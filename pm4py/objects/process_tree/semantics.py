@@ -28,7 +28,8 @@ class GenerationTree(ProcessTree):
         )
 
     def __eq__(self, other):
-        # method that is different from default one (different taus must give different ID in log generation!!!!)
+        # method that is different from default one (different taus must give
+        # different ID in log generation!!!!)
         return id(self) == id(other)
 
     def __hash__(self):

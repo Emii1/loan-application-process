@@ -1,4 +1,5 @@
-import json, logging
+import json
+import logging
 import importlib.util
 
 from pm4py.util.points_subset import pick_chosen_points_list

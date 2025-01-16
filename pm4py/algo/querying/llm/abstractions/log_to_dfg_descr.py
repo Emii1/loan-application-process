@@ -107,7 +107,7 @@ def abstraction_from_frequency_performance_dfg(
                 stru = stru + " frequency = "
                 stru = stru + str(freq_dfg[p])
                 if relative_frequency:
-                    stru = stru + "\%"
+                    stru = stru + "\\%"
                 stru = stru + " "
             if include_performance:
                 stru = stru + " performance = "

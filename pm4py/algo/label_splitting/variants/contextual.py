@@ -155,15 +155,16 @@ def apply(
 
     # keep some internal dictionaries.
     # in particular, 'dict_segments_indexes' maps every activity to some corresponding segments (prefix+suffix).
-    # each prefix is mapped to the set of indexes (of the events) of the log for which the prefix applies.
+    # each prefix is mapped to the set of indexes (of the events) of the log
+    # for which the prefix applies.
     for i in range(len(activities)):
         for j in range(len(activities[i])):
             segment = (
                 activities[i][j],
                 tuple(
-                    activities[i][max(0, j - prefix_length) : j]
+                    activities[i][max(0, j - prefix_length): j]
                     + activities[i][
-                        j + 1 : min(len(activities[i]), j + suffix_length + 1)
+                        j + 1: min(len(activities[i]), j + suffix_length + 1)
                     ]
                 ),
             )

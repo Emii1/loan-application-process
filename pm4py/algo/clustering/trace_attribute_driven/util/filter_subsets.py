@@ -128,7 +128,7 @@ def sublog_percent(log, upper_percent, parameters=None):
     num_list = csum[csum <= upper_percent]
     num_list_lower = csum[csum <= lower_percent]
     # stop until the percent is satisfied
-    df_w_count = df.iloc[len(num_list_lower) : len(num_list), :]
+    df_w_count = df.iloc[len(num_list_lower): len(num_list), :]
     # get correspond var_list
     filtered_var_list = df_w_count["variant"].values.tolist()
     str_var_list = [
@@ -163,7 +163,7 @@ def sublog_percent2actlist(log, upper_percent, parameters=None):
     num_list = csum[csum <= upper_percent]
     num_list_lower = csum[csum <= lower_percent]
     # stop until the percent is satisfied
-    df_w_count = df.iloc[len(num_list_lower) : len(num_list), :]
+    df_w_count = df.iloc[len(num_list_lower): len(num_list), :]
     # get correspond var_list
     filtered_var_list = df_w_count["variant"].values.tolist()
     str_var_list = [
@@ -198,7 +198,7 @@ def sublog_percent2varlist(log, upper_percent, parameters=None):
     num_list = csum[csum <= upper_percent]
     num_list_lower = csum[csum <= lower_percent]
     # stop until the percent is satisfied
-    df_w_count = df.iloc[len(num_list_lower) : len(num_list), :]
+    df_w_count = df.iloc[len(num_list_lower): len(num_list), :]
     # get correspond var_list
     filtered_var_list = df_w_count["variant"].values.tolist()
     return df_w_count, filtered_var_list

@@ -78,7 +78,7 @@ def create_data_petri_nets_with_decisions(
             for k in target_classes.keys():
                 all_conditions[k] = target_classes[k]
                 all_variables[k] = variables[k]
-        except:
+        except BaseException:
             pass
     for trans in net.transitions:
         if trans.name in all_conditions:
@@ -323,7 +323,7 @@ def get_decisions_table(
         log, variant=log_converter.Variants.TO_EVENT_LOG, parameters=parameters
     )
 
-    if pre_decision_points != None:
+    if pre_decision_points is not None:
         if not isinstance(pre_decision_points, list):
             print(
                 "Error: The parameter pre_decision_points has to be a list of names of the places that have to be considered."
@@ -334,7 +334,7 @@ def get_decisions_table(
                 "Error: There must be at least one element in the list of pre_decision_points."
             )
             sys.exit()
-    if attributes != None:
+    if attributes is not None:
         if not isinstance(attributes, list):
             print(
                 "Error: The parameter attributes has to be a list of names of event attributes that have to be considered."
@@ -347,14 +347,14 @@ def get_decisions_table(
             sys.exit()
     if (
         use_trace_attributes == False
-        and trace_attributes != None
+        and trace_attributes is not None
         and isinstance(trace_attributes, list)
     ):
         print(
             "Note: Since a list of considerable trace attributes is provided, and use_trace_attributes was set on False, we set it on True"
         )
         use_trace_attributes = True
-    if trace_attributes != None:
+    if trace_attributes is not None:
         if not isinstance(trace_attributes, list):
             print(
                 "Error: The parameter trace_attributes has to be a list of names of trace attributes that have to be considered."
@@ -379,17 +379,17 @@ def get_decisions_table(
     if use_trace_attributes:
         # Made to ensure distinguishness between event and trace attributes.
         log = prepare_event_log(log)
-        if attributes != None:
+        if attributes is not None:
             attributes = prepare_attributes(attributes)
 
-    if use_trace_attributes and trace_attributes == None:
+    if use_trace_attributes and trace_attributes is None:
         # if no list of trace attributes is provided, we create one
         trace_attributes = []
         if use_trace_attributes:
             for trace in log:
                 trace_attributes += list(trace.attributes)
         trace_attributes = list(set(trace_attributes))
-    if attributes == None:
+    if attributes is None:
         # if no list is given, every attribute of the events are considered
         attributes = []
         for trace in log:
@@ -462,7 +462,7 @@ def get_decision_points(
         counter[place.name] = []
     for arc in net.arcs:
         if arc.source in net.places:
-            if labels == True:
+            if labels:
                 counter[arc.source.name].append(arc.target.label)
             else:
                 counter[arc.source.name].append(arc.target.name)
@@ -471,7 +471,7 @@ def get_decision_points(
     }
     i = 0
     # i counts how many given decision points of the user are detected
-    if pre_decision_points != None:
+    if pre_decision_points is not None:
         for el in list(decision_points):
             if el in pre_decision_points:
                 i += 1
@@ -548,7 +548,8 @@ def get_attributes(
     one_variant = []
     for variant in variants_idxs:
         one_variant.append(variant)
-        # TODO: Token based replay code mit paramter für nur varianten einbeziehen ausstatten
+        # TODO: Token based replay code mit paramter für nur varianten
+        # einbeziehen ausstatten
     replay_result = token_replay.apply(
         log, net, initial_marking, final_marking, parameters=parameters
     )
@@ -561,10 +562,12 @@ def get_attributes(
                 trace = log[trace_index]
                 if use_trace_attributes:
                     for attribute in trace_attributes:
-                        # can be done here since trace attributes does not change for whole trace
+                        # can be done here since trace attributes does not
+                        # change for whole trace
                         A[attribute] = trace.attributes[attribute]
                 j = 0
-                # j is a pointer which points to the current event inside a trace
+                # j is a pointer which points to the current event inside a
+                # trace
                 for transition in variant["activated_transitions"]:
                     for key, value in decision_points_names.items():
                         tr_to_str = (
@@ -572,19 +575,22 @@ def get_attributes(
                         )
                         if tr_to_str in value:
                             for element in last_k_list:
-                                if element != None:
+                                if element is not None:
                                     I[key].append((element.copy(), tr_to_str))
                     for attri in attributes:
                         # print(variant, transition.label, j)
                         if attri in trace[j]:
-                            # only add the attribute information if it is present in the event
+                            # only add the attribute information if it is
+                            # present in the event
                             A[attri] = trace[j][attri]
-                    # add A to last_k_list. Using modulo to access correct entry
+                    # add A to last_k_list. Using modulo to access correct
+                    # entry
                     last_k_list[j % k] = A.copy()
-                    if transition.label != None:
+                    if transition.label is not None:
                         if not j + 1 >= len(trace):
                             # Problem otherwise: If there are tau-transition after the last event related transition,
-                            # the pointer j which points to the current event in a trace, gets out of range
+                            # the pointer j which points to the current event
+                            # in a trace, gets out of range
                             j += 1
         else:
             example_trace = log[variants_idxs[one_variant[count]][0]]
@@ -604,7 +610,8 @@ def get_attributes(
                 trace = log[trace_index]
                 if use_trace_attributes:
                     for attribute in trace_attributes:
-                        # can be done here since trace attributes does not change for whole trace
+                        # can be done here since trace attributes does not
+                        # change for whole trace
                         A[attribute] = trace.attributes[attribute]
                 j = 0
                 for el in alignment:
@@ -613,10 +620,13 @@ def get_attributes(
                         for key, value in decision_points.items():
                             if el[0][1] in value:
                                 for element in last_k_list:
-                                    if element != None:
-                                        # only add those entries where information is provided
-                                        if el[1][1] == None:
-                                            # for some dt algorithms, the entry None might be a problem, since it is left out later
+                                    if element is not None:
+                                        # only add those entries where
+                                        # information is provided
+                                        if el[1][1] is None:
+                                            # for some dt algorithms, the entry
+                                            # None might be a problem, since it
+                                            # is left out later
                                             I[key].append(
                                                 (element.copy(), el[0][1])
                                             )
@@ -628,13 +638,16 @@ def get_attributes(
                         # If there is a move in log and model
                         for attri in attributes:
                             if attri in trace[j]:
-                                # only add the attribute information if it is present in the event
+                                # only add the attribute information if it is
+                                # present in the event
                                 A[attri] = trace[j][attri]
-                        # add A to last_k_list. Using modulo to access correct entry
+                        # add A to last_k_list. Using modulo to access correct
+                        # entry
                         last_k_list[j % k] = A.copy()
                     if el[1][0] != ">>":
                         # only go to next event in trace if the current event has been aligned
-                        # TODO: Discuss if this is correct or can lead to problems
+                        # TODO: Discuss if this is correct or can lead to
+                        # problems
                         j += 1
         count += 1
     return I

@@ -111,7 +111,8 @@ def apply_numeric(
     )
 
     # stream_filter_key is helpful to filter on cases containing an event with an attribute
-    # in the specified value set, but such events shall have an activity in particular.
+    # in the specified value set, but such events shall have an activity in
+    # particular.
     stream_filter_key1 = exec_utils.get_param_value(
         Parameters.STREAM_FILTER_KEY1, parameters, None
     )
@@ -357,7 +358,7 @@ def filter_df_keeping_spno_activities(
     )
     # keep only a number of attributes <= max_no_activities
     activity_values_ordered_list = activity_values_ordered_list[
-        0 : min(len(activity_values_ordered_list), max_no_activities)
+        0: min(len(activity_values_ordered_list), max_no_activities)
     ]
     activity_to_keep = [x[0] for x in activity_values_ordered_list]
 

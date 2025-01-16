@@ -7,11 +7,9 @@ from pm4py.algo.discovery.inductive.dtypes.im_ds import (
 )
 from pm4py.algo.discovery.inductive.fall_through.abc import FallThrough
 from pm4py.algo.discovery.powl.inductive.fall_through.activity_concurrent import (
-    POWLActivityConcurrentUVCL,
-)
+    POWLActivityConcurrentUVCL, )
 from pm4py.algo.discovery.powl.inductive.fall_through.activity_once_per_trace import (
-    POWLActivityOncePerTraceUVCL,
-)
+    POWLActivityOncePerTraceUVCL, )
 from pm4py.algo.discovery.powl.inductive.fall_through.empty_traces import (
     POWLEmptyTracesUVCL,
 )

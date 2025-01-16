@@ -82,7 +82,8 @@ def apply_numeric(
         constants.CASE_ATTRIBUTE_PREFIX,
     )
     # stream_filter_key is helpful to filter on cases containing an event with an attribute
-    # in the specified value set, but such events shall have an activity in particular.
+    # in the specified value set, but such events shall have an activity in
+    # particular.
 
     stream_filter_key1 = exec_utils.get_param_value(
         Parameters.STREAM_FILTER_KEY1, parameters, None

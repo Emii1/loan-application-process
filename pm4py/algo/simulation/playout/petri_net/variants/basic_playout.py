@@ -82,7 +82,8 @@ def apply_playout(
                 break
 
             if len(all_visited_elements) == 0:
-                # likely, the final marking is not reachable, therefore terminate here the playout
+                # likely, the final marking is not reachable, therefore
+                # terminate here the playout
                 break
 
         visited_elements = []

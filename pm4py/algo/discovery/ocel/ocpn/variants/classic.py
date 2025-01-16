@@ -134,7 +134,8 @@ def apply(
         # disables the fallthroughs, as computing the model on a myriad of different object types
         # could be really expensive
         im_parameters["disable_fallthroughs"] = True
-        # for performance reasons, also disable the strict sequence cut (use the normal sequence cut)
+        # for performance reasons, also disable the strict sequence cut (use
+        # the normal sequence cut)
         im_parameters["disable_strict_sequence_cut"] = True
 
         process_tree = None
@@ -183,14 +184,16 @@ def apply(
                 for place in place_fitness_per_trace
             }
             trans_count = {trans: 0 for trans in petri_net[0].transitions}
-            # computes the missing, remaining, consumed, and produced tokens per place.
+            # computes the missing, remaining, consumed, and produced tokens
+            # per place.
             for place, res in place_fitness_per_trace.items():
                 place_diagnostics[place]["m"] += res["m"]
                 place_diagnostics[place]["r"] += res["r"]
                 place_diagnostics[place]["c"] += res["c"]
                 place_diagnostics[place]["p"] += res["p"]
 
-            # counts the number of times a transition has been fired during the replay.
+            # counts the number of times a transition has been fired during the
+            # replay.
             for trace in replayed_traces:
                 for trans in trace["activated_transitions"]:
                     trans_count[trans] += 1

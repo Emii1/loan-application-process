@@ -173,7 +173,8 @@ def apply(
         parameters[Parameters.PARAM_SYNC_COST_FUNCTION] = sync_cost_function
 
     if trace_net_constr_function is not None:
-        # keep the possibility to pass TRACE_NET_CONSTR_FUNCTION in this old version
+        # keep the possibility to pass TRACE_NET_CONSTR_FUNCTION in this old
+        # version
         trace_net, trace_im, trace_fm = trace_net_constr_function(
             trace, activity_key=activity_key
         )
@@ -500,7 +501,8 @@ def apply_trace_net(
         Parameters.RETURN_SYNC_COST_FUNCTION, parameters, False
     )
     if return_sync_cost:
-        # needed for the decomposed alignments (switching them from state_equation_less_memory)
+        # needed for the decomposed alignments (switching them from
+        # state_equation_less_memory)
         return alignment, cost_function
 
     return alignment
@@ -652,7 +654,8 @@ def __search(
             curr = heapq.heappushpop(open_set, tp)
             current_marking = curr.m
 
-        # max allowed heuristics value (27/10/2019, due to the numerical instability of some of our solvers)
+        # max allowed heuristics value (27/10/2019, due to the numerical
+        # instability of some of our solvers)
         if curr.h > lp_solver.MAX_ALLOWED_HEURISTICS:
             continue
 

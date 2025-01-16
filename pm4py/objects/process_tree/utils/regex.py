@@ -50,15 +50,15 @@ def pt_to_regex(tree, rec_depth=0, shared_obj=None, parameters=None):
             )
             children_rep.append(rep)
         if tree.operator == pt_operator.Operator.SEQUENCE:
-            children_rep = [x for x in children_rep if not x is None]
+            children_rep = [x for x in children_rep if x is not None]
             stru = "(" + "".join(children_rep) + ")"
         elif tree.operator == pt_operator.Operator.XOR:
-            children_rep = [x for x in children_rep if not x is None]
+            children_rep = [x for x in children_rep if x is not None]
             stru = "(" + "|".join(children_rep) + ")"
             if contains_tau:
                 stru = "(" + stru + "?)"
         elif tree.operator == pt_operator.Operator.LOOP:
-            children_rep = [x for x in children_rep if not x is None]
+            children_rep = [x for x in children_rep if x is not None]
             if len(children_rep) == 1:
                 stru = "(" + children_rep[0] + ")+"
             else:

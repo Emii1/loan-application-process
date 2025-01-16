@@ -14,5 +14,5 @@ def check_dot_installed():
             ["dot", "-V"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
         )
         return val.returncode == 0
-    except:
+    except BaseException:
         return False

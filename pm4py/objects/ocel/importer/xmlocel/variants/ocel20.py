@@ -36,12 +36,12 @@ def parse_xml(value, tag_str_lower, parser):
 def embed_date_parser(date_parser, x):
     try:
         return date_parser(x)
-    except:
+    except BaseException:
         from dateutil.parser import parse
 
         try:
             return parse(x)
-        except:
+        except BaseException:
             return parse(x, fuzzy=True)
 
 
@@ -158,7 +158,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                                 attribute_type = object_type_attributes[
                                     object_type
                                 ][attribute_name]
-                            except:
+                            except BaseException:
                                 attribute_type = "string"
                             attribute_text = parse_xml(
                                 attribute.text, attribute_type, date_parser
@@ -229,7 +229,7 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None) -> OCEL:
                                 attribute_type = event_type_attributes[
                                     event_type
                                 ][attribute_name]
-                            except:
+                            except BaseException:
                                 attribute_type = "string"
                             ev_dict[attribute_name] = parse_xml(
                                 attribute_text, attribute_type, date_parser

@@ -707,9 +707,8 @@ def nlp_to_log_filter(
     )
 
     prompt = (
-        "Could you provide a database query to filter all the events of the cases for which at least an event (row) is satisfying the following filtering query?\n\n"
-        + filter_query
-    )
+        "Could you provide a database query to filter all the events of the cases for which at least an event (row) is satisfying the following filtering query?\n\n" +
+        filter_query)
     prompt += domain_knowledge_injector.apply(log, parameters=kwargs)
     prompt += "\n\nPlease include the SQL query between the ```sql and the ``` tags.\n\n"
 
@@ -801,7 +800,7 @@ def automated_hypotheses_formulation(
                         obtained_results[i] = duckdb.sql(
                             obtained_queries[i]
                         ).to_df()
-                    except:
+                    except BaseException:
                         print("Exception executing query nr. %d" % i)
 
             return [

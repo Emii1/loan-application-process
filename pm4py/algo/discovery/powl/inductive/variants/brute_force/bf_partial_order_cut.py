@@ -58,7 +58,7 @@ def get_partitions_of_size_k(nodes, k=None):
                 yield [tuple([e]), *p]
             for p in set_partitions_helper(M, k):
                 for i in range(len(p)):
-                    yield p[:i] + [tuple([e]) + p[i]] + p[i + 1 :]
+                    yield p[:i] + [tuple([e]) + p[i]] + p[i + 1:]
 
     if k is None:
         for k in range(1, n + 1):

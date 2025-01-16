@@ -1,5 +1,6 @@
 import numpy as np
-import json, logging
+import json
+import logging
 import importlib.util
 from pm4py.util import exec_utils
 from enum import Enum

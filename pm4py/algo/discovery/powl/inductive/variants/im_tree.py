@@ -23,8 +23,7 @@ from pm4py.algo.discovery.powl.inductive.utils.filtering import (
     DEFAULT_FILTERING_TYPE,
 )
 from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_varaints import (
-    POWLDiscoveryVariant,
-)
+    POWLDiscoveryVariant, )
 
 from pm4py.objects.powl.obj import (
     POWL,
@@ -83,8 +82,7 @@ class IMBasePOWL(Generic[T], InductiveMinerFramework[T]):
                     if isinstance(t, float) and 0 <= t < 1:
                         if t > 0:
                             filtered_log = filter_most_frequent_variants_with_decreasing_factor(
-                                obj.data_structure, decreasing_factor=t
-                            )
+                                obj.data_structure, decreasing_factor=t)
                             if (
                                 0
                                 < len(filtered_log.data_structure)

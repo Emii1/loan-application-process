@@ -152,7 +152,8 @@ def apply(
         parameters[Parameters.PARAM_SYNC_COST_FUNCTION] = sync_cost_function
 
     if trace_net_constr_function is not None:
-        # keep the possibility to pass TRACE_NET_CONSTR_FUNCTION in this old version
+        # keep the possibility to pass TRACE_NET_CONSTR_FUNCTION in this old
+        # version
         trace_net, trace_im, trace_fm = trace_net_constr_function(
             trace, activity_key=activity_key
         )
@@ -325,7 +326,8 @@ def __search(
     closed = set()
     hub: dict[Marking, list[utils.DijkstraSearchTuple]] = dict()
     hub_dist: dict[Marking, int] = dict()
-    # Given a marking, holds many tuples of (search tuples that reached it, distance) in two arrays
+    # Given a marking, holds many tuples of (search tuples that reached it,
+    # distance) in two arrays
 
     ini_state = utils.DijkstraSearchTuple(0, ini, None, None, 0)
     open_set = [ini_state]
@@ -352,7 +354,8 @@ def __search(
         #     continue
 
         # Prevent recursion on already-closed markings (once is enough)
-        # Required because multiple paths can add a marking before it get visited.
+        # Required because multiple paths can add a marking before it get
+        # visited.
         already_closed = current_marking in closed
         if already_closed:
             continue
@@ -412,7 +415,8 @@ def __search(
                 continue
 
             # Each marking contains all paths that reached it. Used later for reconstruction.
-            # We also make sure that each hub node only contains paths with the minimal distance.
+            # We also make sure that each hub node only contains paths with the
+            # minimal distance.
             this_cost = curr.g + cost
             if new_marking not in hub:
                 hub[new_marking] = []

@@ -394,7 +394,8 @@ def __apply_list_activities(trace, dfg, sa, ea, parameters=None):
         {x: align_utils.STD_MODEL_LOG_MOVE_COST for x in activities_model},
     )
     # for each activity that is in the trace, provides the cost of a log move
-    # that is returned in the alignment to the user (but not used internally for ordering the states)
+    # that is returned in the alignment to the user (but not used internally
+    # for ordering the states)
     log_move_cost_function = exec_utils.get_param_value(
         Parameters.LOG_MOVE_COST_FUNCTION,
         parameters,
@@ -522,7 +523,7 @@ def __apply_list_activities(trace, dfg, sa, ea, parameters=None):
                             > closed[new_state[POSITION_MODEL]]
                         ):
                             heapq.heappush(open_set, new_state)
-                    elif not not_end_trace or not trace_curr in list_act:
+                    elif not not_end_trace or trace_curr not in list_act:
                         f = curr[POSITION_F] + model_move_cost_function[act]
                         real_f = (
                             curr[POSITION_REAL_F]

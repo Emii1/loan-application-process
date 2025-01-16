@@ -18,7 +18,9 @@ from pm4py.util.constants import (
 class Parameters(Enum):
     # parameter for the noise threshold
     NOISE_THRESHOLD = "noise_threshold"
-    # considered constraints in conformance checking among: equivalence, always_after, always_before, never_together, directly_follows, activ_freq
+    # considered constraints in conformance checking among: equivalence,
+    # always_after, always_before, never_together, directly_follows,
+    # activ_freq
     CONSIDERED_CONSTRAINTS = "considered_constraints"
     # default choice for conformance checking
     DEFAULT_CONSIDERED_CONSTRAINTS = [
@@ -111,7 +113,7 @@ def apply_log(
     inv_idxs = {}
     for i in range(len(traces)):
         tr = traces[i]
-        if not tr in grouped_traces:
+        if tr not in grouped_traces:
             grouped_traces[tr] = []
             gtk.append(tr)
         grouped_traces[tr].append(i)
@@ -243,7 +245,7 @@ def apply_actlist(trace, model, parameters=None):
                             act
                             for act in this_constraints
                             if min(this_constraints[act]) > 0
-                            and not act in trace
+                            and act not in trace
                         )
                     )
                 )
@@ -263,7 +265,7 @@ def apply_actlist(trace, model, parameters=None):
                             (default_considered_constraints[i], (act, 0))
                         )
                 for act in this_constraints:
-                    if min(this_constraints[act]) > 0 and not act in trace:
+                    if min(this_constraints[act]) > 0 and act not in trace:
                         dev_total += 1
                         ret[Outputs.DEVIATIONS.value].append(
                             (default_considered_constraints[i], (act, 0))

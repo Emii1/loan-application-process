@@ -73,7 +73,8 @@ def get_xml_string(bpmn_graph, parameters=None):
         all_processes.add(flow.get_process())
 
     if len(all_processes) > 1:
-        # when several swimlanes exist, their elements should be annexed to the same BPMN plane
+        # when several swimlanes exist, their elements should be annexed to the
+        # same BPMN plane
         collaboration_nodes = [
             x
             for x in bpmn_graph.get_nodes()

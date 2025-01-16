@@ -32,7 +32,8 @@ def __search(sync_net, ini, fin, stop, cost_function, skip):
 
     # return all the prefix markings of the optimal alignments as set
     ret_markings = None
-    # keep track of the optimal cost of an alignment (to trim search when needed)
+    # keep track of the optimal cost of an alignment (to trim search when
+    # needed)
     optimal_cost = None
 
     while not len(open_set) == 0:

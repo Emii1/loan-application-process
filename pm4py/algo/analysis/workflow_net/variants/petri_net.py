@@ -40,7 +40,8 @@ def _short_circuit_petri_net(net):
         and no_source_places == 1
         and no_sink_places == 1
     ):
-        # If there is one unique source and sink place, short circuit Petri Net is constructed
+        # If there is one unique source and sink place, short circuit Petri Net
+        # is constructed
         t_1 = PetriNet.Transition(
             "short_circuited_transition", "short_circuited_transition"
         )

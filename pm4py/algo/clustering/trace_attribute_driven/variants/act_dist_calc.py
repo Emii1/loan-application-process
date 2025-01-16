@@ -271,7 +271,8 @@ def act_sim_dual(
                 )[0]
                 dist_matrix[i][j] = dist_vec[j]
                 if j == (min_len - 1):
-                    # max_loc_col = np.argmax(dist_matrix[i, :])  # location of max value
+                    # max_loc_col = np.argmax(dist_matrix[i, :])  # location of
+                    # max value
                     max_loc_col = np.argmin(dist_vec)
                     if abs(dist_vec[max_loc_col]) <= 1e-6:
                         index_rec.discard(max_loc_col)

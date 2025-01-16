@@ -10,8 +10,7 @@ from pm4py.algo.conformance.alignments.petri_net.algorithm import (
     apply as get_alignment,
 )
 from pm4py.algo.conformance.alignments.petri_net.variants.state_equation_a_star import (
-    get_best_worst_cost,
-)
+    get_best_worst_cost, )
 from pm4py.objects.conversion.process_tree import converter as pt_converter
 from pm4py.objects.log.obj import Trace, Event
 from pm4py.objects.petri_net.utils.align_utils import (
@@ -141,7 +140,8 @@ def calculate_optimal_alignment(
     pt.parent = parent
     res = []
 
-    # if the alignment has terminated prematurely due to time constraints, raise an Exception
+    # if the alignment has terminated prematurely due to time constraints,
+    # raise an Exception
     if alignment is None:
         raise AlignmentNoneException("alignment terminated prematurely")
 
@@ -152,7 +152,8 @@ def calculate_optimal_alignment(
         == pt_converter.Variants.TO_PETRI_NET_TRANSITION_BORDERED.value
     ):
         # remove invisible model moves from alignment steps that do not belong to a silent model move in the process tree
-        # this is possible only if the TO_PETRI_NET_TRANSITION_BORDERED variant is used
+        # this is possible only if the TO_PETRI_NET_TRANSITION_BORDERED variant
+        # is used
         for a in alignment["alignment"]:
             if not (a[0][0] == SKIP and not a[0][1].isdigit()):
                 res.append(a[1])
@@ -181,7 +182,8 @@ def add_fitness_and_cost_info_to_alignments(
         pt_converter.Variants.TO_PETRI_NET_TRANSITION_BORDERED,
     )
     if alignment is not None:
-        # if the alignment is not None, return a nice dictionary with the alignment of the trace
+        # if the alignment is not None, return a nice dictionary with the
+        # alignment of the trace
         cost = apply_standard_cost_function_to_alignment(alignment)
         if cost == 0:
             fitness = 1

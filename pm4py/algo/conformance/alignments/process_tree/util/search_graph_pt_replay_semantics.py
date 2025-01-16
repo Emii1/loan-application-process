@@ -121,7 +121,8 @@ def close_vertex(tree: ProcessTree, state: ProcessTreeState) -> Tuple[
                 path.extend(e_path)
         state[(id(tree), tree)] = ProcessTree.OperatorState.CLOSED
         path.append((tree, ProcessTree.OperatorState.CLOSED))
-        # if tree is a redo, then we will always need to execute the do part of the surrounding loop
+        # if tree is a redo, then we will always need to execute the do part of
+        # the surrounding loop
         if (
             ptu.is_operator(tree.parent, Operator.LOOP)
             and id(tree) == id(tree.parent.children[1])

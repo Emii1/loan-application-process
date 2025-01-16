@@ -1,7 +1,8 @@
 from enum import Enum
 from pm4py.util import exec_utils
 from typing import Optional, Dict, Any
-import base64, os
+import base64
+import os
 from pm4py.util import constants
 
 

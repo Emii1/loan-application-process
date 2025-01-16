@@ -832,7 +832,8 @@ def get_rules_from_rules_df(
     rules = {}
 
     if min_support_ratio is None and min_confidence_ratio is None:
-        # auto determine the minimum support and confidence ratio by identifying the values for the best feature
+        # auto determine the minimum support and confidence ratio by
+        # identifying the values for the best feature
         auto_selection_multiplier = exec_utils.get_param_value(
             Parameters.AUTO_SELECTION_MULTIPLIER, parameters, 0.8
         )

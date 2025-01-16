@@ -50,7 +50,8 @@ def marking_flow_petri(
     if parameters is None:
         parameters = {}
 
-    # set a maximum execution time of 1 day (it can be changed by providing the parameter)
+    # set a maximum execution time of 1 day (it can be changed by providing
+    # the parameter)
     max_exec_time = exec_utils.get_param_value(
         Parameters.MAX_ELAB_TIME, parameters, 86400
     )
@@ -80,9 +81,7 @@ def marking_flow_petri(
         if return_eventually_enabled:
             eventually_enabled[m] = (
                 align_utils.get_visible_transitions_eventually_enabled_by_marking(
-                    net, m
-                )
-            )
+                    net, m))
         outgoing_transitions[m] = {}
         for t in enabled_transitions:
             nm = semantics.weak_execute(t, net, m)

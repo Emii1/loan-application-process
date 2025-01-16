@@ -51,14 +51,14 @@ def get_events(box, prefix, progress) -> List[Dict[str, Any]]:
                 sender = "EMPTY"
                 try:
                     sender = str(it.Sender.Name)
-                except:
+                except BaseException:
                     pass
                 recipients = "EMPTY"
                 try:
                     recipients = " AND ".join(
                         [str(x.Name) for x in it.Recipients]
                     )
-                except:
+                except BaseException:
                     pass
                 conversationid = str(it.ConversationID)
                 conversationtopic = str(it.ConversationTopic)
@@ -73,7 +73,7 @@ def get_events(box, prefix, progress) -> List[Dict[str, Any]]:
                         "subject": subject,
                     }
                 )
-        except:
+        except BaseException:
             traceback.print_exc()
             pass
         if progress is not None:

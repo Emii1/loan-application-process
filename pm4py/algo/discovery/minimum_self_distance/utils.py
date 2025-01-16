@@ -59,6 +59,6 @@ def derive_msd_witnesses(
                 indices = [i for i, x in enumerate(t) if x == a]
                 for i in range(len(indices) - 1):
                     if indices[i + 1] - indices[i] - 1 == msd[a]:
-                        for b in t[indices[i] + 1 : indices[i + 1]]:
+                        for b in t[indices[i] + 1: indices[i + 1]]:
                             witnesses[a].add(b)
     return witnesses

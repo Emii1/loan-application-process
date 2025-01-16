@@ -33,7 +33,7 @@ def transform_basis(basis, style=None):
     At the moment, 'uniform' (all weights have value 0 or 1), and 'weighted' (all weights are >=0) are supported
     :return: List of p-invariants that fits the style
     """
-    if style == None:
+    if style is None:
         style = "weighted"
 
     # First, we want to check if a vector of a basis only contains non-positve entries. If so, then we multiply the
@@ -49,7 +49,8 @@ def transform_basis(basis, style=None):
         else:
             modified_base.append(vector)
     # For uniform variants, it is necessary that the weight for a place is either 0 or 1. We collect the variants for
-    # which this condition does not hold. We also collect the variants for the weighted invariants the entry is <0.
+    # which this condition does not hold. We also collect the variants for the
+    # weighted invariants the entry is <0.
     to_modify = []
 
     for vector in modified_base:
@@ -130,7 +131,8 @@ def transform_basis(basis, style=None):
                 Aub = np.zeros((1, len(c))).astype(np.float64)
                 bub = np.zeros(1).transpose().astype(np.float64)
 
-            # this is highly critical and LP solutions are not always correct :(
+            # this is highly critical and LP solutions are not always correct
+            # :(
 
             proposed_solver = solver.SCIPY
             if importlib.util.find_spec("pulp"):

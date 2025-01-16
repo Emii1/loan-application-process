@@ -80,7 +80,7 @@ def apply(
 
     prev = 0
     while prev < len(log):
-        sample = log[prev : min(len(log), prev + sample_size)]
+        sample = log[prev: min(len(log), prev + sample_size)]
         transf_stream, activities_grouped, activities = classic.preprocess_log(
             sample, activities=activities, parameters=parameters
         )

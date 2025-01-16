@@ -19,7 +19,7 @@ class Parameters(Enum):
 
 def gen_patterns(pattern, length):
     return [
-        "".join(pattern[i : i + length])
+        "".join(pattern[i: i + length])
         for i in range(len(pattern) - (length - 1))
     ]
 
@@ -105,7 +105,8 @@ def apply(
 
     points = []
     for l, patterns in all_patterns:
-        # concat shifted and suffixed dataframes to get a dataframe that allows to check for the patterns
+        # concat shifted and suffixed dataframes to get a dataframe that allows
+        # to check for the patterns
         dfs = [dataframe.add_suffix(str(i)).shift(-i) for i in range(l)]
         df_merged = pandas_utils.concat(dfs, axis=1)
 

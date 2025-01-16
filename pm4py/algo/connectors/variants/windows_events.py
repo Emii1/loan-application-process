@@ -31,7 +31,7 @@ def apply(parameters: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
 
     strComputer = "."
     objWMIService = win32com.client.Dispatch("WbemScripting.SWbemLocator")
-    objSWbemServices = objWMIService.ConnectServer(strComputer, "root\cimv2")
+    objSWbemServices = objWMIService.ConnectServer(strComputer, "root\\cimv2")
     colItems = objSWbemServices.ExecQuery("Select * from Win32_NTLogEvent")
     events = []
 

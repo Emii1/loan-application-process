@@ -42,7 +42,7 @@ def filter_on_ncases(
     cases_to_keep = []
     for case in cases_values_dict:
         cases_to_keep.append(case)
-    cases_to_keep = cases_to_keep[0 : min(len(cases_to_keep), max_no_cases)]
+    cases_to_keep = cases_to_keep[0: min(len(cases_to_keep), max_no_cases)]
     ret = df[df[case_id_glue].isin(cases_to_keep)]
     ret.attrs = copy(df.attrs) if hasattr(df, "attrs") else {}
     return ret

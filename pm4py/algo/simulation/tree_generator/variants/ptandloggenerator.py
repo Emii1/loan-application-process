@@ -78,27 +78,27 @@ def apply(
     if parameters is None:
         parameters = {}
 
-    if not "mode" in parameters:
+    if "mode" not in parameters:
         parameters["mode"] = 20
-    if not "min" in parameters:
+    if "min" not in parameters:
         parameters["min"] = 10
-    if not "max" in parameters:
+    if "max" not in parameters:
         parameters["max"] = 30
-    if not "sequence" in parameters:
+    if "sequence" not in parameters:
         parameters["sequence"] = 0.25
-    if not "choice" in parameters:
+    if "choice" not in parameters:
         parameters["choice"] = 0.25
-    if not "parallel" in parameters:
+    if "parallel" not in parameters:
         parameters["parallel"] = 0.25
-    if not "loop" in parameters:
+    if "loop" not in parameters:
         parameters["loop"] = 0.25
-    if not "or" in parameters:
+    if "or" not in parameters:
         parameters["or"] = 0.0
-    if not "silent" in parameters:
+    if "silent" not in parameters:
         parameters["silent"] = 0.2
-    if not "duplicate" in parameters:
+    if "duplicate" not in parameters:
         parameters["duplicate"] = 0
-    if not "no_models" in parameters:
+    if "no_models" not in parameters:
         parameters["no_models"] = 1
 
     no_models = parameters["no_models"]
@@ -153,7 +153,8 @@ class GeneratedTree(object):
 
     def select_operator(self):
         # add root operator, if probabilities are high enough
-        # ordering of operator computation is sequence, choice, parallel, loop, or
+        # ordering of operator computation is sequence, choice, parallel, loop,
+        # or
         operator = choices(
             ["sequence", "choice", "parallel", "loop", "or"],
             [
@@ -207,7 +208,8 @@ class GeneratedTree(object):
                 for child in p._children:
                     if child != leaf:
                         siblings.append(child)
-                # TODO Skaling? Original: 30times, my idea : percentage of duplicates * len(leaves)
+                # TODO Skaling? Original: 30times, my idea : percentage of
+                # duplicates * len(leaves)
                 while i < self.parameters["duplicate"] * len(leaves):
                     replacement = random.choice(possible_replacements)
                     if replacement not in siblings:
@@ -313,13 +315,15 @@ class GeneratedTree(object):
                 self.parameters["loop"] / sum_of_operators
             )
         # First step: Compute acivity distribution
-        # Since mode, min and max are given, the triangle distribution is chosen
+        # Since mode, min and max are given, the triangle distribution is
+        # chosen
         self.activity_distribution = self.calculate_activity_distribution(
             self.parameters["mode"],
             self.parameters["min"],
             self.parameters["max"],
         )
-        # Number of total activities represented in the tree. Also, tau is counted as an activity.
+        # Number of total activities represented in the tree. Also, tau is
+        # counted as an activity.
         self.total_activities = int(
             round(self.draw_random_number_from_distribution())
         )

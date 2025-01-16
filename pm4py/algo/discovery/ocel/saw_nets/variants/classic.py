@@ -180,7 +180,8 @@ def apply(
     # disables the fallthroughs, as computing the model on a myriad of different object types
     # could be really expensive
     disc_parameters["disable_fallthroughs"] = True
-    # for performance reasons, also disable the strict sequence cut (use the normal sequence cut)
+    # for performance reasons, also disable the strict sequence cut (use the
+    # normal sequence cut)
     disc_parameters["disable_strict_sequence_cut"] = True
     ocpn_nets, saw_weights = __discover_petri_and_consumption_stats_tbr(
         ocel, obj_types, parameters=disc_parameters

@@ -90,22 +90,22 @@ def preprocessing(
         while i < len(trace) - 1:
             current = trace[i][activity_key]
             successor = trace[i + 1][activity_key]
-            if not current in loop_one_list:
+            if current not in loop_one_list:
                 filtered_trace.append(current)
             if successor in loop_one_list:
-                if not current in loop_one_list:
+                if current not in loop_one_list:
                     if current in A:
                         A[successor].append(current)
                     else:
                         A[successor] = [current]
             if current in loop_one_list:
-                if not successor in loop_one_list:
+                if successor not in loop_one_list:
                     if current in B:
                         B[current].append(successor)
                     else:
                         B[current] = [successor]
             if i == len(trace) - 2:
-                if not successor in loop_one_list:
+                if successor not in loop_one_list:
                     filtered_trace.append(successor)
             i += 1
         filtered_log.append(filtered_trace)
@@ -255,7 +255,7 @@ def get_relations(log: EventLog):
                     if key in follows[element]:
                         if element in follows[key]:
                             if key in square:
-                                if not element in square[key]:
+                                if element not in square[key]:
                                     if key in parallel:
                                         parallel[key].append(element)
                                     else:
@@ -389,7 +389,7 @@ def get_sharp_relation(follows, instance_one, instance_two):
                 and not instance_one in follows[instance_two]
             ):
                 return True
-    if not instance_one in follows and not instance_two in follows:
+    if instance_one not in follows and instance_two not in follows:
         return True
     if instance_one in follows:
         if instance_two in follows[instance_one]:

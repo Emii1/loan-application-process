@@ -1297,11 +1297,9 @@ def discover_powl(
         print(powl_model)
     """
     from pm4py.algo.discovery.powl.inductive.variants.dynamic_clustering_frequency.dynamic_clustering_frequency_partial_order_cut import (
-        ORDER_FREQUENCY_RATIO,
-    )
+        ORDER_FREQUENCY_RATIO, )
     from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_varaints import (
-        POWLDiscoveryVariant,
-    )
+        POWLDiscoveryVariant, )
 
     if variant is None:
         variant = POWLDiscoveryVariant.MAXIMAL

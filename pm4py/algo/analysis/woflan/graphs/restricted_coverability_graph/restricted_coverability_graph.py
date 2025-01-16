@@ -29,7 +29,7 @@ def construct_tree(net, initial_marking):
         nodes = list(coverability_graph.nodes).copy()
         while len(nodes) > 0:
             m = nodes.pop()
-            if not np.inf in coverability_graph.nodes[m]["marking"]:
+            if np.inf not in coverability_graph.nodes[m]["marking"]:
                 possible_markings = helper.enabled_markings(
                     firing_dict,
                     req_dict,
@@ -38,7 +38,9 @@ def construct_tree(net, initial_marking):
                 m2 = None
                 if len(possible_markings) > 0:
                     for marking in possible_markings:
-                        # check for m1 + since we want to construct a tree, we do not want that a marking is already in a graph since it is going to have an arc
+                        # check for m1 + since we want to construct a tree, we
+                        # do not want that a marking is already in a graph
+                        # since it is going to have an arc
                         if np.array2string(marking[0]) not in look_up_indices:
                             if check_if_transition_unique(
                                 m, coverability_graph, marking[1]

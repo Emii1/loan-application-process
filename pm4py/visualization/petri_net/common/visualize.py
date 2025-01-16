@@ -456,7 +456,8 @@ def graphviz_visualization(
                     )
 
     # check if there is an arc with weight different than 1.
-    # in that case, all the arcs in the visualization should have the arc weight visible
+    # in that case, all the arcs in the visualization should have the arc
+    # weight visible
     arc_weight_visible = False
     for arc in arcs:
         if arc.weight != 1:

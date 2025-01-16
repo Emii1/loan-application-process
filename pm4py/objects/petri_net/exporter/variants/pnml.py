@@ -321,7 +321,8 @@ def export_petri_as_string(
         export_prom5=export_prom5,
     )
 
-    # removing default decoding (return binary string as in other parts of the application)
+    # removing default decoding (return binary string as in other parts of the
+    # application)
     return etree.tostring(tree, xml_declaration=True, encoding=encoding)
 
 

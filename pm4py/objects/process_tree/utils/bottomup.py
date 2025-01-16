@@ -223,7 +223,7 @@ def get_bottomup_nodes(tree, parameters=None):
         if parent is not None and parent not in bottomup:
             is_ok = True
             for child in parent.children:
-                if not child in bottomup:
+                if child not in bottomup:
                     is_ok = False
                     break
             if is_ok:

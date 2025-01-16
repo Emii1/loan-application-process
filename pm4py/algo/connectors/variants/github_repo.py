@@ -136,7 +136,7 @@ def apply(parameters: Optional[Dict[Any, str]] = None) -> pd.DataFrame:
             if progress is not None:
                 progress.close()
             time.sleep(1)
-        except:
+        except BaseException:
             continuee = False
             traceback.print_exc()
             if progress is not None:

@@ -118,7 +118,8 @@ def reduce_tau_leafs(tree):
                     pt_op.Operator.XOR,
                     pt_op.Operator.OR,
                 ]:
-                    # remove all but one, later reductions might need the fact that skipping is possible
+                    # remove all but one, later reductions might need the fact
+                    # that skipping is possible
                     while silents > 1:
                         cc = tree.children
                         for c in cc:
@@ -269,22 +270,22 @@ def parse_recursive(string_rep, depth_cache, depth):
     operator = None
     if string_rep.startswith(pt_op.Operator.LOOP.value):
         operator = pt_op.Operator.LOOP
-        string_rep = string_rep[len(pt_op.Operator.LOOP.value) :]
+        string_rep = string_rep[len(pt_op.Operator.LOOP.value):]
     elif string_rep.startswith(pt_op.Operator.PARALLEL.value):
         operator = pt_op.Operator.PARALLEL
-        string_rep = string_rep[len(pt_op.Operator.PARALLEL.value) :]
+        string_rep = string_rep[len(pt_op.Operator.PARALLEL.value):]
     elif string_rep.startswith(pt_op.Operator.XOR.value):
         operator = pt_op.Operator.XOR
-        string_rep = string_rep[len(pt_op.Operator.XOR.value) :]
+        string_rep = string_rep[len(pt_op.Operator.XOR.value):]
     elif string_rep.startswith(pt_op.Operator.OR.value):
         operator = pt_op.Operator.OR
-        string_rep = string_rep[len(pt_op.Operator.OR.value) :]
+        string_rep = string_rep[len(pt_op.Operator.OR.value):]
     elif string_rep.startswith(pt_op.Operator.SEQUENCE.value):
         operator = pt_op.Operator.SEQUENCE
-        string_rep = string_rep[len(pt_op.Operator.SEQUENCE.value) :]
+        string_rep = string_rep[len(pt_op.Operator.SEQUENCE.value):]
     elif string_rep.startswith(pt_op.Operator.INTERLEAVING.value):
         operator = pt_op.Operator.INTERLEAVING
-        string_rep = string_rep[len(pt_op.Operator.INTERLEAVING.value) :]
+        string_rep = string_rep[len(pt_op.Operator.INTERLEAVING.value):]
     if operator is not None:
         parent = None if depth == 0 else depth_cache[depth - 1]
         node = pt.ProcessTree(operator=operator, parent=parent)
@@ -301,7 +302,7 @@ def parse_recursive(string_rep, depth_cache, depth):
             string_rep = string_rep[1:]
             escape_ext = string_rep.find("'")
             label = string_rep[0:escape_ext]
-            string_rep = string_rep[escape_ext + 1 :]
+            string_rep = string_rep[escape_ext + 1:]
         else:
             assert (
                 string_rep.startswith("tau")
@@ -309,11 +310,11 @@ def parse_recursive(string_rep, depth_cache, depth):
                 or string_rep.startswith("\u03c4")
             )
             if string_rep.startswith("tau"):
-                string_rep = string_rep[len("tau") :]
+                string_rep = string_rep[len("tau"):]
             elif string_rep.startswith("τ"):
-                string_rep = string_rep[len("τ") :]
+                string_rep = string_rep[len("τ"):]
             elif string_rep.startswith("\u03c4"):
-                string_rep = string_rep[len("\u03c4") :]
+                string_rep = string_rep[len("\u03c4"):]
         parent = None if depth == 0 else depth_cache[depth - 1]
         node = pt.ProcessTree(operator=operator, parent=parent, label=label)
         if parent is not None:
@@ -343,7 +344,8 @@ def tree_sort(tree):
         tree_sort(child)
         tree.labels_hash_sum += child.labels_hash_sum
     if tree.label is not None:
-        # this assures that among different executions, the same string gets always the same hash
+        # this assures that among different executions, the same string gets
+        # always the same hash
         this_hash = int(
             hashlib.md5(
                 str(tree.label).encode(constants.DEFAULT_ENCODING)

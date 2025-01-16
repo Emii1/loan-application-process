@@ -177,7 +177,8 @@ def sort_dfg_reachability(
         if activity not in distance:
             distance[activity] = float("inf")
 
-    # perform BFS to calculate the distance of each activity from the start activities
+    # perform BFS to calculate the distance of each activity from the start
+    # activities
     while queue:
         current = queue.popleft()
         current_distance = distance[current]
@@ -281,7 +282,8 @@ def graphviz_visualization(
             labelloc="top",
         )
 
-    # first, remove edges in diagram that exceeds the maximum number of edges in the diagram
+    # first, remove edges in diagram that exceeds the maximum number of edges
+    # in the diagram
     dfg_key_value_list = []
     for edge in dfg:
         dfg_key_value_list.append([edge, dfg[edge]])
@@ -293,7 +295,7 @@ def graphviz_visualization(
         reverse=True,
     )
     dfg_key_value_list = dfg_key_value_list[
-        0 : min(len(dfg_key_value_list), max_no_of_edges_in_diagram)
+        0: min(len(dfg_key_value_list), max_no_of_edges_in_diagram)
     ]
     dfg_allowed_keys = [x[0] for x in dfg_key_value_list]
     dfg_keys = list(dfg.keys())
@@ -317,7 +319,8 @@ def graphviz_visualization(
     if len(activities_in_dfg) == 0:
         activities_to_include = sorted(list(set(activities_count_int)))
     else:
-        # take unique elements as a list not as a set (in this way, nodes are added in the same order to the graph)
+        # take unique elements as a list not as a set (in this way, nodes are
+        # added in the same order to the graph)
         activities_to_include = sorted(list(set(activities_in_dfg)))
 
     start_activities_to_include = [

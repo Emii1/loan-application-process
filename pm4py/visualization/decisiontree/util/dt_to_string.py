@@ -33,7 +33,7 @@ def apply(
             this_part = tree_string[i].split("--- ")[1]
             this_part_idx_space = this_part.index(" ")
             this_part_0 = this_part[:this_part_idx_space]
-            this_part_1 = this_part[this_part_idx_space + 1 :]
+            this_part_1 = this_part[this_part_idx_space + 1:]
             if "class" in this_part:
                 all_levels = (
                     "(" + " && ".join([levels[i] for i in range(level)]) + ")"

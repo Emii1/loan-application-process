@@ -1,7 +1,6 @@
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
 from pm4py.algo.discovery.powl.inductive.variants.im_dynamic_clustering_frequencies import (
-    POWLInductiveMinerDynamicClusteringFrequency,
-)
+    POWLInductiveMinerDynamicClusteringFrequency, )
 from pm4py.algo.discovery.powl.inductive.variants.im_tree import IMBasePOWL
 from pm4py.algo.discovery.powl.inductive.variants.im_brute_force import (
     POWLInductiveMinerBruteForce,
@@ -10,8 +9,7 @@ from pm4py.algo.discovery.powl.inductive.variants.im_maximal import (
     POWLInductiveMinerMaximalOrder,
 )
 from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_varaints import (
-    POWLDiscoveryVariant,
-)
+    POWLDiscoveryVariant, )
 
 from pm4py import util
 from pm4py.algo.discovery.inductive.algorithm import Parameters

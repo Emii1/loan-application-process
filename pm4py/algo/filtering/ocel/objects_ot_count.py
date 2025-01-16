@@ -72,7 +72,7 @@ def apply(
     for evid, evobjs in num_obj.items():
         is_ok = True
         for k, v in min_num_obj_type.items():
-            if not k in evobjs:
+            if k not in evobjs:
                 is_ok = False
                 break
             elif evobjs[k] < v:

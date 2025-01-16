@@ -54,17 +54,20 @@ def apply(
     if parameters is None:
         parameters = {}
 
-    # execute the following part of code when the variant is not specified by the user
+    # execute the following part of code when the variant is not specified by
+    # the user
     if variant is None:
         if not (
             check_easy_soundness_net_in_fin_marking(
                 net, marking, final_marking
             )
         ):
-            # in the case the net is not a easy sound workflow net, we must apply token-based replay
+            # in the case the net is not a easy sound workflow net, we must
+            # apply token-based replay
             variant = ETCONFORMANCE_TOKEN
         else:
-            # otherwise, use the align-etconformance approach (safer, in the case the model contains duplicates)
+            # otherwise, use the align-etconformance approach (safer, in the
+            # case the model contains duplicates)
             variant = ALIGN_ETCONFORMANCE
 
     return exec_utils.get_variant(variant).apply(

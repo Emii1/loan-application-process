@@ -3,11 +3,9 @@ from typing import Optional, Tuple, List, Any, Dict
 
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
 from pm4py.algo.discovery.inductive.fall_through.activity_once_per_trace import (
-    ActivityOncePerTraceUVCL,
-)
+    ActivityOncePerTraceUVCL, )
 from pm4py.algo.discovery.powl.inductive.fall_through.activity_concurrent import (
-    POWLActivityConcurrentUVCL,
-)
+    POWLActivityConcurrentUVCL, )
 from pm4py.objects.powl.obj import StrictPartialOrder
 from pm4py.objects.process_tree.obj import ProcessTree, Operator
 

@@ -34,7 +34,8 @@ def generate_nx_graph_from_dfg(
         Identifier of the end node (connected to all the end activities)
     """
     start_node = "4d872045-8664-4e21-bd55-5da5edb096fe"  # made static to avoid undeterminism
-    end_node = "b8136db7-b162-4763-bd68-4d5ccbcdff87"  # made static to avoid undeterminism
+    # made static to avoid undeterminism
+    end_node = "b8136db7-b162-4763-bd68-4d5ccbcdff87"
     G = nx_utils.DiGraph()
     G.add_node(start_node)
     G.add_node(end_node)
@@ -80,7 +81,8 @@ def filter_dfg_on_activities_percentage(
     activities_count
         (Filtered) activities of the DFG along with their count
     """
-    # since the dictionaries/sets are modified, a deepcopy is the best option to ensure data integrity
+    # since the dictionaries/sets are modified, a deepcopy is the best option
+    # to ensure data integrity
     dfg = deepcopy(dfg0)
     start_activities = deepcopy(start_activities0)
     end_activities = deepcopy(end_activities0)
@@ -92,22 +94,25 @@ def filter_dfg_on_activities_percentage(
             key=lambda x: (x[1], x[0]),
             reverse=True,
         )
-        # retrieve the minimum list of activities to keep in the graph, according to the percentage
+        # retrieve the minimum list of activities to keep in the graph,
+        # according to the percentage
         min_set_activities_to_keep = set(
             x[0]
             for x in activities_count_sorted_list[
                 : math.ceil((len(activities_count) - 1) * percentage) + 1
             ]
         )
-        # retrieve the activities that can be possibly discarded, according to the percentage
+        # retrieve the activities that can be possibly discarded, according to
+        # the percentage
         activities_to_possibly_discard = list(
             x[0]
             for x in activities_count_sorted_list[
-                math.ceil((len(activities_count) - 1) * percentage) + 1 :
+                math.ceil((len(activities_count) - 1) * percentage) + 1:
             ]
         )
         activities_to_possibly_discard.reverse()
-        # build a graph structure that helps in deciding whether the activities can be discarded safely
+        # build a graph structure that helps in deciding whether the activities
+        # can be discarded safely
         graph, start_node, end_node = generate_nx_graph_from_dfg(
             dfg, start_activities, end_activities, activities_count
         )
@@ -115,7 +120,8 @@ def filter_dfg_on_activities_percentage(
             new_graph = nx_utils.DiGraph(graph)
             # try to remove the node
             new_graph.remove_node(act)
-            # check whether all the activities to keep can be reached from the start and can reach the end
+            # check whether all the activities to keep can be reached from the
+            # start and can reach the end
             reachable_from_start = set(
                 nx_utils.descendants(new_graph, start_node)
             )
@@ -123,7 +129,8 @@ def filter_dfg_on_activities_percentage(
             if min_set_activities_to_keep.issubset(
                 reachable_from_start
             ) and min_set_activities_to_keep.issubset(reachable_to_end):
-                # if that is the case, try to elaborate the new DFG (without the activity)
+                # if that is the case, try to elaborate the new DFG (without
+                # the activity)
                 new_dfg = {
                     x: y for x, y in dfg.items() if x[0] != act and x[1] != act
                 }
@@ -180,7 +187,8 @@ def __filter_specified_paths(
             # try to remove the edge
             new_graph.remove_edge(edge[0], edge[1])
 
-            # check whether all the activities to keep can be reached from the start and can reach the end
+            # check whether all the activities to keep can be reached from the
+            # start and can reach the end
             reachable_from_start = set(
                 nx_utils.descendants(new_graph, start_node)
             )
@@ -267,14 +275,16 @@ def filter_dfg_on_paths_percentage(
         (Filtered) activities of the DFG along with their count
     """
 
-    # since the dictionaries/sets are modified, a deepcopy is the best option to ensure data integrity
+    # since the dictionaries/sets are modified, a deepcopy is the best option
+    # to ensure data integrity
     dfg = deepcopy(dfg0)
     start_activities = deepcopy(start_activities0)
     end_activities = deepcopy(end_activities0)
     activities_count = deepcopy(activities_count0)
 
     if len(activities_count) > 1 and len(dfg) > 1:
-        # build a graph structure that helps in deciding whether the paths can be discarded safely
+        # build a graph structure that helps in deciding whether the paths can
+        # be discarded safely
         graph, start_node, end_node = generate_nx_graph_from_dfg(
             dfg, start_activities, end_activities, activities_count
         )
@@ -297,7 +307,7 @@ def filter_dfg_on_paths_percentage(
         discardable_edges = list(
             x[0]
             for x in all_edges[
-                math.ceil((len(all_edges) - 1) * percentage) + 1 :
+                math.ceil((len(all_edges) - 1) * percentage) + 1:
             ]
         )
         discardable_edges.reverse()
@@ -379,14 +389,16 @@ def filter_dfg_keep_connected(
         (Filtered) activities of the DFG along with their count
     """
 
-    # since the dictionaries/sets are modified, a deepcopy is the best option to ensure data integrity
+    # since the dictionaries/sets are modified, a deepcopy is the best option
+    # to ensure data integrity
     dfg = deepcopy(dfg0)
     start_activities = deepcopy(start_activities0)
     end_activities = deepcopy(end_activities0)
     activities_count = deepcopy(activities_count0)
 
     if len(activities_count) > 1 and len(dfg) > 1:
-        # build a graph structure that helps in deciding whether the paths can be discarded safely
+        # build a graph structure that helps in deciding whether the paths can
+        # be discarded safely
         graph, start_node, end_node = generate_nx_graph_from_dfg(
             dfg, start_activities, end_activities, activities_count
         )
@@ -490,7 +502,8 @@ def filter_dfg_to_activity(
     if parameters is None:
         parameters = {}
 
-    # since the dictionaries/sets are modified, a deepcopy is the best option to ensure data integrity
+    # since the dictionaries/sets are modified, a deepcopy is the best option
+    # to ensure data integrity
     dfg = deepcopy(dfg0)
     start_activities = deepcopy(start_activities0)
     activities_count = deepcopy(activities_count0)
@@ -573,7 +586,8 @@ def filter_dfg_from_activity(
     if parameters is None:
         parameters = {}
 
-    # since the dictionaries/sets are modified, a deepcopy is the best option to ensure data integrity
+    # since the dictionaries/sets are modified, a deepcopy is the best option
+    # to ensure data integrity
     dfg = deepcopy(dfg0)
     end_activities = deepcopy(end_activities0)
     activities_count = deepcopy(activities_count0)
@@ -654,7 +668,8 @@ def filter_dfg_contain_activity(
     if parameters is None:
         parameters = {}
 
-    # since the dictionaries/sets are modified, a deepcopy is the best option to ensure data integrity
+    # since the dictionaries/sets are modified, a deepcopy is the best option
+    # to ensure data integrity
     dfg = deepcopy(dfg0)
     start_activities = deepcopy(start_activities0)
     end_activities = deepcopy(end_activities0)
@@ -752,7 +767,7 @@ def clean_dfg_based_on_noise_thresh(
             act2 = el[0][1]
             val = el[1]
 
-        if not el in most_common_paths and val < min(
+        if el not in most_common_paths and val < min(
             activ_max_count[act1] * noise_threshold,
             activ_max_count[act2] * noise_threshold,
         ):

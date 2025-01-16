@@ -124,7 +124,8 @@ def apply(
                 place_fontcolor = otc
                 place_fillcolor = None
 
-            # if the place has some TBR diagnostics, override the label in any case
+            # if the place has some TBR diagnostics, override the label in any
+            # case
             if place in all_places_diagn:
                 this_diagn = all_places_diagn[place]
                 place_label = "p=%d m=%d\nc=%d r=%d" % (

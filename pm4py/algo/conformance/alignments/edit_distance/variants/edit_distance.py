@@ -61,11 +61,13 @@ def apply(
 
     aligned_traces = []
 
-    # form a mapping dictionary associating each activity of the two logs to an ASCII character
+    # form a mapping dictionary associating each activity of the two logs to
+    # an ASCII character
     mapping = log_regex.form_encoding_dictio_from_two_logs(
         log1, log2, parameters=parameters
     )
-    # encode the second log (against which we want to align each trace of the first log)
+    # encode the second log (against which we want to align each trace of the
+    # first log)
     list_encodings = log_regex.get_encoded_log(
         log2, mapping, parameters=parameters
     )
@@ -79,7 +81,8 @@ def apply(
     else:
         list_encodings = sorted(list_encodings, key=lambda x: len(x))
 
-    # keeps an alignment cache (to avoid re-calculating the same edit distances :) )
+    # keeps an alignment cache (to avoid re-calculating the same edit
+    # distances :) )
     cache_align = {}
 
     best_worst_cost = min(len(x) for x in list_encodings)
@@ -153,7 +156,8 @@ def align_trace(
     if parameters is None:
         parameters = {}
 
-    # keeps an alignment cache (to avoid re-calculating the same edit distances :) )
+    # keeps an alignment cache (to avoid re-calculating the same edit
+    # distances :) )
     if cache_align is None:
         cache_align = {}
 
@@ -174,10 +178,12 @@ def align_trace(
 
     if encoded_trace not in cache_align:
         if not anti_alignment and encoded_trace in set_encodings:
-            # the trace is already in the encodings. we don't need to calculate any edit distance
+            # the trace is already in the encodings. we don't need to calculate
+            # any edit distance
             argmin_dist = encoded_trace
         else:
-            # finds the encoded trace of the other log that is at minimal distance
+            # finds the encoded trace of the other log that is at minimal
+            # distance
             argmin_dist = comparison_function(encoded_trace, list_encodings)
 
         seq_match = difflib.SequenceMatcher(

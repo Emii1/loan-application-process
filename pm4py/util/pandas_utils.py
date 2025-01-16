@@ -12,7 +12,7 @@ def get_default_dataframe_environment():
             import cudf.pandas
 
             cudf.pandas.install()
-        except:
+        except BaseException:
             pass
     import pandas as pd
 
@@ -155,7 +155,7 @@ def insert_ev_in_tr_index(
 def format_unique(values):
     try:
         values = values.to_numpy()
-    except:
+    except BaseException:
         pass
 
     values = values.tolist()
@@ -364,7 +364,7 @@ def convert_to_seconds(dt_column):
     try:
         # Pandas
         return dt_column.values.astype(np.int64) / 10**9
-    except:
+    except BaseException:
         # CUDF
         return [x / 10**9 for x in dt_column.to_numpy().tolist()]
 
@@ -449,9 +449,11 @@ def check_pandas_dataframe_columns(
     if case_id_key is not None:
         if case_id_key not in df.columns:
             raise Exception(
-                "the specified case ID column is not contained in the dataframe. Available columns: "
-                + str(sorted(list(df.columns)))
-            )
+                "the specified case ID column is not contained in the dataframe. Available columns: " +
+                str(
+                    sorted(
+                        list(
+                            df.columns))))
 
         if case_id_key not in str_columns:
             raise Exception("the case ID column should be of type string.")
@@ -464,9 +466,11 @@ def check_pandas_dataframe_columns(
     if activity_key is not None:
         if activity_key not in df.columns:
             raise Exception(
-                "the specified activity column is not contained in the dataframe. Available columns: "
-                + str(sorted(list(df.columns)))
-            )
+                "the specified activity column is not contained in the dataframe. Available columns: " +
+                str(
+                    sorted(
+                        list(
+                            df.columns))))
 
         if activity_key not in str_columns:
             raise Exception("the activity column should be of type string.")
@@ -479,9 +483,11 @@ def check_pandas_dataframe_columns(
     if timestamp_key is not None:
         if timestamp_key not in df.columns:
             raise Exception(
-                "the specified timestamp column is not contained in the dataframe. Available columns: "
-                + str(sorted(list(df.columns)))
-            )
+                "the specified timestamp column is not contained in the dataframe. Available columns: " +
+                str(
+                    sorted(
+                        list(
+                            df.columns))))
 
         if timestamp_key not in timest_columns:
             raise Exception(
@@ -496,9 +502,11 @@ def check_pandas_dataframe_columns(
     if start_timestamp_key is not None:
         if start_timestamp_key not in df.columns:
             raise Exception(
-                "the specified start timestamp column is not contained in the dataframe. Available columns: "
-                + str(sorted(list(df.columns)))
-            )
+                "the specified start timestamp column is not contained in the dataframe. Available columns: " +
+                str(
+                    sorted(
+                        list(
+                            df.columns))))
 
         if start_timestamp_key not in timest_columns:
             raise Exception(

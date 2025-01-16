@@ -599,8 +599,7 @@ def filter_time_range(
         else:
             if constants.SHOW_INTERNAL_WARNINGS:
                 warnings.warn(
-                    f"Mode provided: {mode} is not recognized; original log returned!"
-                )
+                    f"Mode provided: {mode} is not recognized; original log returned!")
             return log
     else:
         from pm4py.algo.filtering.log.timestamp import timestamp_filter
@@ -620,8 +619,7 @@ def filter_time_range(
         else:
             if constants.SHOW_INTERNAL_WARNINGS:
                 warnings.warn(
-                    f"Mode provided: {mode} is not recognized; original log returned!"
-                )
+                    f"Mode provided: {mode} is not recognized; original log returned!")
             return log
 
 

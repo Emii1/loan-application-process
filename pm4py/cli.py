@@ -407,7 +407,7 @@ def cli_interface():
                 if not os.path.exists(method_tuples[i][-1]):
                     print(method_name, method_tuples[i])
                     method["method"](method_tuples[i])
-            except:
+            except BaseException:
                 traceback.print_exc()
     else:
         raise Exception(

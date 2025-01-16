@@ -78,7 +78,8 @@ def apply(
                 act2 = sorted_trace[j][activity_key]
                 if max(ts1, ts2) <= min(tc1, tc2):
                     if not strict or max(ts1, ts2) < min(tc1, tc2):
-                        # avoid getting two entries for the same set of concurrent activities
+                        # avoid getting two entries for the same set of
+                        # concurrent activities
                         tup = tuple(sorted((act1, act2)))
                         if tup not in ret_dict:
                             ret_dict[tup] = 0

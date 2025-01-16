@@ -145,7 +145,7 @@ def apply_fst_rule(net):
                     and len(pre_set(u, properties.INHIBITOR_ARC)) == 0
                 )
             ):
-                if u.label == None:
+                if u.label is None:
                     remove_place(net, p)
                     for target in post_set(u):
                         add_arc_from_to(t, target, net)
@@ -176,7 +176,7 @@ def apply_fsp_rule(net, im=None, fm=None):
             net.places, net.places, net.transitions
         ):
             if (
-                t.label == None
+                t.label is None
             ):  # only silent transitions may be removed either way
                 if (
                     (len(t.in_arcs) == 1 and list(t.in_arcs)[0].source == p)
@@ -229,7 +229,7 @@ def apply_fpt_rule(net):
             [
                 transition
                 for transition in net.transitions
-                if transition.label == None
+                if transition.label is None
             ],
             2,
         ):
@@ -328,7 +328,7 @@ def apply_elt_rule(net):
     while cont:
         cont = False
         for p, t in itertools.product(
-            net.places, [t for t in net.transitions if t.label == None]
+            net.places, [t for t in net.transitions if t.label is None]
         ):
             if (
                 (len(list(t.in_arcs)) == 1 and list(t.in_arcs)[0].source == p)
@@ -406,7 +406,7 @@ def apply_a_rule(net):
                 [
                     t
                     for t in net.transitions
-                    if (t not in U) and (t.label == None)
+                    if (t not in U) and (t.label is None)
                 ],
             ):
                 if (

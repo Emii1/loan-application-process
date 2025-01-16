@@ -6,8 +6,7 @@ from pm4py.algo.discovery.powl.inductive.cuts.xor import (
     POWLExclusiveChoiceCutUVCL,
 )
 from pm4py.algo.discovery.powl.inductive.variants.dynamic_clustering.dynamic_clustering_partial_order_cut import (
-    DynamicClusteringPartialOrderCutUVCL,
-)
+    DynamicClusteringPartialOrderCutUVCL, )
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructure
 from pm4py.objects.powl.obj import POWL
 from pm4py.objects.dfg import util as dfu

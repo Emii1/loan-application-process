@@ -13,8 +13,7 @@ from pm4py.algo.discovery.powl.inductive.cuts.xor import (
 )
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
 from pm4py.algo.discovery.powl.inductive.variants.brute_force.bf_partial_order_cut import (
-    BruteForcePartialOrderCutUVCL,
-)
+    BruteForcePartialOrderCutUVCL, )
 from pm4py.objects.powl.obj import POWL
 
 

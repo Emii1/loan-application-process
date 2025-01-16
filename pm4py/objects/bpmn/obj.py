@@ -54,7 +54,8 @@ class Marking(Counter):
 
     def __repr__(self):
         # return str([str(p.name) + ":" + str(self.get(p)) for p in self.keys()])
-        # The previous representation had a bug, it took into account the order of the places with tokens
+        # The previous representation had a bug, it took into account the order
+        # of the places with tokens
         return str(
             [
                 str(p.id) + ":" + str(self.get(p))
@@ -144,7 +145,7 @@ class BPMN(object):
             self.__name = name
             self.__in_arcs = list() if in_arcs is None else in_arcs
             self.__out_arcs = list() if out_arcs is None else out_arcs
-            self.__process = DEFAULT_PROCESS if process == None else process
+            self.__process = DEFAULT_PROCESS if process is None else process
             self.__layout = BPMNLayout()
 
         def get_id(self):
@@ -707,7 +708,7 @@ class BPMN(object):
             source.add_out_arc(self)
             self.__target = target
             target.add_in_arc(self)
-            self.__process = DEFAULT_PROCESS if process == None else process
+            self.__process = DEFAULT_PROCESS if process is None else process
             self.__layout = BPMNLayout()
 
         def get_id(self):
@@ -782,7 +783,7 @@ class BPMN(object):
 
     def __init__(self, process_id=None, name="", nodes=None, flows=None):
         self.__process_id = (
-            str(uuid.uuid4()) if process_id == None else process_id
+            str(uuid.uuid4()) if process_id is None else process_id
         )
 
         self.__name = name

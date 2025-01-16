@@ -78,11 +78,9 @@ def get_model_implementation():
         )
         + "'\n"
     )
-    implementation += (
-        "For the keys {'"
-        + "', '".join([EXISTENCE, ABSENCE, EXACTLY_ONE, INIT])
-        + "'}, the value is a dictionary containing as keys the activities and as corresponding value the support (please set it to 1.0) and confidence of the declarative rule.\n"
-    )
+    implementation += ("For the keys {'" +
+                       "', '".join([EXISTENCE, ABSENCE, EXACTLY_ONE, INIT]) +
+                       "'}, the value is a dictionary containing as keys the activities and as corresponding value the support (please set it to 1.0) and confidence of the declarative rule.\n")
     implementation += (
         "For the keys {'"
         + "', '".join(

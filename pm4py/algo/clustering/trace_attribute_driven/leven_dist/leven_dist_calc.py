@@ -13,7 +13,7 @@ def leven_preprocess(list1, list2):
     """
 
     listsum = sorted(list(set(list1 + list2)))
-    alphabet = list(string.ascii_letters)[0 : len(listsum)]
+    alphabet = list(string.ascii_letters)[0: len(listsum)]
     str1 = [alphabet[listsum.index(item)] for item in list1]
     str2 = [alphabet[listsum.index(item)] for item in list2]
     str1 = "".join(str1)
@@ -65,7 +65,8 @@ def leven_dist(log1, log2, percent_1, percent_2):
                 ) / max_len
                 dist_matrix[i][j] = dist_vec[j]
                 if j == (min_len - 1):
-                    # max_loc_col = np.argmax(dist_matrix[i, :])  # location of max value
+                    # max_loc_col = np.argmax(dist_matrix[i, :])  # location of
+                    # max value
                     max_loc_col = np.argmin(dist_vec)
                     if abs(dist_vec[max_loc_col]) <= 1e-8:
                         index_rec.discard(max_loc_col)

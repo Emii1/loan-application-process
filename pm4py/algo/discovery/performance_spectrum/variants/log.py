@@ -72,13 +72,13 @@ def apply(
         for i in range(len(trace) - len(list_activities) + 1):
             acti_comb = [
                 event[activity_key]
-                for event in trace[i : i + len(list_activities)]
+                for event in trace[i: i + len(list_activities)]
             ]
 
             if acti_comb == list_activities:
                 timest_comb = [
                     event[timestamp_key].timestamp()
-                    for event in trace[i : i + len(list_activities)]
+                    for event in trace[i: i + len(list_activities)]
                 ]
 
                 points.append(timest_comb)

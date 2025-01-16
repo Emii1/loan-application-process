@@ -177,7 +177,7 @@ def convert_to_bpmn(
             from pm4py.objects.conversion.wf_net.variants import to_bpmn
 
             return to_bpmn.apply(net, im, fm)
-        except:
+        except BaseException:
             # don't do nothing and throw the following exception
             pass
     # if no conversion is done, then the format of the arguments is unsupported
@@ -237,12 +237,8 @@ def convert_to_petri_net(
         return to_petri_net_activity_defines_place.apply(
             args[0],
             parameters={
-                to_petri_net_activity_defines_place.Parameters.START_ACTIVITIES: args[
-                    1
-                ],
-                to_petri_net_activity_defines_place.Parameters.END_ACTIVITIES: args[
-                    2
-                ],
+                to_petri_net_activity_defines_place.Parameters.START_ACTIVITIES: args[1],
+                to_petri_net_activity_defines_place.Parameters.END_ACTIVITIES: args[2],
             },
         )
     # if no conversion is done, then the format of the arguments is unsupported
@@ -415,8 +411,7 @@ def convert_ocel_to_networkx(
         variant1 = converter.Variants.OCEL_FEATURES_TO_NX
     else:
         raise ValueError(
-            f"Unsupported variant '{variant}'. Supported variants are 'ocel_to_nx' and 'ocel_features_to_nx'."
-        )
+            f"Unsupported variant '{variant}'. Supported variants are 'ocel_to_nx' and 'ocel_features_to_nx'.")
 
     return converter.apply(ocel, variant=variant1)
 
@@ -612,8 +607,7 @@ def convert_petri_net_type(
         new_net = ResetInhibitorNet(net.name)
     else:
         raise ValueError(
-            f"Unsupported Petri net type '{type}'. Supported types are 'classic', 'reset', 'inhibitor', 'reset_inhibitor'."
-        )
+            f"Unsupported Petri net type '{type}'. Supported types are 'classic', 'reset', 'inhibitor', 'reset_inhibitor'.")
 
     for place in net.places:
         new_net.places.add(place)

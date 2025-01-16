@@ -335,7 +335,7 @@ def suc_sim_percent(log1, log2, percent_1, percent_2):
                     np.array([df["freq_x"].values, df["freq_y"].values]),
                     "cosine",
                 )[0]
-                if np.isnan(dist_vec[j]) == True:
+                if np.isnan(dist_vec[j]):
                     dist_vec[j] = 1
                 dist_matrix[i][j] = dist_vec[j]
                 if j == (min_len - 1):
@@ -418,7 +418,7 @@ def suc_sim_percent_avg(log1, log2, percent_1, percent_2):
             dist_vec[j] = pdist(
                 np.array([df["freq_x"].values, df["freq_y"].values]), "cosine"
             )[0]
-            if np.isnan(dist_vec[j]) == True:
+            if np.isnan(dist_vec[j]):
                 dist_vec[j] = 1
             dist_matrix[i][j] = dist_vec[j]
             col_sum[i] += (

@@ -206,7 +206,6 @@ def get_diagnostics_dataframe(
                 "end_activities_violations": end_activities_violations,
                 "act_always_happening_violations": act_always_happening_violations,
                 "min_length_fit": min_length_fit,
-            }
-        )
+            })
 
     return pandas_utils.instantiate_dataframe(diagn_stream)

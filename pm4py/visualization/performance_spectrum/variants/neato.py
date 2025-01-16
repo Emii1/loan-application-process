@@ -161,13 +161,13 @@ def apply(
                 len(perf_spectrum["list_activities"]) - i - 1
             )
             lines.append(
-                '%s [label="", pos="%.10f,%.10f!", shape=none, width="0px", height="0px"];'
-                % (
-                    p_id,
-                    first_coord * layout_ext_multiplier,
-                    second_coord * layout_ext_multiplier,
-                )
-            )
+                '%s [label="", pos="%.10f,%.10f!", shape=none, width="0px", height="0px"];' %
+                (p_id,
+                 first_coord *
+                 layout_ext_multiplier,
+                 second_coord *
+                 layout_ext_multiplier,
+                 ))
             this_pts.append(p_id)
         for i in range(len(this_pts) - 1):
             diff = polyline[i + 1] - polyline[i]
@@ -185,19 +185,18 @@ def apply(
         )
         a_id = "n" + str(uuid.uuid4()).replace("-", "") + "e"
         lines.append(
-            '%s [label="%s", pos="%.10f,%.10f!", shape=none, width="0px", height="0px"];'
-            % (
-                a_id,
-                act,
-                overall_length * layout_ext_multiplier,
-                second_coord * layout_ext_multiplier,
-            )
-        )
+            '%s [label="%s", pos="%.10f,%.10f!", shape=none, width="0px", height="0px"];' %
+            (a_id,
+             act,
+             overall_length *
+             layout_ext_multiplier,
+             second_coord *
+             layout_ext_multiplier,
+             ))
         s_id = "n" + str(uuid.uuid4()).replace("-", "") + "e"
         lines.append(
-            '%s [label="", pos="0,%.10f!", shape=none, width="0px", height="0px"];'
-            % (s_id, second_coord * layout_ext_multiplier)
-        )
+            '%s [label="", pos="0,%.10f!", shape=none, width="0px", height="0px"];' %
+            (s_id, second_coord * layout_ext_multiplier))
         lines.append('%s -- %s [ color="black" ];' % (s_id, a_id))
         if i == len(perf_spectrum["list_activities"]) - 1:
             for j in range(n_div + 1):
@@ -206,14 +205,15 @@ def apply(
                 dt = strpfromiso.fix_naivety(datetime.fromtimestamp(tst))
                 n_id = "n" + str(uuid.uuid4()).replace("-", "") + "e"
                 lines.append(
-                    '%s [label="%s", pos="%.10f,%.10f!", shape=none, width="0px", height="0px"];'
-                    % (
-                        n_id,
-                        str(dt),
-                        pos * layout_ext_multiplier,
-                        (second_coord - date_divider) * layout_ext_multiplier,
-                    )
-                )
+                    '%s [label="%s", pos="%.10f,%.10f!", shape=none, width="0px", height="0px"];' %
+                    (n_id,
+                     str(dt),
+                        pos *
+                        layout_ext_multiplier,
+                        (second_coord -
+                         date_divider) *
+                        layout_ext_multiplier,
+                     ))
 
     lines.append("}")
     lines = "\n".join(lines)

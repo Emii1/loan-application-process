@@ -340,7 +340,7 @@ def parse_element(
                     gateway_direction=direction,
                     process=process,
                 )
-            except:
+            except BaseException:
                 exclusive_gateway = BPMN.ExclusiveGateway(
                     id=curr_el.get("id"),
                     name=name,
@@ -367,7 +367,7 @@ def parse_element(
                     gateway_direction=direction,
                     process=process,
                 )
-            except:
+            except BaseException:
                 parallel_gateway = BPMN.ParallelGateway(
                     id=curr_el.get("id"),
                     name=name,
@@ -394,7 +394,7 @@ def parse_element(
                     gateway_direction=direction,
                     process=process,
                 )
-            except:
+            except BaseException:
                 inclusive_gateway = BPMN.InclusiveGateway(
                     id=curr_el.get("id"),
                     name=name,
@@ -421,7 +421,7 @@ def parse_element(
                     gateway_direction=direction,
                     process=process,
                 )
-            except:
+            except BaseException:
                 event_based_gateway = BPMN.EventBasedGateway(
                     id=curr_el.get("id"),
                     name=name,
@@ -495,7 +495,7 @@ def parse_element(
         if flow is not None:
             x = float(curr_el.get("x"))
             y = float(curr_el.get("y"))
-            if not flow in flow_info:
+            if flow not in flow_info:
                 flow_info[flow] = []
             flow_info[flow].append((x, y))
     elif tag.endswith(

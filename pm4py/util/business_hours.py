@@ -71,7 +71,8 @@ class BusinessHours:
             else constants.DEFAULT_BUSINESS_HOUR_SLOTS
         )
 
-        # union of business hour slots in order to avoid overlapping business hours
+        # union of business hour slots in order to avoid overlapping business
+        # hours
         self.business_hour_slots_unified = []
         for begin, end in sorted(self.business_hour_slots):
             if (
@@ -84,7 +85,8 @@ class BusinessHours:
             else:
                 self.business_hour_slots_unified.append([begin, end])
 
-        # work calendar (it permits querying if a given day is a working day in a given culture) - not used yet
+        # work calendar (it permits querying if a given day is a working day in
+        # a given culture) - not used yet
         self.work_calendar = (
             kwargs["work_calendar"]
             if "work_calendar" in kwargs

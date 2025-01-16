@@ -72,10 +72,11 @@ def apply(
         Parameters.SUBCASE_CONCAT_STR, parameters, "##@@"
     )
 
-    act1_comparison = lambda x: (
+    def act1_comparison(x): return (
         (x == act1) if type(act1) is str else (x in act1)
     )
-    act2_comparison = lambda x: (
+
+    def act2_comparison(x): return (
         (x == act2) if type(act2) is str else (x in act2)
     )
 
@@ -114,11 +115,13 @@ def apply(
                 rel_count += 1
                 if act1 != act2:
                     # if the between filter is applied between two activities A and B, with A different from B,
-                    # then the filter should stop until the next occurrence of A
+                    # then the filter should stop until the next occurrence of
+                    # A
                     act1_encountered = False
                     filt_trace = None
                 else:
-                    # otherwise, if A = B, then it continues outputting the events to a new subcase
+                    # otherwise, if A = B, then it continues outputting the
+                    # events to a new subcase
                     filt_trace = Trace(
                         attributes=__fix_trace_attributes(
                             trace.attributes,

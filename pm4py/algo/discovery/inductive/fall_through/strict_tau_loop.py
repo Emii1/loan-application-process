@@ -23,7 +23,7 @@ class StrictTauLoopUVCL(FallThrough[IMDataStructureUVCL]):
                 if t[i] in start_activities and t[i - 1] in end_activities:
                     proj.update({t[x:i]: log[t]})
                     x = i
-            proj.update({t[x : len(t)]: log[t]})
+            proj.update({t[x: len(t)]: log[t]})
         return proj
 
     @classmethod

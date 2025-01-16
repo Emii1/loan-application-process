@@ -1,8 +1,7 @@
 import math
 
 from pm4py.algo.conformance.alignments.process_tree.variants.approximated.calculate_a_sa_ea_sets import (
-    initialize_a_sa_ea_tau_sets,
-)
+    initialize_a_sa_ea_tau_sets, )
 from pm4py.algo.conformance.alignments.process_tree.variants.approximated.utilities import (
     calculate_optimal_alignment,
     concatenate_traces,
@@ -401,20 +400,25 @@ def __approximate_alignment_on_loop(
     # t_i_j = 1 <=> inserts a tau at position i and assigns it to subtree j
     t_variables = {}
 
-    # s_i_j = 1 <=> activity i is a start activity in the current sub-trace assigned to subtree j
+    # s_i_j = 1 <=> activity i is a start activity in the current sub-trace
+    # assigned to subtree j
     s_variables = {}
 
-    # e_i_j = 1 <=> activity i is an end activity in the current sub-trace assigned to subtree j
+    # e_i_j = 1 <=> activity i is an end activity in the current sub-trace
+    # assigned to subtree j
     e_variables = {}
 
-    # v_i_j = 1 <=> activity i is neither a start nor end-activity in the current sub-trace assigned to subtree j
+    # v_i_j = 1 <=> activity i is neither a start nor end-activity in the
+    # current sub-trace assigned to subtree j
     v_variables = {}
 
     # auxiliary variables
-    # p_i_j = 1 <=> previous activity i-1 is assigned to the other subtree or t_1_other-subtree is 1
+    # p_i_j = 1 <=> previous activity i-1 is assigned to the other subtree or
+    # t_1_other-subtree is 1
     p_variables = {}
 
-    # n_i_j = 1 <=> next activity i+1 is assigned to the other subtree or t_1_other-subtree is 1
+    # n_i_j = 1 <=> next activity i+1 is assigned to the other subtree or
+    # t_1_other-subtree is 1
     n_variables = {}
 
     t_costs = {}
@@ -516,7 +520,8 @@ def __approximate_alignment_on_loop(
     # last tau can never be assigned to the 2nd subtree
     ilp += t_variables[len(trace)][1] == 0
 
-    # if first/last tau is not used --> first/last activity is assigned to 1st subtree
+    # if first/last tau is not used --> first/last activity is assigned to 1st
+    # subtree
     ilp += 1 - t_variables[0][0] <= x_variables[0][0]
     ilp += 1 - t_variables[len(trace)][0] <= x_variables[len(trace) - 1][0]
 
@@ -527,7 +532,8 @@ def __approximate_alignment_on_loop(
             == 1
         )
 
-        # start/end/intermediate-activity at position i can only be assigned to one subtree
+        # start/end/intermediate-activity at position i can only be assigned to
+        # one subtree
         ilp += (
             lpSum([s_variables[i][j] * 1 for j in range(len(pt.children))])
             <= 1
@@ -545,22 +551,28 @@ def __approximate_alignment_on_loop(
         # max one tau is used per index
         ilp += lpSum([t_variables[i][j] for j in range(2)]) <= 1
 
-    # if tau is used and hence, assigned to a subtree, the surrounding activities are assigned to the other subtree
+    # if tau is used and hence, assigned to a subtree, the surrounding
+    # activities are assigned to the other subtree
     for i in range(1, len(trace)):
-        # if tau at position i is assigned to 1st subtree, the previous activity is assigned to 2nd subtree
+        # if tau at position i is assigned to 1st subtree, the previous
+        # activity is assigned to 2nd subtree
         ilp += t_variables[i][0] <= x_variables[i - 1][1]
-        # if tau at position i is assigned to 1st subtree, the previous activity is assigned to 2nd subtree
+        # if tau at position i is assigned to 1st subtree, the previous
+        # activity is assigned to 2nd subtree
         ilp += t_variables[i][1] <= x_variables[i - 1][0]
     for i in range(len(trace)):
-        # if tau at position i is assigned to 1st subtree, the next activity is assigned to 2nd subtree
+        # if tau at position i is assigned to 1st subtree, the next activity is
+        # assigned to 2nd subtree
         ilp += t_variables[i][0] <= x_variables[i][1]
-        # if tau at position i is assigned to 2nd subtree, the next activity is assigned to 1st subtree
+        # if tau at position i is assigned to 2nd subtree, the next activity is
+        # assigned to 1st subtree
         ilp += t_variables[i][1] <= x_variables[i][0]
     # if last tau is used and assigned to 1st subtree (assigning it to the 2nd subtree is already forbidden by another
     # constraint) --> last activity must be assigned to 2nd subtree
     ilp += t_variables[len(trace)][0] <= x_variables[len(trace) - 1][1]
 
-    # define auxiliary variables n: n_i_1 = 1 <=> next activity i+1 is assigned to 2nd subtree or t_i+1_2 = 1
+    # define auxiliary variables n: n_i_1 = 1 <=> next activity i+1 is
+    # assigned to 2nd subtree or t_i+1_2 = 1
     for i in range(len(trace) - 1):
         ilp += (
             n_variables[i][0] <= x_variables[i + 1][1] + t_variables[i + 1][1]
@@ -586,7 +598,8 @@ def __approximate_alignment_on_loop(
                 e_variables[i][j] >= n_variables[i][j] + x_variables[i][j] - 1
             )
 
-    # define auxiliary variables p: p_i_1 = 1 <=> previous activity i-1 is assigned to 2nd subtree or t_i-1_2 = 1
+    # define auxiliary variables p: p_i_1 = 1 <=> previous activity i-1 is
+    # assigned to 2nd subtree or t_i-1_2 = 1
     ilp += t_variables[0][1] <= p_variables[0][0]
     ilp += p_variables[0][1] <= t_variables[0][0]
 
@@ -712,16 +725,19 @@ def __approximate_alignment_on_sequence(
     # x_i_j = 1 <=> assigns activity i to subtree j
     x_variables = {}
 
-    # s_i_j = 1 <=> activity i is a start activity in the current sub-trace assigned to subtree j
+    # s_i_j = 1 <=> activity i is a start activity in the current sub-trace
+    # assigned to subtree j
     s_variables = {}
 
-    # e_i_j = 1 <=> activity i is an end activity in the current sub-trace assigned to subtree j
+    # e_i_j = 1 <=> activity i is an end activity in the current sub-trace
+    # assigned to subtree j
     e_variables = {}
 
     # auxiliary u_j <=> u_j=1 if an activity is assigned to subtree j
     u_variables = {}
 
-    # v_i_j = 1 <=> activity i is neither a start nor end-activity in the current sub-trace assigned to subtree j
+    # v_i_j = 1 <=> activity i is neither a start nor end-activity in the
+    # current sub-trace assigned to subtree j
     v_variables = {}
 
     s_costs = {}
@@ -937,16 +953,19 @@ def __approximate_alignment_on_parallel(
     # x_i_j = 1 <=> assigns activity i to subtree j
     x_variables = {}
 
-    # s_i_j = 1 <=> activity i is a start activity in the current sub-trace assigned to subtree j
+    # s_i_j = 1 <=> activity i is a start activity in the current sub-trace
+    # assigned to subtree j
     s_variables = {}
 
-    # e_i_j = 1 <=> activity i is an end activity in the current sub-trace assigned to subtree j
+    # e_i_j = 1 <=> activity i is an end activity in the current sub-trace
+    # assigned to subtree j
     e_variables = {}
 
     # auxiliary u_j <=> u_j=1 if an activity is assigned to subtree j
     u_variables = {}
 
-    # v_i_j = 1 <=> activity i is neither a start nor end-activity in the current sub-trace assigned to subtree j
+    # v_i_j = 1 <=> activity i is neither a start nor end-activity in the
+    # current sub-trace assigned to subtree j
     v_variables = {}
 
     s_costs = {}
@@ -1134,10 +1153,12 @@ def __approximate_alignment_on_parallel(
         while activities_to_cover != activities_covered_so_far:
             move = alignment.pop(0)
             res.append(move)
-            # if the alignment move is NOT a model move add activity to activities_covered_so_far
+            # if the alignment move is NOT a model move add activity to
+            # activities_covered_so_far
             if move[0] != SKIP:
                 activities_covered_so_far.append(move[0])
-    # add possible remaining alignment moves to resulting alignment, the order does not matter (parallel operator)
+    # add possible remaining alignment moves to resulting alignment, the order
+    # does not matter (parallel operator)
     for subtree in alignments_per_subtree:
         if len(alignments_per_subtree[subtree]) > 0:
             res.extend(alignments_per_subtree[subtree])

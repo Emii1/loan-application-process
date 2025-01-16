@@ -15,7 +15,8 @@ SCIPY = "scipy"
 CVXOPT_SOLVER_CUSTOM_ALIGN = "cvxopt_solver_custom_align"
 CVXOPT_SOLVER_CUSTOM_ALIGN_ILP = "cvxopt_solver_custom_align_ilp"
 
-# max allowed heuristics value (27/10/2019, due to the numerical instability of some of our solvers)
+# max allowed heuristics value (27/10/2019, due to the numerical
+# instability of some of our solvers)
 MAX_ALLOWED_HEURISTICS = 10**15
 
 VERSIONS_APPLY = {}

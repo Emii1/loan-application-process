@@ -45,6 +45,6 @@ def apply(
 
     overlap = []
     for p in points:
-        overlap.append(len(tree[p[0] : p[1]]))
+        overlap.append(len(tree[p[0]: p[1]]))
 
     return overlap

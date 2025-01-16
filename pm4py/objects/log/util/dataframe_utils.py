@@ -181,7 +181,7 @@ def convert_timestamp_columns_in_df(
                     df[col] = pandas_utils.dataframe_column_string_to_datetime(
                         df[col], format=timest_format, utc=True
                     )
-                except:
+                except BaseException:
                     try:
                         df[col] = (
                             pandas_utils.dataframe_column_string_to_datetime(
@@ -191,14 +191,12 @@ def convert_timestamp_columns_in_df(
                                 utc=True,
                             )
                         )
-                    except:
+                    except BaseException:
                         try:
                             df[col] = (
                                 pandas_utils.dataframe_column_string_to_datetime(
-                                    df[col], format=timest_format
-                                )
-                            )
-                        except:
+                                    df[col], format=timest_format))
+                        except BaseException:
                             pass
 
     for col in df.columns:
@@ -323,7 +321,8 @@ def automatic_feature_selection_df(df, parameters=None):
                 ):
                     other_attributes_to_retain.add(x)
             else:
-                # not consider the attribute after this feature selection if it has other types (for example, date)
+                # not consider the attribute after this feature selection if it
+                # has other types (for example, date)
                 pass
 
     attributes_to_retain = mandatory_attributes.union(
@@ -585,7 +584,8 @@ def insert_artificial_start_end(
         .last()
         .reset_index()
     )
-    # stability trick: remove 1ms from the artificial start activity timestamp, add 1ms to the artificial end activity timestamp
+    # stability trick: remove 1ms from the artificial start activity
+    # timestamp, add 1ms to the artificial end activity timestamp
     if use_extremes_timestamp:
         start_df[timestamp_key] = pd.Timestamp.min
         end_df[timestamp_key] = pd.Timestamp.max

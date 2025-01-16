@@ -564,7 +564,8 @@ def apply_trace(
                     current_event_map.update(trace[i])
                     # change 14/10/2020: to better support duplicate transitions with this approach, we check
                     # whether in the current marking there is at least one transition corresponding to the activity
-                    # key without looking at the transition map (that contains one entry per label)
+                    # key without looking at the transition map (that contains
+                    # one entry per label)
                     corr_en_t = [
                         x
                         for x in semantics.enabled_transitions(net, marking)
@@ -783,7 +784,8 @@ def apply_trace(
             else:
                 break
 
-        # try to reach the final marking in a different fashion, if not already reached
+        # try to reach the final marking in a different fashion, if not already
+        # reached
         if not break_condition_final_marking(marking, final_marking):
             if len(final_marking) == 1:
                 sink_place = list(final_marking)[0]
@@ -886,7 +888,8 @@ def apply_trace(
     ):
         is_fit = False
 
-    # separate global counts from local statistics in the case these are not enabled by the options
+    # separate global counts from local statistics in the case these are not
+    # enabled by the options
     for pl in final_marking:
         consumed += final_marking[pl]
     # 25/02/2020: update the missing tokens count here
@@ -922,7 +925,7 @@ def apply_trace(
                     activating_transition_index[suffix]["marking"]
                 ] = {
                     "trans_to_activate": act_trans[
-                        activating_transition_index[suffix]["index"] :
+                        activating_transition_index[suffix]["index"]:
                     ],
                     "final_marking": marking,
                 }
@@ -940,7 +943,7 @@ def apply_trace(
                         start_marking_index:end_marking_index
                     ]
                     this_visited_markings = vis_mark[
-                        start_marking_index + 1 : end_marking_index + 1
+                        start_marking_index + 1: end_marking_index + 1
                     ]
 
                     if (
@@ -1108,44 +1111,42 @@ class ApplyTraceTokenReplay:
         """
         Runs the thread and stores the results
         """
-        (
-            self.t_fit,
-            self.t_value,
-            self.act_trans,
-            self.trans_probl,
-            self.reached_marking,
-            self.enabled_trans_in_mark,
-            self.missing,
-            self.consumed,
-            self.remaining,
-            self.produced,
-        ) = apply_trace(
-            self.trace,
-            self.net,
-            self.initial_marking,
-            self.final_marking,
-            self.trans_map,
-            self.enable_pltr_fitness,
-            self.place_fitness,
-            self.transition_fitness,
-            self.notexisting_activities_in_model,
-            self.places_shortest_path_by_hidden,
-            self.consider_remaining_in_fitness,
-            activity_key=self.activity_key,
-            try_to_reach_final_marking_through_hidden=self.try_to_reach_final_marking_through_hidden,
-            stop_immediately_unfit=self.stop_immediately_when_unfit,
-            walk_through_hidden_trans=self.walk_through_hidden_trans,
-            post_fix_caching=self.post_fix_caching,
-            marking_to_activity_caching=self.marking_to_activity_caching,
-            is_reduction=self.is_reduction,
-            thread_maximum_ex_time=self.thread_maximum_ex_time,
-            enable_postfix_cache=self.enable_postfix_cache,
-            enable_marktoact_cache=self.enable_marktoact_cache,
-            cleaning_token_flood=self.cleaning_token_flood,
-            s_components=self.s_components,
-            trace_occurrences=self.trace_occurrences,
-            consider_activities_not_in_model_in_fitness=self.consider_activities_not_in_model_in_fitness,
-        )
+        (self.t_fit,
+         self.t_value,
+         self.act_trans,
+         self.trans_probl,
+         self.reached_marking,
+         self.enabled_trans_in_mark,
+         self.missing,
+         self.consumed,
+         self.remaining,
+         self.produced,
+         ) = apply_trace(self.trace,
+                         self.net,
+                         self.initial_marking,
+                         self.final_marking,
+                         self.trans_map,
+                         self.enable_pltr_fitness,
+                         self.place_fitness,
+                         self.transition_fitness,
+                         self.notexisting_activities_in_model,
+                         self.places_shortest_path_by_hidden,
+                         self.consider_remaining_in_fitness,
+                         activity_key=self.activity_key,
+                         try_to_reach_final_marking_through_hidden=self.try_to_reach_final_marking_through_hidden,
+                         stop_immediately_unfit=self.stop_immediately_when_unfit,
+                         walk_through_hidden_trans=self.walk_through_hidden_trans,
+                         post_fix_caching=self.post_fix_caching,
+                         marking_to_activity_caching=self.marking_to_activity_caching,
+                         is_reduction=self.is_reduction,
+                         thread_maximum_ex_time=self.thread_maximum_ex_time,
+                         enable_postfix_cache=self.enable_postfix_cache,
+                         enable_marktoact_cache=self.enable_marktoact_cache,
+                         cleaning_token_flood=self.cleaning_token_flood,
+                         s_components=self.s_components,
+                         trace_occurrences=self.trace_occurrences,
+                         consider_activities_not_in_model_in_fitness=self.consider_activities_not_in_model_in_fitness,
+                         )
         self.thread_is_alive = False
 
 

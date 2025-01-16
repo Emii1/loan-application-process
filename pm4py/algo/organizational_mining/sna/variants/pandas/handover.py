@@ -84,11 +84,11 @@ def apply(
         rvj = variants_resources[idx]
         for i in range(len(rv) - 1):
             res_i = flat_list.index(rv[i])
-            if not res_i in sum_i_to_j:
+            if res_i not in sum_i_to_j:
                 sum_i_to_j[res_i] = {}
             for j in range(i + 1, len(rv)):
                 res_j = flat_list.index(rv[j])
-                if not res_j in sum_i_to_j[res_i]:
+                if res_j not in sum_i_to_j[res_i]:
                     sum_i_to_j[res_i][res_j] = 0
                 if beta == 0:
                     sum_i_to_j[res_i][res_j] += variants_occ[rvj]

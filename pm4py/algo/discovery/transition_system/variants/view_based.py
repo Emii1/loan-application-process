@@ -145,7 +145,7 @@ def __compute_view_sequence(trace, full_case, parameters):
         if direction == Parameters.DIRECTION_FORWARD.value:
             view_sequences.append(
                 (
-                    __apply_abstr(trace[i : i + window], parameters),
+                    __apply_abstr(trace[i: i + window], parameters),
                     trace[i] if i < len(trace) else None,
                     (
                         (full_case, i)
@@ -157,7 +157,7 @@ def __compute_view_sequence(trace, full_case, parameters):
         else:
             view_sequences.append(
                 (
-                    __apply_abstr(trace[max(0, i - window) : i], parameters),
+                    __apply_abstr(trace[max(0, i - window): i], parameters),
                     trace[i] if i < len(trace) else None,
                     (
                         (full_case, i)

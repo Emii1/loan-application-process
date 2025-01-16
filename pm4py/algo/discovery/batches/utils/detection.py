@@ -105,7 +105,8 @@ def __check_batch_type(batch: Tuple[float, float, Set[Any]]) -> str:
     # take the maximum of the right-extreme of each interval
     max_right_events = max(ev[1] for ev in events_batch)
 
-    # CONDITION 1 - All the events in the batch have identical start and end timestamps
+    # CONDITION 1 - All the events in the batch have identical start and end
+    # timestamps
     if (
         min_left_events == max_left_events
         and min_right_events == max_right_events
@@ -119,11 +120,13 @@ def __check_batch_type(batch: Tuple[float, float, Set[Any]]) -> str:
         return BatchType.BATCHING_END.value
 
     # now we could be in the SEQUENTIAL batching or the CONCURRENT batching
-    # in order to be in the SEQUENTIAL, we need that for all the consecutive events the end of the first is equal to the start of the second
+    # in order to be in the SEQUENTIAL, we need that for all the consecutive
+    # events the end of the first is equal to the start of the second
     is_sequential = True
     i = 0
     while i < len(events_batch) - 1:
-        # if there are two consecutive events that are not sequentially matched, then we automatically fall inside the CONCURRENT batching
+        # if there are two consecutive events that are not sequentially
+        # matched, then we automatically fall inside the CONCURRENT batching
         if events_batch[i][1] != events_batch[i + 1][0]:
             is_sequential = False
             break

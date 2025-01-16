@@ -1,3 +1,4 @@
+from pm4py.util.dt_parsing.variants import dummy
 import sys
 import importlib.util
 import warnings
@@ -10,8 +11,6 @@ DUMMY = "dummy"
 
 VERSIONS = {}
 
-
-from pm4py.util.dt_parsing.variants import dummy
 
 VERSIONS[DUMMY] = dummy
 # this option should never be used, except in particular situations

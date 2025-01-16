@@ -88,7 +88,8 @@ def get_dfg_graph(
     if measure == "cost":
         df[cost_attribute] = df[cost_attribute].fillna(value=0)
 
-    # to get rows belonging to same case ID together, we need to sort on case ID
+    # to get rows belonging to same case ID together, we need to sort on case
+    # ID
     if sort_caseid_required:
         if sort_timestamp_along_case_id:
             df = df.sort_values(
@@ -125,14 +126,16 @@ def get_dfg_graph(
 
     if measure == "performance" or measure == "both":
         if not st_eq_ct:
-            # in the arc performance calculation, make sure to consider positive or null values
+            # in the arc performance calculation, make sure to consider
+            # positive or null values
             df_successive_rows[start_timestamp_key + "_2"] = (
                 df_successive_rows[
                     [start_timestamp_key + "_2", timestamp_key]
                 ].max(axis=1)
             )
 
-        # calculate the difference between the timestamps of two successive events
+        # calculate the difference between the timestamps of two successive
+        # events
         if business_hours:
             if business_hours_slot is None:
                 business_hours_slot = constants.DEFAULT_BUSINESS_HOUR_SLOTS
@@ -155,7 +158,8 @@ def get_dfg_graph(
             df_successive_rows[constants.DEFAULT_FLOW_TIME] = (
                 pandas_utils.get_total_seconds(difference)
             )
-        # groups couple of attributes (directly follows relation, we can measure the frequency and the performance)
+        # groups couple of attributes (directly follows relation, we can
+        # measure the frequency and the performance)
         directly_follows_grouping = df_successive_rows.groupby(
             [activity_key, target_activity_key + "_2"]
         )[constants.DEFAULT_FLOW_TIME]
@@ -290,7 +294,8 @@ def get_partial_order_dataframe(
         needed_columns = list(needed_columns)
         df = df[needed_columns]
 
-    # to get rows belonging to same case ID together, we need to sort on case ID
+    # to get rows belonging to same case ID together, we need to sort on case
+    # ID
     if sort_caseid_required:
         if sort_timestamp_along_case_id:
             df = df.sort_values(
@@ -385,7 +390,8 @@ def get_concurrent_events_dataframe(
         start_timestamp_key = xes_constants.DEFAULT_START_TIMESTAMP_KEY
         df[start_timestamp_key] = df[timestamp_key]
 
-    # to get rows belonging to same case ID together, we need to sort on case ID
+    # to get rows belonging to same case ID together, we need to sort on case
+    # ID
     if sort_caseid_required:
         if sort_timestamp_along_case_id:
             df = df.sort_values(

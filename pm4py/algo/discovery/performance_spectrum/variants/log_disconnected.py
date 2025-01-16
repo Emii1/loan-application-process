@@ -54,7 +54,7 @@ def apply(
     )
 
     all_acti_combs = set(
-        tuple(list_activities[j : j + i])
+        tuple(list_activities[j: j + i])
         for i in range(2, len(list_activities) + 1)
         for j in range(0, len(list_activities) - i + 1)
     )

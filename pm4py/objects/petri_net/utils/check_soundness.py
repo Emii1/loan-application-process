@@ -134,7 +134,8 @@ def check_source_sink_place_conditions(net):
     boolean
         Boolean value (True is good)
     """
-    # check also that the transitions connected to the source/sink place have unique arcs
+    # check also that the transitions connected to the source/sink place have
+    # unique arcs
     unique_source_place = check_source_place_presence(net)
     unique_sink_place = check_sink_place_presence(net)
     if unique_source_place is not None:
@@ -173,7 +174,7 @@ def check_easy_soundness_net_in_fin_marking(net, ini, fin):
         if alignment is not None:
             return True
         return False
-    except:
+    except BaseException:
         return False
 
 

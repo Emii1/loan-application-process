@@ -56,7 +56,8 @@ class PandasTraceWrapper(Sequence):
 
 
 class PandasLogWrapper(Sequence):
-    # permits to iterate over a Pandas dataframe and access its Traces object *without* a conversion to EventLog
+    # permits to iterate over a Pandas dataframe and access its Traces object
+    # *without* a conversion to EventLog
     def __init__(
         self,
         dataframe: pd.DataFrame,

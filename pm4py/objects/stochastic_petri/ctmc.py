@@ -204,7 +204,8 @@ def transient_analysis_from_petri_net_and_smap(
     for trans in reachab_graph.transitions:
         if str(trans.from_state) == "start1":
             states_reachable_from_start.add(trans.to_state)
-    # get the tangible reachability graph from the reachability graph and the stochastic map
+    # get the tangible reachability graph from the reachability graph and the
+    # stochastic map
     tang_reach_graph = (
         tangible_reachability.get_tangible_reachability_from_reachability(
             reachab_graph, s_map

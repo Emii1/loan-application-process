@@ -87,7 +87,7 @@ def apply(
         Parameters.CUT_MODE, parameters, "this"
     )
 
-    act_equal = lambda x: (
+    def act_equal(x): return (
         x == activity if type(activity) is str else x in activity
     )
 

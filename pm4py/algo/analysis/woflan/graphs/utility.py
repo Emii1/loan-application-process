@@ -100,7 +100,7 @@ def check_for_dead_tasks(net, graph):
     tasks = []
     lst_transitions = sorted(list(net.transitions), key=lambda x: x.name)
     for transition in lst_transitions:
-        if transition.label != None:
+        if transition.label is not None:
             tasks.append(transition)
     for node, targets in graph.edges()._adjdict.items():
         for target_node, activties in targets.items():

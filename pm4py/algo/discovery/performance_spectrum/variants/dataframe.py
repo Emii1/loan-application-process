@@ -82,7 +82,8 @@ def apply(
     def key(k, n):
         return k + str(n)
 
-    # create a dataframe with all needed columns to check for the activities pattern
+    # create a dataframe with all needed columns to check for the activities
+    # pattern
     dfs = [
         dataframe.add_suffix(str(i)).shift(-i)
         for i in range(len(list_activities))

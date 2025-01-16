@@ -89,8 +89,7 @@ def degree_centrality(*args, **kwargs):
 
 def greedy_modularity_communities(*args, **kwargs):
     return DEFAULT_NX_ENVIRONMENT.algorithms.community.greedy_modularity_communities(
-        *args, **kwargs
-    )
+        *args, **kwargs)
 
 
 def maximum_flow_value(*args, **kwargs):

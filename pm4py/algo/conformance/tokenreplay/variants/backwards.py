@@ -89,7 +89,7 @@ def diff_mark(m, t):
     for a in t.in_arcs:
         p = a.source
         w = a.weight
-        if not p in m:
+        if p not in m:
             m[p] = 0
         m[p] = m[p] + w
     return m

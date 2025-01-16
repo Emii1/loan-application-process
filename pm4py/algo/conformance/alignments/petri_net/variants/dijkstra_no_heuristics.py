@@ -146,7 +146,8 @@ def apply(
         parameters[Parameters.PARAM_SYNC_COST_FUNCTION] = sync_cost_function
 
     if trace_net_constr_function is not None:
-        # keep the possibility to pass TRACE_NET_CONSTR_FUNCTION in this old version
+        # keep the possibility to pass TRACE_NET_CONSTR_FUNCTION in this old
+        # version
         trace_net, trace_im, trace_fm = trace_net_constr_function(
             trace, activity_key=activity_key
         )

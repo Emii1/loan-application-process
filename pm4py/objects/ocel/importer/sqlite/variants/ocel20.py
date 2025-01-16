@@ -75,9 +75,8 @@ def apply(file_path: str, parameters: Optional[Dict[Any, Any]] = None):
         if unsatisfied:
             if pm4_constants.SHOW_INTERNAL_WARNINGS:
                 warnings.warn(
-                    "There are unsatisfied OCEL 2.0 constraints in the given relational database: "
-                    + str(unsatisfied)
-                )
+                    "There are unsatisfied OCEL 2.0 constraints in the given relational database: " +
+                    str(unsatisfied))
 
             if except_if_invalid:
                 raise Exception("OCEL 2.0 validation failed.")

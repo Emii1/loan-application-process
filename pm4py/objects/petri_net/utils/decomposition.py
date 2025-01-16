@@ -143,7 +143,7 @@ def merge_comp(comp1, comp2):
         net.transitions.add(trans[tr.name])
 
     for tr in comp2[0].transitions:
-        if not tr.name in trans:
+        if tr.name not in trans:
             trans[tr.name] = PetriNet.Transition(tr.name, tr.label)
             net.transitions.add(trans[tr.name])
 

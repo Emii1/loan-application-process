@@ -47,7 +47,7 @@ def restore_non_alphanumeric(stri):
     ret = []
     for el in stri_split:
         if el.startswith(ref_stri_2):
-            ret.append(chr(int(el[len(ref_stri_2) :])))
+            ret.append(chr(int(el[len(ref_stri_2):])))
         else:
             ret.append(el)
     return "".join(ret)

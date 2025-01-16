@@ -118,7 +118,7 @@ def apply(sna: SNA, parameters=None):
     try:
         F.write(got_net.generate_html())
         F.close()
-    except:
+    except BaseException:
         # networkx 3.1
         F.close()
         got_net.write_html(temp_file_name)

@@ -97,7 +97,7 @@ class Gamma(BasicStructureRandomVariable):
         if len(values) > 1:
             try:
                 self.a, self.loc, self.scale = gamma.fit(values)
-            except:
+            except BaseException:
                 if constants.SHOW_INTERNAL_WARNINGS:
                     warnings.warn(
                         "Gamma fitting: Optimization converged to parameters that are outside the range allowed by the distribution"

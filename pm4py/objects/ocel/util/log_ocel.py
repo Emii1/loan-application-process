@@ -553,7 +553,7 @@ def log_to_ocel_multiple_obj_types(
                         rel[ocel_constants.DEFAULT_OBJECT_TYPE] = ot
 
                         relations.append(rel)
-            except:
+            except BaseException:
                 pass
 
     events = pandas_utils.instantiate_dataframe(events)

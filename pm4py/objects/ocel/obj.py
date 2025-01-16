@@ -223,7 +223,7 @@ class OCEL(object):
                 return True
             if np.isnan(x):
                 return True
-        except:
+        except BaseException:
             return False
 
     def __str__(self):

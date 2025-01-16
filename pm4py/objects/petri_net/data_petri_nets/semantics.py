@@ -130,7 +130,7 @@ def evaluate_guard(guard, read_variables, data):
             ret = eval(guard, dct)
             return ret
         return False
-    except:
+    except BaseException:
         # the guard could not be evaluated (for example, given missing data)
         return False
 

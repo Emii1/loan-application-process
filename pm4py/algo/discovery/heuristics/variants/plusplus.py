@@ -558,9 +558,11 @@ def calculate(
     heu_net = calculate_dependency(
         heu_net, dependency_thresh, heu_net_decoration
     )
-    # calculates the AND measure for outgoing edges (e.g. which activities happen in parallel after a given activity)
+    # calculates the AND measure for outgoing edges (e.g. which activities
+    # happen in parallel after a given activity)
     heu_net = calculate_and_out_measure(heu_net, and_measure_thresh)
-    # calculates the AND measure for ingoing edges (e.g. which activities happen in parallel before a given activity)
+    # calculates the AND measure for ingoing edges (e.g. which activities
+    # happen in parallel before a given activity)
     heu_net = calculate_and_in_measure(heu_net, and_measure_thresh)
     return heu_net
 

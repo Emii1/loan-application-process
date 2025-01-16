@@ -9,15 +9,15 @@ from pm4py.objects.powl.BinaryRelation import BinaryRelation
 from pm4py.objects.powl.obj import StrictPartialOrder, POWL
 from pm4py.algo.discovery.inductive.cuts import utils as cut_util
 from pm4py.algo.discovery.powl.inductive.variants.maximal.maximal_partial_order_cut import (
-    project_on_groups_with_unique_activities,
-)
+    project_on_groups_with_unique_activities, )
 from pm4py.objects.dfg import util as dfu
 
 ORDER_FREQUENCY_RATIO = "order frequency ratio"
 
 
 def generate_order(obj: T, clusters, order_frequency_ratio):
-    # Step 0: if we have one single group containing all activities ---> invoke fall-through.
+    # Step 0: if we have one single group containing all activities --->
+    # invoke fall-through.
     if len(clusters) < 2:
         return None
 

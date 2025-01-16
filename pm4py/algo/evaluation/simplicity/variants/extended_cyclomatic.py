@@ -29,7 +29,8 @@ def apply(
         parameters = {}
 
     if im is None:
-        # if not provided, try to reconstruct the initial marking by taking the places with empty preset
+        # if not provided, try to reconstruct the initial marking by taking the
+        # places with empty preset
         im = Marking()
         for place in petri_net.places:
             if len(place.in_arcs) == 0:

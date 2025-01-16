@@ -13,8 +13,7 @@ from pm4py.algo.discovery.powl.inductive.cuts.xor import (
 )
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureUVCL
 from pm4py.algo.discovery.powl.inductive.variants.maximal.maximal_partial_order_cut import (
-    MaximalPartialOrderCutUVCL,
-)
+    MaximalPartialOrderCutUVCL, )
 from pm4py.objects.powl.obj import POWL
 from pm4py.objects.dfg import util as dfu
 

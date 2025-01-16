@@ -111,7 +111,7 @@ def apply(
                 dfg[key] = dfg0[key][aggregation_measure]
             else:
                 dfg[key] = dfg0[key]
-        except:
+        except BaseException:
             dfg[key] = dfg0[key]
 
     if activities_count is None:
@@ -122,7 +122,8 @@ def apply(
         else:
             # the frequency of an activity in the log is at least the number of occurrences of
             # incoming arcs in the DFG.
-            # if the frequency of the start activities nodes is also provided, use also that.
+            # if the frequency of the start activities nodes is also provided,
+            # use also that.
             activities_count = Counter({key: 0 for key in activities})
             for el in dfg:
                 activities_count[el[1]] += dfg[el]

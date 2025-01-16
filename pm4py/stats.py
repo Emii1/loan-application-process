@@ -254,7 +254,8 @@ def get_trace_attribute_values(
             attribute not in log
             and constants.CASE_ATTRIBUTE_PREFIX + attribute in log
         ):
-            # If "attribute" does not exist as a column, but "case:attribute" exists, then use that.
+            # If "attribute" does not exist as a column, but "case:attribute"
+            # exists, then use that.
             attribute = constants.CASE_ATTRIBUTE_PREFIX + attribute
         ret = get.get_attribute_values(log, attribute, parameters=parameters)
         return ret

@@ -157,9 +157,9 @@ def apply(bpmn_graph, parameters=None):
             or isinstance(node, BPMN.ParallelGateway)
             or isinstance(node, BPMN.InclusiveGateway)
         ):
-            if not node in source_count:
+            if node not in source_count:
                 source_count[node] = 0
-            if not node in target_count:
+            if node not in target_count:
                 target_count[node] = 0
 
             entry_place = PetriNet.Place("ent_" + str(node.get_id()))
@@ -286,8 +286,8 @@ def apply(bpmn_graph, parameters=None):
         if (
             len(place.in_arcs) == 0
             and len(place.out_arcs) == 0
-            and not place in im
-            and not place in fm
+            and place not in im
+            and place not in fm
         ):
             remove_place(net, place)
 

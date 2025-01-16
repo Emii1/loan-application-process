@@ -90,7 +90,8 @@ def format_dataframe(
     df = dataframe_utils.convert_timestamp_columns_in_df(
         df, timest_format=timest_format
     )
-    # Drop NaN(s) in the main columns (case ID, activity, timestamp) to ensure functioning of the algorithms
+    # Drop NaN(s) in the main columns (case ID, activity, timestamp) to ensure
+    # functioning of the algorithms
     prev_length = len(df)
     df = df.dropna(
         subset={

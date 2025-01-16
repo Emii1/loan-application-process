@@ -428,7 +428,8 @@ def import_log(filename, parameters=None):
         num_traces = count_traces(context)
         f.close()
     else:
-        # avoid the iteration to calculate the number of traces is "tqdm" is not used
+        # avoid the iteration to calculate the number of traces is "tqdm" is
+        # not used
         num_traces = 0
 
     if is_compressed:
@@ -499,7 +500,8 @@ def import_from_string(log_string, parameters=None):
         s.close()
         b.close()
     else:
-        # avoid the iteration to calculate the number of traces is "tqdm" is not used
+        # avoid the iteration to calculate the number of traces is "tqdm" is
+        # not used
         num_traces = 0
 
     # second iteration: actually read the content

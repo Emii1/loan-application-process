@@ -202,21 +202,18 @@ def apply(
         'origin [label="", shape=none, width="0px", height="0px", pos="0,0!"];'
     )
     lines.append(
-        'rightX [label="", shape=none, width="0px", height="0px", pos="%d,0!"];'
-        % (x_length)
-    )
+        'rightX [label="", shape=none, width="0px", height="0px", pos="%d,0!"];' %
+        (x_length))
     lines.append(
         'topY [label="", shape=none, width="0px", height="0px", pos="0,%d!"];'
         % (y_length)
     )
     lines.append(
-        'rightXlabel [label="%s", shape=none, width="0px", height="0px", pos="%d,0!"];'
-        % (attributes[0], x_length + 1.5)
-    )
+        'rightXlabel [label="%s", shape=none, width="0px", height="0px", pos="%d,0!"];' %
+        (attributes[0], x_length + 1.5))
     lines.append(
-        'topYlabel [label="%s", shape=none, width="0px", height="0px", pos="0,%d!"];'
-        % (attributes[1], y_length + 1.0)
-    )
+        'topYlabel [label="%s", shape=none, width="0px", height="0px", pos="0,%d!"];' %
+        (attributes[1], y_length + 1.0))
     lines.append('origin -- rightX [ color="black" ];')
     lines.append('origin -- topY [ color="black" ];')
 
@@ -224,17 +221,15 @@ def apply(
         for k, v in corr_dict[0].items():
             n_id = "n" + str(uuid.uuid4()).replace("-", "") + "e"
             lines.append(
-                '%s [label="%s", shape=none, width="0px", height="0px", pos="%.10f,0!", fontsize="6pt"];'
-                % (n_id, str(k), v * x_length)
-            )
+                '%s [label="%s", shape=none, width="0px", height="0px", pos="%.10f,0!", fontsize="6pt"];' %
+                (n_id, str(k), v * x_length))
 
     if attr_type[1] == "str":
         for k, v in corr_dict[1].items():
             n_id = "n" + str(uuid.uuid4()).replace("-", "") + "e"
             lines.append(
-                '%s [label="%s", shape=none, width="0px", height="0px", pos="0,%.10f!", fontsize="6pt"];'
-                % (n_id, str(k), v * y_length)
-            )
+                '%s [label="%s", shape=none, width="0px", height="0px", pos="0,%.10f!", fontsize="6pt"];' %
+                (n_id, str(k), v * y_length))
 
     for p in points_list:
         coord_x = corr_dict[0][p[0]]
@@ -242,35 +237,24 @@ def apply(
         color = color_dict[p[2]] if color_dict is not None else "blue"
         n_id = "n" + str(uuid.uuid4()).replace("-", "") + "e"
         lines.append(
-            '%s [label="", shape=circle,  width="%.10fpx", height="%.10fpx", pos="%.10f,%.10f!", fontsize="6pt", style="filled", fillcolor="%s", penwidth=0];'
-            % (
-                n_id,
-                dot_size,
-                dot_size,
-                coord_x * x_length,
-                coord_y * y_length,
-                color,
-            )
-        )
+            '%s [label="", shape=circle,  width="%.10fpx", height="%.10fpx", pos="%.10f,%.10f!", fontsize="6pt", style="filled", fillcolor="%s", penwidth=0];' %
+            (n_id, dot_size, dot_size, coord_x * x_length, coord_y * y_length, color, ))
 
     if color_dict is not None and show_legend:
         lines.append(
-            'Legend [label="legend (attribute: %s)", shape=none, width="0px", height="0px", pos="0,-%d!"]'
-            % (attributes[2], 1 * layout_ext_multiplier)
-        )
+            'Legend [label="legend (attribute: %s)", shape=none, width="0px", height="0px", pos="0,-%d!"]' %
+            (attributes[2], 1 * layout_ext_multiplier))
         row = -1
         for k, v in color_dict.items():
             row -= 1
             n_id = "n" + str(uuid.uuid4()).replace("-", "") + "e"
             lines.append(
-                '%s [label="", shape=circle, width="%.10fpx", height="%.10fpx", fontsize="6pt", style="filled", fillcolor="%s", pos="0,%d!"]'
-                % (n_id, dot_size, dot_size, v, layout_ext_multiplier * row)
-            )
+                '%s [label="", shape=circle, width="%.10fpx", height="%.10fpx", fontsize="6pt", style="filled", fillcolor="%s", pos="0,%d!"]' %
+                (n_id, dot_size, dot_size, v, layout_ext_multiplier * row))
             n_id = "n" + str(uuid.uuid4()).replace("-", "") + "e"
             lines.append(
-                '%s [label="%s", shape=none, width="0px", height="0px", pos="1.5,%d!", fontsize="9pt"];'
-                % (n_id, str(k), layout_ext_multiplier * row)
-            )
+                '%s [label="%s", shape=none, width="0px", height="0px", pos="1.5,%d!", fontsize="9pt"];' %
+                (n_id, str(k), layout_ext_multiplier * row))
 
     lines.append("}")
 

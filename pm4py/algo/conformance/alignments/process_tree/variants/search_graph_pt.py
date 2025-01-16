@@ -243,7 +243,8 @@ def align_variant(variant, tree_leaf_set, pt):
                         need_log_move = True
                     else:
                         model_moves = _obtain_leaves_from_state_path(path)
-                        # Check if we need a log move due to XOR/LOOP transitions in the path
+                        # Check if we need a log move due to XOR/LOOP
+                        # transitions in the path
                         need_log_move = (
                             need_log_move
                             if need_log_move
@@ -295,7 +296,8 @@ def align_variant(variant, tree_leaf_set, pt):
                     _obtain_leaves_from_state_path(path, include_tau=True)
                 )
                 heapq.heappush(open_set, sga_state)
-    # Fallback empty result if something went wrong logically (should not happen)
+    # Fallback empty result if something went wrong logically (should not
+    # happen)
     return _construct_result_dictionary(initial_search_state, variant)
 
 

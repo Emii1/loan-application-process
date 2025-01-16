@@ -239,5 +239,4 @@ def view(svg_content: str, parameters: Optional[Dict[Any, Any]] = None):
                 )
             else:
                 raise Exception(
-                    f"Unsupported format: {image_format}. Please use 'svg', 'png', or 'pdf'."
-                )
+                    f"Unsupported format: {image_format}. Please use 'svg', 'png', or 'pdf'.")

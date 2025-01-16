@@ -95,7 +95,7 @@ def minimal_coverability_tree(net, initial_marking, original_net=None):
                 if all(np.less_equal(G.nodes[ancestor]["marking"], m2)):
                     n1 = get_first_smaller_marking_on_path(n, m2)
                     break
-            if n1 != None:
+            if n1 is not None:
                 ancestor_bool = True
                 G.nodes[n1]["marking"] = m2.copy()
                 subtree = sorted(list(nx_utils.bfs_tree(G, n1)))
@@ -105,7 +105,7 @@ def minimal_coverability_tree(net, initial_marking, original_net=None):
                     if node in unprocessed_nodes:
                         del unprocessed_nodes[unprocessed_nodes.index(node)]
                 G = remove_subtree(G, n1)
-                if not n1 in unprocessed_nodes:
+                if n1 not in unprocessed_nodes:
                     unprocessed_nodes.append(n1)
             processed_nodes_copy = copy(processed_nodes)
             for node in processed_nodes_copy:

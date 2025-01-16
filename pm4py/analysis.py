@@ -599,7 +599,8 @@ def generate_marking(
         dct_keys = list(place_or_dct_places)
         if dct_keys:
             if isinstance(dct_keys[0], PetriNet.Place):
-                # A dictionary mapping Place objects to token counts is specified
+                # A dictionary mapping Place objects to token counts is
+                # specified
                 return Marking(place_or_dct_places)
             elif isinstance(dct_keys[0], str):
                 # A dictionary mapping place names to token counts is specified

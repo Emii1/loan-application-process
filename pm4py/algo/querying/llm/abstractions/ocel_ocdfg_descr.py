@@ -14,9 +14,8 @@ class Parameters(Enum):
 
 def __get_descr(curr, include_performance):
     stru = (
-        '  "%s" -> "%s" (frequency (number of events) = %d, frequency (number of objects) = %d'
-        % (curr[1][0], curr[1][1], curr[2], curr[3])
-    )
+        '  "%s" -> "%s" (frequency (number of events) = %d, frequency (number of objects) = %d' %
+        (curr[1][0], curr[1][1], curr[2], curr[3]))
     if include_performance:
         stru += ", duration = %.2f" % curr[5]
     stru += ")\n"

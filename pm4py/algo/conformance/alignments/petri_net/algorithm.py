@@ -165,7 +165,8 @@ def apply_trace(
     trace_cost_function = exec_utils.get_param_value(
         Parameters.PARAM_TRACE_COST_FUNCTION, parameters, []
     )
-    # Instead of using the length of the trace, use the sum of the trace cost function
+    # Instead of using the length of the trace, use the sum of the trace cost
+    # function
     trace_cost_function_sum = sum(trace_cost_function)
 
     if enable_best_worst_cost:

@@ -328,13 +328,13 @@ class TbrStreamingConformance(StreamingAlgorithm):
                     self.message_final_marking_not_reached(case, new_marking)
                     fm_copy = copy(self.fm)
                     for m in fm_copy:
-                        if not m in new_marking:
+                        if m not in new_marking:
                             new_marking[m] = 0
                         self.missing[case] = int(self.missing[case]) + (
                             fm_copy[m] - new_marking[m]
                         )
                     for m in new_marking:
-                        if not m in fm_copy:
+                        if m not in fm_copy:
                             fm_copy[m] = 0
                         remaining += new_marking[m] - fm_copy[m]
             missing = int(self.missing[case])

@@ -1,9 +1,7 @@
 from pm4py.algo.conformance.alignments.process_tree.variants.approximated import (
-    matrix_lp as approximated_matrix_lp,
-)
+    matrix_lp as approximated_matrix_lp, )
 from pm4py.algo.conformance.alignments.process_tree.variants.approximated import (
-    original as approximated_original,
-)
+    original as approximated_original, )
 from pm4py.algo.conformance.alignments.process_tree.variants import (
     search_graph_pt,
 )

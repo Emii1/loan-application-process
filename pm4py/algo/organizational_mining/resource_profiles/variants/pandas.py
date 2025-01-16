@@ -457,7 +457,7 @@ def __compute_workload(
     for ev in events:
         tree.add(Interval(ev[0], ev[1] + k))
     for ev in events:
-        ev_map[ev] = len(tree[ev[0] : ev[1] + k])
+        ev_map[ev] = len(tree[ev[0]: ev[1] + k])
     return ev_map
 
 

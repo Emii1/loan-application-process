@@ -5,8 +5,7 @@ from pm4py.algo.discovery.powl.inductive.variants.maximal.factory import (
 )
 from pm4py.algo.discovery.powl.inductive.variants.im_tree import IMBasePOWL, T
 from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_varaints import (
-    POWLDiscoveryVariant,
-)
+    POWLDiscoveryVariant, )
 from pm4py.objects.powl.obj import POWL
 
 

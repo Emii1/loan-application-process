@@ -4,7 +4,8 @@ from pm4py.objects.petri_net.utils import petri_utils
 import copy
 import numpy as np
 
-# Importing for place invariants related stuff (s-components, uniform and weighted place invariants)
+# Importing for place invariants related stuff (s-components, uniform and
+# weighted place invariants)
 from pm4py.algo.analysis.woflan.place_invariants.place_invariants import (
     compute_place_invariants,
 )
@@ -21,13 +22,11 @@ from pm4py.algo.analysis.woflan.place_invariants.utility import (
 
 # Importing to discover not-well handled pairs
 from pm4py.algo.analysis.woflan.not_well_handled_pairs.not_well_handled_pairs import (
-    apply as compute_not_well_handled_pairs,
-)
+    apply as compute_not_well_handled_pairs, )
 
 # Minimal Coverability Graph
 from pm4py.algo.analysis.woflan.graphs.minimal_coverability_graph.minimal_coverability_graph import (
-    apply as minimal_coverability_graph,
-)
+    apply as minimal_coverability_graph, )
 from pm4py.algo.analysis.woflan.graphs.utility import check_for_dead_tasks
 from pm4py.algo.analysis.woflan.graphs.utility import (
     check_for_improper_conditions,
@@ -37,13 +36,11 @@ from pm4py.algo.analysis.woflan.graphs.utility import convert_marking
 
 # Restricted coverability graph
 from pm4py.algo.analysis.woflan.graphs.restricted_coverability_graph.restricted_coverability_graph import (
-    construct_tree as restricted_coverability_tree,
-)
+    construct_tree as restricted_coverability_tree, )
 
 # reachability Graph Creation
 from pm4py.algo.analysis.woflan.graphs.reachability_graph.reachability_graph import (
-    apply as reachability_graph,
-)
+    apply as reachability_graph, )
 
 from typing import Optional, Dict, Any, Union
 from pm4py.objects.petri_net.obj import PetriNet, Marking
@@ -287,7 +284,8 @@ def short_circuit_petri_net(net, print_diagnostics=False):
         and no_source_places == 1
         and no_sink_places == 1
     ):
-        # If there is one unique source and sink place, short circuit Petri Net is constructed
+        # If there is one unique source and sink place, short circuit Petri Net
+        # is constructed
         t_1 = PetriNet.Transition(
             "short_circuited_transition", "short_circuited_transition"
         )
@@ -400,7 +398,7 @@ def step_2(woflan_object, return_asap_when_unsound=False):
     )
     woflan_object.set_s_c_net(s_c_net)
     woflan_object.diagnostic_messages += diagnostic_messages
-    if woflan_object.get_s_c_net() == None:
+    if woflan_object.get_s_c_net() is None:
         return False
     to_discover = (
         woflan_object.get_s_c_net().places
@@ -456,9 +454,7 @@ def step_3(woflan_object, return_asap_when_unsound=False):
     else:
         woflan_object.diagnostic_messages.append(
             "The following places are not covered by an s-component: {}.".format(
-                woflan_object.get_uncovered_places_s_component()
-            )
-        )
+                woflan_object.get_uncovered_places_s_component()))
         if woflan_object.print_diagnostics:
             print(
                 "The following places are not covered by an s-component: {}.".format(
@@ -523,9 +519,7 @@ def step_5(woflan_object, return_asap_when_unsound=False):
     else:
         woflan_object.diagnostic_messages.append(
             "The following places are uncovered in uniform invariants: {}".format(
-                woflan_object.get_uncovered_places_uniform()
-            )
-        )
+                woflan_object.get_uncovered_places_uniform()))
         if woflan_object.print_diagnostics:
             print(
                 "The following places are uncovered in uniform invariants: {}".format(
@@ -559,9 +553,7 @@ def step_6(woflan_object, return_asap_when_unsound=False):
     else:
         woflan_object.diagnostic_messages.append(
             "The following places are uncovered in weighted invariants: {}".format(
-                woflan_object.get_uncovered_places_weighted()
-            )
-        )
+                woflan_object.get_uncovered_places_weighted()))
         if woflan_object.print_diagnostics:
             print(
                 "The following places are uncovered in weighted invariants: {}".format(
@@ -585,7 +577,7 @@ def step_7(woflan_object, return_asap_when_unsound=False):
         woflan_object.diagnostic_messages.append("No improper coditions.")
         if woflan_object.print_diagnostics:
             print("No improper conditions.")
-        if woflan_object.get_left == True:
+        if woflan_object.get_left:
             return step_8(
                 woflan_object,
                 return_asap_when_unsound=return_asap_when_unsound,
@@ -598,9 +590,8 @@ def step_7(woflan_object, return_asap_when_unsound=False):
     else:
         woflan_object.diagnostic_messages.append(
             "Improper WPD. The following are the improper conditions: {}.".format(
-                check_for_improper_conditions(woflan_object.get_mcg())
-            )
-        )
+                check_for_improper_conditions(
+                    woflan_object.get_mcg())))
         if woflan_object.print_diagnostics:
             print(
                 "Improper WPD. The following are the improper conditions: {}.".format(
@@ -641,7 +632,7 @@ def step_9(woflan_object, return_asap_when_unsound=False):
 
 
 def step_10(woflan_object, return_asap_when_unsound=False):
-    if woflan_object.get_mcg() == None:
+    if woflan_object.get_mcg() is None:
         woflan_object.set_mcg(
             minimal_coverability_graph(
                 woflan_object.get_s_c_net(),
@@ -658,7 +649,7 @@ def step_10(woflan_object, return_asap_when_unsound=False):
         woflan_object.diagnostic_messages.append("There are no dead tasks.")
         if woflan_object.print_diagnostics:
             print("There are no dead tasks.")
-        if woflan_object.get_left() == True:
+        if woflan_object.get_left():
             return step_11(
                 woflan_object,
                 return_asap_when_unsound=return_asap_when_unsound,
@@ -822,7 +813,8 @@ def compute_non_live_sequences(woflan_object):
         for node in spanning_tree.neighbors(v):
             if node not in paths and node not in processed_nodes:
                 paths[node] = paths[v].copy()
-                # we can use directly 0 here, since we are working on a spanning tree and there should be no more edges to a node
+                # we can use directly 0 here, since we are working on a
+                # spanning tree and there should be no more edges to a node
                 paths[node].append(
                     woflan_object.get_r_g().get_edge_data(v, node)[0][
                         "transition"
@@ -899,7 +891,8 @@ def compute_unbounded_sequences(woflan_object):
                 break
         if add_to_red:
             red_markings.append(node)
-    # Make the path as short as possible. If we reach a red state, we stop and do not go further in the "red zone".
+    # Make the path as short as possible. If we reach a red state, we stop and
+    # do not go further in the "red zone".
     queue = set()
     queue.add(0)
     paths = {}

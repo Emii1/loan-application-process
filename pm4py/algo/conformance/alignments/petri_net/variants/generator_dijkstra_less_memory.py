@@ -514,7 +514,8 @@ def __dijkstra(
     # position 4 (POSITION_STATES_COUNT): the count of states visited
     # position 5 (POSITION_PARENT_STATE): if valued, the parent state of the current state
     # position 6 (POSITION_MARKING): the marking associated to the state
-    # position 7 (POSITION_EN_T): if valued, the transition that was enabled to reach the state
+    # position 7 (POSITION_EN_T): if valued, the transition that was enabled
+    # to reach the state
     initial_state = (0, 0, 0, 0, 0, None, im, None)
     open_set = [initial_state]
     heapq.heapify(open_set)
@@ -569,7 +570,8 @@ def __dijkstra(
         j = 0
         while j < len(en_t):
             t = en_t[j]
-            # checks if a given transition can be executed in sync with the trace
+            # checks if a given transition can be executed in sync with the
+            # trace
             is_sync = (
                 trans_labels_dict[t] == transf_trace[-curr[POSITION_INDEX]]
                 if -curr[POSITION_INDEX] < len(transf_trace)
@@ -599,7 +601,8 @@ def __dijkstra(
                     (new_state[POSITION_MARKING], new_state[POSITION_INDEX]),
                 ):
                     # if it can be executed in a sync way, add a new state corresponding
-                    # to the sync execution only if it has not already been closed
+                    # to the sync execution only if it has not already been
+                    # closed
                     open_set = __add_to_open_set(open_set, new_state)
                 del en_t[j]
                 continue
@@ -656,7 +659,8 @@ def __dijkstra(
                 closed,
                 (new_state[POSITION_MARKING], new_state[POSITION_INDEX]),
             ):
-                # adds the log move only if it has not been already closed before
+                # adds the log move only if it has not been already closed
+                # before
                 open_set = __add_to_open_set(open_set, new_state)
 
 

@@ -38,7 +38,7 @@ class StochasticArcWeightNetSemantics(
         -------
         :return: true if enabled, false otherwise
         """
-        if not transition in pn.transitions:
+        if transition not in pn.transitions:
             return False
         for a in transition.in_arcs:
             if marking[a.source] < min(
@@ -273,7 +273,7 @@ class GlobalStochasticArcWeightNetSemantics(
         """
         return (
             0.0
-            if not transition in pn.transitions
+            if transition not in pn.transitions
             or not cls.is_enabled(pn, transition, marking)
             else sum(
                 [

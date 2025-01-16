@@ -100,7 +100,7 @@ def abstraction_from_variants_freq_perf_list(
                 stru = stru + " frequency = "
                 stru = stru + str(v[1])
                 if relative_frequency:
-                    stru = stru + "\%"
+                    stru = stru + "\\%"
                 stru = stru + " "
             if include_performance:
                 stru = stru + " performance = "

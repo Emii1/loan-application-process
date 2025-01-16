@@ -1,7 +1,8 @@
 from pm4py.util import xes_constants as xes_util
 
 
-# TODO: we can do some instance checking and then support both trace level and event level logs..
+# TODO: we can do some instance checking and then support both trace level
+# and event level logs..
 def get_event_labels(event_log, key):
     """
     Fetches the labels present in a log, given a key to use within the events.

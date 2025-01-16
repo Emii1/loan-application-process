@@ -252,7 +252,8 @@ class SimulationThread(Thread):
                 simulated_execution_plus_waiting_time - waiting_time, 0
             )
 
-            # increase the timing based on the waiting time and the execution time of the transition
+            # increase the timing based on the waiting time and the execution
+            # time of the transition
             current_time = current_time + waiting_time + execution_time
 
             for arc in ct.out_arcs:
@@ -267,10 +268,8 @@ class SimulationThread(Thread):
                     {
                         xes_constants.DEFAULT_NAME_KEY: ct.label,
                         xes_constants.DEFAULT_TIMESTAMP_KEY: strpfromiso.fix_naivety(
-                            datetime.datetime.fromtimestamp(current_time)
-                        ),
-                    }
-                )
+                            datetime.datetime.fromtimestamp(current_time)),
+                    })
                 last_event = eve
                 if first_event is None:
                     first_event = last_event
@@ -471,7 +470,8 @@ def apply(
         if enable_diagnostics:
             logger.info(str(time()) + " ended the replay operation.")
 
-    # the start timestamp is set to 1000000 instead of 0 to avoid problems with 32 bit machines
+    # the start timestamp is set to 1000000 instead of 0 to avoid problems
+    # with 32 bit machines
     start_time = 1000000
     threads = []
     for i in range(no_simulations):

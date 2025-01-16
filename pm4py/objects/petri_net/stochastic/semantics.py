@@ -58,7 +58,7 @@ class StochasticPetriNetSemantics(PetriNetSemantics[N], Generic[N]):
         Returns:
             float: _description_
         """
-        if not transition in pn.transitions or not cls.is_enabled(
+        if transition not in pn.transitions or not cls.is_enabled(
             pn, transition, marking
         ):
             return 0.0

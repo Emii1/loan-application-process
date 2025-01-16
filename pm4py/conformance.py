@@ -271,8 +271,7 @@ def conformance_diagnostics_alignments(
         if isinstance(args[0], ProcessTree):
             # Process tree alignments
             from pm4py.algo.conformance.alignments.process_tree.variants import (
-                search_graph_pt,
-            )
+                search_graph_pt, )
 
             if multi_processing:
                 result = search_graph_pt.apply_multiprocessing(
@@ -1074,7 +1073,8 @@ def __check_is_fit_petri_net(
     activities_trace = set([x[activity_key] for x in trace])
     diff = activities_trace.difference(activities_model)
     if diff:
-        # CHECK 1) If there are activities in the trace not present in the model, return False
+        # CHECK 1) If there are activities in the trace not present in the
+        # model, return False
         return False
     else:
         log = EventLog()
@@ -1120,8 +1120,9 @@ def check_is_fitting(
 
     try:
         model = convert_to_process_tree(*model)
-    except:
-        # If the model cannot be expressed as a process tree, attempt Petri net conversion
+    except BaseException:
+        # If the model cannot be expressed as a process tree, attempt Petri net
+        # conversion
         model = convert_to_petri_net(*model)
 
     if not isinstance(trace, Trace):

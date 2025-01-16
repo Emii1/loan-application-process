@@ -219,7 +219,8 @@ def apply(
         Parameters.MIN_VARIANT_OCC, parameters, 1
     )
 
-    # keep track of the DFG, start activities and end activities of the (ongoing) simulation
+    # keep track of the DFG, start activities and end activities of the
+    # (ongoing) simulation
     simulated_traces_dfg = set()
     simulated_traces_sa = set()
     simulated_traces_ea = set()
@@ -267,7 +268,8 @@ def apply(
         simulated_traces_sa = simulated_traces_sa.union(diff_sa)
         simulated_traces_ea = simulated_traces_ea.union(diff_ea)
         simulated_traces_dfg = simulated_traces_dfg.union(diff_dfg)
-        # memorize the difference between the original DFG and the DFG of the simulated log
+        # memorize the difference between the original DFG and the DFG of the
+        # simulated log
         diff_original_sa = set(start_activities).difference(
             simulated_traces_sa
         )
@@ -370,7 +372,8 @@ def get_trace_probability(
     )
 
     try:
-        # the following code would not crash, assuming that the trace is fully replayable on the model
+        # the following code would not crash, assuming that the trace is fully
+        # replayable on the model
         sum_prob = 0.0
         sum_prob += start_activities[trace_act[0]]
 
@@ -382,7 +385,7 @@ def get_trace_probability(
             sum_prob += lpt
 
         return math.exp(sum_prob)
-    except:
+    except BaseException:
         # if it crashes, the trace is not replayable on the model
         # then return probability 0
         return 0.0

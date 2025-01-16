@@ -102,7 +102,8 @@ def __search(net, ini, fin):
             curr = heapq.heappushpop(open_set, tp)
             current_marking = curr.m
 
-        # max allowed heuristics value (27/10/2019, due to the numerical instability of some of our solvers)
+        # max allowed heuristics value (27/10/2019, due to the numerical
+        # instability of some of our solvers)
         if curr.h > lp_solver.MAX_ALLOWED_HEURISTICS:
             continue
 

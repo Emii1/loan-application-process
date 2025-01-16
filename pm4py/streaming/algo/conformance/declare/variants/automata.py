@@ -494,8 +494,7 @@ class DeclareStreamingConformance(StreamingAlgorithm):
             # Print types of violated constraints
             violated_types = [vt for vt, _acts in violated_constraints]
             logging.error(
-                f"Case {case_id} - Deviations detected: {deviations_in_this_event}. Violated constraint types: {violated_types}"
-            )
+                f"Case {case_id} - Deviations detected: {deviations_in_this_event}. Violated constraint types: {violated_types}")
 
         timestamp = event.get("time:timestamp", self._total_events)
         self._deviations_per_time.append((timestamp, deviations_in_this_event))

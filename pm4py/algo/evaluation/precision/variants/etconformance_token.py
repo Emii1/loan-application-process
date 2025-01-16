@@ -92,7 +92,8 @@ def apply(
         Parameters.SHOW_PROGRESS_BAR, parameters, constants.SHOW_PROGRESS_BAR
     )
 
-    # default value for precision, when no activated transitions (not even by looking at the initial marking) are found
+    # default value for precision, when no activated transitions (not even by
+    # looking at the initial marking) are found
     precision = 1.0
     sum_ee = 0
     sum_at = 0

@@ -103,7 +103,7 @@ def apply(parameters: Optional[Dict[str, Any]] = None) -> pd.DataFrame:
                     "concept:name": "Meeting Completed",
                 }
             )
-        except:
+        except BaseException:
             traceback.print_exc()
             pass
         if progress is not None:

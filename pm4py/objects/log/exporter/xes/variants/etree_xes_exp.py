@@ -6,7 +6,7 @@ try:
     # and this variant cannot be used.
     # after all, the default variant is now the "line_by_line" one.
     from lxml import etree
-except:
+except BaseException:
     pass
 
 from pm4py.objects.conversion.log import converter as log_converter
@@ -300,7 +300,8 @@ def export_log_tree(log, parameters=None):
     tree
         XML tree
     """
-    # If the log is in log_instance.EventStream, then transform it into log_instance.EventLog format
+    # If the log is in log_instance.EventStream, then transform it into
+    # log_instance.EventLog format
     if type(log) is log_instance.EventStream:
         log = log_converter.apply(
             log,

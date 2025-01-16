@@ -56,7 +56,7 @@ def dfg_dist_calc(log1, log2):
     dist_dfg = pdist(
         np.array([df_dfg["freq_x"].values, df_dfg["freq_y"].values]), "cosine"
     )[0]
-    if np.isnan(dist_dfg) == True:
+    if np.isnan(dist_dfg):
         dist_dfg = 1
     return dist_act, dist_dfg
 

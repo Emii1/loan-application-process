@@ -414,7 +414,7 @@ def recompose_alignment(cons_nets, cons_nets_result):
     added = set()
     while len(to_visit) > 0:
         curr = to_visit.pop(0)
-        if not curr in visited:
+        if curr not in visited:
             output_edges = [e for e in G0.edges if e[0] == curr]
             for edge in output_edges:
                 to_visit.append(edge[1])
@@ -426,7 +426,7 @@ def recompose_alignment(cons_nets, cons_nets_result):
                 for y in [
                     x for x in cons_nets_result[curr]["alignment"][sind:]
                 ]:
-                    if not y in added:
+                    if y not in added:
                         overall_ali.append(y)
                         added.add(y)
             visited.add(curr)
@@ -514,7 +514,8 @@ def apply_trace(trace, list_nets, parameters=None):
                             cons_nets_alres[ind] is None
                             or cons_nets_alres[ind] is None
                         ):
-                            # the alignment did not termine in the provided time
+                            # the alignment did not termine in the provided
+                            # time
                             return None
                         if (
                             cons_nets_alres[ind][act]

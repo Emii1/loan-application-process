@@ -213,7 +213,7 @@ def get_log_traces_until_activity(log, activity, parameters=None):
             ]
         )
         if ev_in_tr_w_act and ev_in_tr_w_act[0] > 0:
-            new_trace = Trace(log[i][0 : ev_in_tr_w_act[0]])
+            new_trace = Trace(log[i][0: ev_in_tr_w_act[0]])
             for attr in log[i].attributes:
                 new_trace.attributes[attr] = log[i].attributes[attr]
 
@@ -225,7 +225,7 @@ def get_log_traces_until_activity(log, activity, parameters=None):
                             timestamp_key
                         ].timestamp()
                     )
-                except:
+                except BaseException:
                     curr_trace_interlapsed_time_to_act = (
                         log[i][ev_in_tr_w_act[0]][timestamp_key]
                         - log[i][ev_in_tr_w_act[0] - 1][timestamp_key]

@@ -2,12 +2,10 @@ from typing import Optional, Tuple, List, TypeVar, Dict, Any
 
 from pm4py.algo.discovery.inductive.dtypes.im_ds import IMDataStructureLog
 from pm4py.algo.discovery.powl.inductive.variants.dynamic_clustering_frequency.factory import (
-    CutFactoryPOWLDynamicClusteringFrequency,
-)
+    CutFactoryPOWLDynamicClusteringFrequency, )
 from pm4py.algo.discovery.powl.inductive.variants.im_tree import IMBasePOWL
 from pm4py.algo.discovery.powl.inductive.variants.powl_discovery_varaints import (
-    POWLDiscoveryVariant,
-)
+    POWLDiscoveryVariant, )
 from pm4py.objects.powl.obj import POWL
 
 T = TypeVar("T", bound=IMDataStructureLog)

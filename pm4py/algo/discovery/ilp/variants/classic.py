@@ -66,7 +66,7 @@ def __manage_solution(
             sol = np.array(sol)
 
             x0 = np.array(sol[: len(activities)])
-            y0 = np.array(sol[len(activities) : 2 * len(activities)])
+            y0 = np.array(sol[len(activities): 2 * len(activities)])
 
             if max(x0) > 0 and max(y0) > 0:
                 place = PetriNet.Place(str(len(net.places)))
@@ -164,14 +164,16 @@ def apply(
             dfg_discovery.apply(log, parameters=parameters)
         ),
     )
-    # noise threshold for the sequence encoding graph (when alpha=1, no filtering is applied; when alpha=0, the greatest filtering is applied)
+    # noise threshold for the sequence encoding graph (when alpha=1, no
+    # filtering is applied; when alpha=0, the greatest filtering is applied)
     alpha = exec_utils.get_param_value(Parameters.ALPHA, parameters, 1.0)
 
     activities = sorted(
         list(set(x[activity_key] for trace in log for x in trace))
     )
 
-    # check if the causal relation satisfy the criteria for relaxed sound WF-nets
+    # check if the causal relation satisfy the criteria for relaxed sound
+    # WF-nets
     G = nx_utils.DiGraph()
     for ca in causal:
         G.add_edge(ca[0], ca[1])
@@ -210,7 +212,8 @@ def apply(
     trans_map = {}
 
     # STEP A) construction of the transitions of the Petri net.
-    # the source and sink place are connected respectively to the artificial start/end activities
+    # the source and sink place are connected respectively to the artificial
+    # start/end activities
     for act in activities:
         label = (
             act
@@ -274,7 +277,8 @@ def apply(
                         bub.append(0)
                 else:
                     if tuple(row) not in added_rows_Aeq:
-                        # deviation 1: impose that the place is empty at the end of every trace of the log
+                        # deviation 1: impose that the place is empty at the
+                        # end of every trace of the log
                         added_rows_Aeq.add(tuple(row))
                         Aeq.append(row)
                         beq.append(0)
@@ -381,7 +385,8 @@ def apply(
         if ite >= 25:
             break"""
 
-    # STEP E) apply the reduction on the implicit places and on the invisible transitions
+    # STEP E) apply the reduction on the implicit places and on the invisible
+    # transitions
     net, im, fm = murata.apply_reduction(net, im, fm)
     net = reduction.apply_simple_reduction(net)
 

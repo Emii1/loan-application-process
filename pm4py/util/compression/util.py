@@ -43,7 +43,7 @@ def project_univariate(
         )
         for i in range(len(distinct_ids)):
             cl.append(
-                values[start_indexes[i] : start_indexes[i] + case_sizes[i]]
+                values[start_indexes[i]: start_indexes[i] + case_sizes[i]]
             )
         return cl
     return None
@@ -92,7 +92,7 @@ def compress_univariate(
         for i in range(len(distinct_ids)):
             cl.append(
                 encoded_values[
-                    start_indexes[i] : start_indexes[i] + case_sizes[i]
+                    start_indexes[i]: start_indexes[i] + case_sizes[i]
                 ]
             )
         return cl, lookup
@@ -179,7 +179,7 @@ def compress_multivariate(
         for i in range(len(distinct_ids)):
             cl.append(
                 encoded_values[
-                    start_indexes[i] : start_indexes[i] + case_sizes[i]
+                    start_indexes[i]: start_indexes[i] + case_sizes[i]
                 ]
             )
     return cl, lookup
@@ -302,6 +302,6 @@ def msdw(cl: Union[UCL, UVCL], msd: Dict[Any, int]) -> Dict[Any, Any]:
                 indices = [i for i, x in enumerate(t) if x == a]
                 for i in range(len(indices) - 1):
                     if indices[i + 1] - indices[i] - 1 == msd[a]:
-                        for b in t[indices[i] + 1 : indices[i + 1]]:
+                        for b in t[indices[i] + 1: indices[i + 1]]:
                             witnesses[a].add(b)
     return witnesses

@@ -39,7 +39,7 @@ def get_log_encoded(
 
             try:
                 attr = trace.attributes[trace_attribute]
-            except:
+            except BaseException:
                 attr = None
             trace_encoding.append(attr)
 
@@ -49,7 +49,7 @@ def get_log_encoded(
 
                     try:
                         attr = event[event_attribute]
-                    except:
+                    except BaseException:
                         attr = None
                     trace_encoding.append(attr)
 

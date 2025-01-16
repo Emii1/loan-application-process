@@ -255,8 +255,7 @@ def import_net_from_xml_object(root, parameters=None):
                                         trans_visible = False
 
                             from pm4py.objects.random_variables.random_variable import (
-                                RandomVariable,
-                            )
+                                RandomVariable, )
 
                             random_variable = RandomVariable()
                             random_variable.read_from_string(

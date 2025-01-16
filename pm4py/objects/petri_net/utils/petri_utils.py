@@ -239,11 +239,13 @@ def construct_trace_net(
             "t_" + trace[i][activity_key] + "_" + str(i),
             trace[i][activity_key],
         )
-        # 16/02/2021: set the trace index as property of the transition of the trace net
+        # 16/02/2021: set the trace index as property of the transition of the
+        # trace net
         t.properties[properties.TRACE_NET_TRANS_INDEX] = i
         net.transitions.add(t)
         place_map[i + 1] = PetriNet.Place("p_" + str(i + 1))
-        # 16/02/2021: set the place index as property of the place of the trace net
+        # 16/02/2021: set the place index as property of the place of the trace
+        # net
         place_map[i + 1].properties[properties.TRACE_NET_PLACE_INDEX] = i + 1
         net.places.add(place_map[i + 1])
         add_arc_from_to(place_map[i], t, net)
@@ -286,12 +288,14 @@ def construct_trace_net_cost_aware(
             "t_" + trace[i][activity_key] + "_" + str(i),
             trace[i][activity_key],
         )
-        # 16/02/2021: set the trace index as property of the transition of the trace net
+        # 16/02/2021: set the trace index as property of the transition of the
+        # trace net
         t.properties[properties.TRACE_NET_TRANS_INDEX] = i
         cost_map[t] = costs[i]
         net.transitions.add(t)
         place_map[i + 1] = PetriNet.Place("p_" + str(i + 1))
-        # 16/02/2021: set the place index as property of the place of the trace net
+        # 16/02/2021: set the place index as property of the place of the trace
+        # net
         place_map[i + 1].properties[properties.TRACE_NET_PLACE_INDEX] = i + 1
         net.places.add(place_map[i + 1])
         add_arc_from_to(place_map[i], t, net)
@@ -343,7 +347,9 @@ def acyclic_net_variants(
             if next_marking == final_marking:
                 variants.add(next_partial_trace)
             else:
-                # If the next marking is not in visited, if the next marking+partial trace is different from the current one+partial trace
+                # If the next marking is not in visited, if the next
+                # marking+partial trace is different from the current
+                # one+partial trace
                 if next_pair not in visited and curr_pair != next_pair:
                     active.add(next_pair)
         visited.add(curr_pair)
@@ -519,9 +525,9 @@ def invert_spaths_dictionary(spaths):
     inv_spaths = {}
     for target_place in spaths:
         for source_place in spaths[target_place]:
-            if not source_place in inv_spaths:
+            if source_place not in inv_spaths:
                 inv_spaths[source_place] = {}
-            if not target_place in inv_spaths[source_place]:
+            if target_place not in inv_spaths[source_place]:
                 inv_spaths[source_place][target_place] = set()
             inv_spaths[source_place][target_place] = inv_spaths[source_place][
                 target_place
@@ -607,7 +613,7 @@ def get_s_components_from_petri(
     while something_changed and rec_depth < max_rec_depth:
         something_changed = False
         places_to_visit = sorted(
-            list(set(curr_s_comp[len(visited_places) :])),
+            list(set(curr_s_comp[len(visited_places):])),
             key=lambda x: len(x.out_arcs),
             reverse=True,
         )

@@ -69,17 +69,20 @@ def apply(
     if parameters is None:
         parameters = {}
 
-    # execute the following part of code when the variant is not specified by the user
+    # execute the following part of code when the variant is not specified by
+    # the user
     if variant is None:
         if not (
             check_easy_soundness_net_in_fin_marking(
                 petri_net, initial_marking, final_marking
             )
         ):
-            # in the case the net is not a easy sound workflow net, we must apply token-based replay
+            # in the case the net is not a easy sound workflow net, we must
+            # apply token-based replay
             variant = TOKEN_BASED
         else:
-            # otherwise, use the align-etconformance approach (safer, in the case the model contains duplicates)
+            # otherwise, use the align-etconformance approach (safer, in the
+            # case the model contains duplicates)
             variant = ALIGNMENT_BASED
 
     if variant == TOKEN_BASED:
@@ -92,7 +95,8 @@ def apply(
             parameters=parameters,
         )
     else:
-        # execute the alignments based variant, with the specification of the alignments variant
+        # execute the alignments based variant, with the specification of the
+        # alignments variant
         if align_variant is None:
             align_variant = alignments.petri_net.algorithm.DEFAULT_VARIANT
         return exec_utils.get_variant(variant).apply(

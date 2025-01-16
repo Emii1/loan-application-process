@@ -647,9 +647,9 @@ def apply(tree, parameters=None):
 
     places = list(net.places)
     for place in places:
-        if len(place.out_arcs) == 0 and not place in final_marking:
+        if len(place.out_arcs) == 0 and place not in final_marking:
             remove_place(net, place)
-        if len(place.in_arcs) == 0 and not place in initial_marking:
+        if len(place.in_arcs) == 0 and place not in initial_marking:
             remove_place(net, place)
 
     return net, initial_marking, final_marking

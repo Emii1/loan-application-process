@@ -113,7 +113,8 @@ def apply(
         else:
             # the frequency of an activity in the log is at least the number of occurrences of
             # incoming arcs in the DFG.
-            # if the frequency of the start activities nodes is also provided, use also that.
+            # if the frequency of the start activities nodes is also provided,
+            # use also that.
             activities_count = Counter({key: 0 for key in activities})
             for el in dfg:
                 activities_count[el[1]] += dfg[el]
