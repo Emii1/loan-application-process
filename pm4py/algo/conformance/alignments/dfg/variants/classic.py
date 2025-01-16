@@ -727,3 +727,86 @@ def project_log_on_dfg(
         projected_log.append(projected_trace)
 
     return projected_log
+
+
+def project_alignments_on_dfg(log: Union[EventLog, pd.DataFrame],
+                              dfg: Dict[Tuple[str, str], int],
+                              sa: Dict[str, int],
+                              ea: Dict[str, int],
+                              parameters: Optional[Dict[Union[str,
+                                                              Parameters], Any]] = None,
+                              ) -> Tuple[Dict[Tuple[str, str], Dict[str, int]], Dict[str, Dict[str, int]]]:
+    """
+    Performs the DFG-based alignments and "projects" the results on the DFG.
+    The conformance-annotated DFG and the conformance-annotated activity dictionary are returned.
+
+    The conformance-annotated DFG reports for each edge the number of SYNC and MM executions.
+    The conformance-annotated activity dictionary reports for each activity the number of SYNC, MM, and LM executions.
+
+    Parameters
+    -------------------
+    log
+        Event log / Pandas dataframe
+    dfg
+        Directly-follows graph
+    sa
+        Start activities
+    ea
+        End activities
+    parameters
+        Optional parameters of the method
+
+    Returns
+    -------------------
+    conformance_dfg
+        Conformance-annotated DFG reporting for each edge the number of SYNC and MM executions.
+    conformance_activities
+        Conformance-annotated activity dictionary reporting for each activity the number of SYNC, MM, and LM executions.
+    """
+    if parameters is None:
+        parameters = {}
+
+    aligned_traces = apply_log(log, dfg, sa, ea, parameters=parameters)
+
+    activities = set(x[0] for x in dfg).union(set(x[1] for x in dfg))
+    conformance_dfg = {x: {"sync": 0, "mm": 0} for x in dfg}
+    activities_conformance = {
+        a: {"sync": 0, "mm": 0, "lm": 0} for a in activities}
+
+    for trace in aligned_traces:
+        trace = trace["alignment"]
+
+        for i in range(len(trace) - 1):
+            move0 = trace[i]
+            move1 = trace[i + 1]
+
+            if move0[1] == ">>":
+                if move0[0] in activities:
+                    activities_conformance[move0[0]]["lm"] += 1
+            elif move0[0] == ">>":
+                if move0[1] in activities:
+                    activities_conformance[move0[1]]["mm"] += 1
+            else:
+                if move0[0] in activities:
+                    activities_conformance[move0[0]]["sync"] += 1
+
+            if i == len(trace) - 1:
+                if move1[1] == ">>":
+                    if move1[0] in activities:
+                        activities_conformance[move1[0]]["lm"] += 1
+                elif move1[0] == ">>":
+                    if move1[1] in activities:
+                        activities_conformance[move1[1]]["mm"] += 1
+                else:
+                    if move1[0] in activities:
+                        activities_conformance[move1[0]]["sync"] += 1
+
+            if (move0[1], move1[1]) in conformance_dfg:
+                is_sync = move0[0] != ">>" and move1[0] != ">>"
+
+                if is_sync:
+                    conformance_dfg[(move0[1], move1[1])]["sync"] += 1
+                else:
+                    conformance_dfg[(move0[1], move1[1])]["mm"] += 1
+
+    return conformance_dfg, activities_conformance
