@@ -30,10 +30,24 @@ def pt_to_regex(tree, rec_depth=0, shared_obj=None, parameters=None):
     stru = ""
 
     if tree.operator is not None:
-        contains_tau = len(list(child for child in tree.children if child.operator is None and child.label is None)) > 0
+        contains_tau = (
+            len(
+                list(
+                    child
+                    for child in tree.children
+                    if child.operator is None and child.label is None
+                )
+            )
+            > 0
+        )
         children_rep = []
         for child in tree.children:
-            rep, shared_obj = pt_to_regex(child, rec_depth=rec_depth + 1, shared_obj=shared_obj, parameters=parameters)
+            rep, shared_obj = pt_to_regex(
+                child,
+                rec_depth=rec_depth + 1,
+                shared_obj=shared_obj,
+                parameters=parameters,
+            )
             children_rep.append(rep)
         if tree.operator == pt_operator.Operator.SEQUENCE:
             children_rep = [x for x in children_rep if not x is None]
@@ -50,9 +64,13 @@ def pt_to_regex(tree, rec_depth=0, shared_obj=None, parameters=None):
             else:
                 stru = "(" + "".join(children_rep) + ")*" + children_rep[0]
         elif tree.operator == pt_operator.Operator.PARALLEL:
-            raise Exception("the conversion is not yet working with trees containing an AND and/or an OR operator!")
+            raise Exception(
+                "the conversion is not yet working with trees containing an AND and/or an OR operator!"
+            )
         elif tree.operator == pt_operator.Operator.OR:
-            raise Exception("the conversion is not yet working with trees containing an AND and/or an OR operator!")
+            raise Exception(
+                "the conversion is not yet working with trees containing an AND and/or an OR operator!"
+            )
 
     elif tree.label is not None:
         if tree.label not in shared_obj.mapping_dictio:

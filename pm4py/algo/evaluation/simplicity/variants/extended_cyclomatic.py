@@ -4,7 +4,11 @@ from typing import Optional, Dict, Any
 from pm4py.util import nx_utils
 
 
-def apply(petri_net: PetriNet, im: Optional[Marking] = None, parameters: Optional[Dict[Any, Any]] = None) -> float:
+def apply(
+    petri_net: PetriNet,
+    im: Optional[Marking] = None,
+    parameters: Optional[Dict[Any, Any]] = None,
+) -> float:
     """
     Computes the extended cyclomatic metric as described in the paper:
 
@@ -31,7 +35,9 @@ def apply(petri_net: PetriNet, im: Optional[Marking] = None, parameters: Optiona
             if len(place.in_arcs) == 0:
                 im[place] = 1
 
-    reach_graph = reachability_graph.construct_reachability_graph(petri_net, im, use_trans_name=True)
+    reach_graph = reachability_graph.construct_reachability_graph(
+        petri_net, im, use_trans_name=True
+    )
 
     G = nx_utils.DiGraph()
     for n in reach_graph.states:

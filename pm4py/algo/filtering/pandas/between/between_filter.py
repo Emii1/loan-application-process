@@ -13,8 +13,12 @@ class Parameters(Enum):
     SUBCASE_CONCAT_STR = "subcase_concat_str"
 
 
-def apply(df: pd.DataFrame, act1: Union[str, List[str]], act2: Union[str, List[str]],
-          parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> pd.DataFrame:
+def apply(
+    df: pd.DataFrame,
+    act1: Union[str, List[str]],
+    act2: Union[str, List[str]],
+    parameters: Optional[Dict[Union[str, Parameters], Any]] = None,
+) -> pd.DataFrame:
     """
     Given a dataframe, filters all the subtraces going from an event with activity "act1" to an event with
     activity "act2"
@@ -41,17 +45,29 @@ def apply(df: pd.DataFrame, act1: Union[str, List[str]], act2: Union[str, List[s
     if parameters is None:
         parameters = {}
 
-    activity_key = exec_utils.get_param_value(Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY)
-    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
-    subcase_concat_str = exec_utils.get_param_value(Parameters.SUBCASE_CONCAT_STR, parameters, "##@@")
+    activity_key = exec_utils.get_param_value(
+        Parameters.ACTIVITY_KEY, parameters, xes_constants.DEFAULT_NAME_KEY
+    )
+    case_id_key = exec_utils.get_param_value(
+        Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME
+    )
+    subcase_concat_str = exec_utils.get_param_value(
+        Parameters.SUBCASE_CONCAT_STR, parameters, "##@@"
+    )
 
-    act1_comparison = lambda x: (x == act1) if type(act1) is str else (x in act1)
-    act2_comparison = lambda x: (x == act2) if type(act2) is str else (x in act2)
+    act1_comparison = lambda x: (
+        (x == act1) if type(act1) is str else (x in act1)
+    )
+    act2_comparison = lambda x: (
+        (x == act2) if type(act2) is str else (x in act2)
+    )
 
     df = df.copy()
     cases = df[case_id_key].to_numpy()
     activities = df[activity_key].to_numpy()
-    c_unq, c_ind, c_counts = np.unique(cases, return_index=True, return_counts=True)
+    c_unq, c_ind, c_counts = np.unique(
+        cases, return_index=True, return_counts=True
+    )
     res = [np.nan for i in range(len(df))]
 
     i = 0

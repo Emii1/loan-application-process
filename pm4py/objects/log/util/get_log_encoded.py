@@ -1,10 +1,9 @@
 import numpy as np
 
 
-def get_log_encoded(event_log,
-                    trace_attributes=[],
-                    event_attributes=[],
-                    concatenate=False):
+def get_log_encoded(
+    event_log, trace_attributes=[], event_attributes=[], concatenate=False
+):
     """
     Get event log encoded into matrix.
 
@@ -70,10 +69,14 @@ def get_log_encoded(event_log,
 
                 dataset.append(np.asarray(trace_encoding))
 
-    dataset = np.asarray([np.pad(a,
-                                 (0, max_trace_len - len(a)),
-                                 'constant',
-                                 constant_values=0) for a in dataset])
+    dataset = np.asarray(
+        [
+            np.pad(
+                a, (0, max_trace_len - len(a)), "constant", constant_values=0
+            )
+            for a in dataset
+        ]
+    )
 
     columns = np.asarray(columns)
 

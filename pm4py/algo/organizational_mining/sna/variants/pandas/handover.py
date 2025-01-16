@@ -18,7 +18,10 @@ class Parameters(Enum):
 BETA = Parameters.BETA
 
 
-def apply(log: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], Any]] = None) -> SNA:
+def apply(
+    log: pd.DataFrame,
+    parameters: Optional[Dict[Union[str, Parameters], Any]] = None,
+) -> SNA:
     """
     Calculates the HW metric
 
@@ -42,20 +45,35 @@ def apply(log: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], A
     import numpy
     from pm4py.statistics.traces.generic.pandas import case_statistics
 
-    resource_key = exec_utils.get_param_value(Parameters.RESOURCE_KEY, parameters, xes.DEFAULT_RESOURCE_KEY)
+    resource_key = exec_utils.get_param_value(
+        Parameters.RESOURCE_KEY, parameters, xes.DEFAULT_RESOURCE_KEY
+    )
     beta = exec_utils.get_param_value(Parameters.BETA, parameters, 0)
-    case_id_key = exec_utils.get_param_value(Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME)
+    case_id_key = exec_utils.get_param_value(
+        Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME
+    )
 
-    parameters_variants = {case_statistics.Parameters.ACTIVITY_KEY: resource_key,
-                           case_statistics.Parameters.ATTRIBUTE_KEY: resource_key,
-                           case_statistics.Parameters.CASE_ID_KEY: case_id_key}
+    parameters_variants = {
+        case_statistics.Parameters.ACTIVITY_KEY: resource_key,
+        case_statistics.Parameters.ATTRIBUTE_KEY: resource_key,
+        case_statistics.Parameters.CASE_ID_KEY: case_id_key,
+    }
 
-    variants_occ = {x["variant"]: x[case_id_key] for x in
-                    case_statistics.get_variant_statistics(log, parameters=parameters_variants)}
+    variants_occ = {
+        x["variant"]: x[case_id_key]
+        for x in case_statistics.get_variant_statistics(
+            log, parameters=parameters_variants
+        )
+    }
     variants_resources = list(variants_occ.keys())
-    resources = [variants_util.get_activities_from_variant(y) for y in variants_resources]
+    resources = [
+        variants_util.get_activities_from_variant(y)
+        for y in variants_resources
+    ]
 
-    flat_list = sorted(list(set([item for sublist in resources for item in sublist])))
+    flat_list = sorted(
+        list(set([item for sublist in resources for item in sublist]))
+    )
 
     metric_matrix = numpy.zeros((len(flat_list), len(flat_list)))
 
@@ -77,7 +95,9 @@ def apply(log: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], A
                     dividend += variants_occ[rvj]
                     break
                 else:
-                    sum_i_to_j[res_i][res_j] += variants_occ[rvj] * (beta ** (j - i - 1))
+                    sum_i_to_j[res_i][res_j] += variants_occ[rvj] * (
+                        beta ** (j - i - 1)
+                    )
                     dividend += variants_occ[rvj] * (beta ** (j - i - 1))
 
     for key1 in sum_i_to_j:
@@ -87,7 +107,9 @@ def apply(log: pd.DataFrame, parameters: Optional[Dict[Union[str, Parameters], A
     connections = {}
     for key1 in sum_i_to_j:
         for key2 in sum_i_to_j[key1]:
-            connections[(flat_list[key1], flat_list[key2])] = sum_i_to_j[key1][key2] / dividend
+            connections[(flat_list[key1], flat_list[key2])] = (
+                sum_i_to_j[key1][key2] / dividend
+            )
             metric_matrix[key1][key2] = sum_i_to_j[key1][key2] / dividend
 
     return SNA(connections, True)

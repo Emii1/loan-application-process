@@ -44,7 +44,9 @@ if importlib.util.find_spec("scipy"):
     DEFAULT_LP_SOLVER_VARIANT = SCIPY
 
 
-def apply(c, Aub, bub, Aeq, beq, parameters=None, variant=DEFAULT_LP_SOLVER_VARIANT):
+def apply(
+    c, Aub, bub, Aeq, beq, parameters=None, variant=DEFAULT_LP_SOLVER_VARIANT
+):
     """
     Gets the overall solution of the problem
 
@@ -70,10 +72,14 @@ def apply(c, Aub, bub, Aeq, beq, parameters=None, variant=DEFAULT_LP_SOLVER_VARI
     sol
         Solution of the LP problem by the given algorithm
     """
-    return VERSIONS_APPLY[variant](c, Aub, bub, Aeq, beq, parameters=parameters)
+    return VERSIONS_APPLY[variant](
+        c, Aub, bub, Aeq, beq, parameters=parameters
+    )
 
 
-def get_prim_obj_from_sol(sol, parameters=None, variant=DEFAULT_LP_SOLVER_VARIANT):
+def get_prim_obj_from_sol(
+    sol, parameters=None, variant=DEFAULT_LP_SOLVER_VARIANT
+):
     """
     Gets the primal objective from the solution of the LP problem
 
@@ -94,7 +100,9 @@ def get_prim_obj_from_sol(sol, parameters=None, variant=DEFAULT_LP_SOLVER_VARIAN
     return VERSIONS_GET_PRIM_OBJ[variant](sol, parameters=parameters)
 
 
-def get_points_from_sol(sol, parameters=None, variant=DEFAULT_LP_SOLVER_VARIANT):
+def get_points_from_sol(
+    sol, parameters=None, variant=DEFAULT_LP_SOLVER_VARIANT
+):
     """
     Gets the points from the solution
 

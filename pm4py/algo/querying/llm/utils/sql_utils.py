@@ -13,11 +13,32 @@ def mask_non_alphanumeric(stri):
     ret = []
     for el in stri_split:
         for char in el:
-            if char.isalnum() or char == " " or char in ["(", ")", "*", ".", ",", "'", "\"", "=", "<", ">", "_", "+",
-                                                         "-", "!"]:
+            if (
+                char.isalnum()
+                or char == " "
+                or char
+                in [
+                    "(",
+                    ")",
+                    "*",
+                    ".",
+                    ",",
+                    "'",
+                    '"',
+                    "=",
+                    "<",
+                    ">",
+                    "_",
+                    "+",
+                    "-",
+                    "!",
+                ]
+            ):
                 ret.append(char)
             else:
-                ret.append(ref_stri_1 + ref_stri_2 + str(ord(char)) + ref_stri_1)
+                ret.append(
+                    ref_stri_1 + ref_stri_2 + str(ord(char)) + ref_stri_1
+                )
     return "".join(ret)
 
 
@@ -26,7 +47,7 @@ def restore_non_alphanumeric(stri):
     ret = []
     for el in stri_split:
         if el.startswith(ref_stri_2):
-            ret.append(chr(int(el[len(ref_stri_2):])))
+            ret.append(chr(int(el[len(ref_stri_2) :])))
         else:
             ret.append(el)
     return "".join(ret)
