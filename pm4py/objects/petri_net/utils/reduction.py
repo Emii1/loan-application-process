@@ -7,6 +7,7 @@ from pm4py.objects.petri_net.utils.petri_utils import (
     post_set,
     get_arc_type,
 )
+from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.objects.petri_net import properties
 import itertools
 from itertools import combinations, chain
@@ -21,9 +22,8 @@ def _has_only_this_transition_as_output(place, transition):
     Checks if all arcs exiting the given place go to exactly this 'transition'
     (i.e., place -> transition, no other transitions).
     """
-    from pm4py.objects.petri_net.obj import Transition
     outgoing_transitions = {
-        arc.target for arc in place.out_arcs if isinstance(arc.target, Transition)
+        arc.target for arc in place.out_arcs if isinstance(arc.target, PetriNet.Transition)
     }
     return outgoing_transitions == {transition}
 
@@ -33,9 +33,8 @@ def _has_only_this_transition_as_input(place, transition):
     Checks if all arcs entering the given place come from exactly this 'transition'
     (i.e., transition -> place, no other transitions).
     """
-    from pm4py.objects.petri_net.obj import Transition
     incoming_transitions = {
-        arc.source for arc in place.in_arcs if isinstance(arc.source, Transition)
+        arc.source for arc in place.in_arcs if isinstance(arc.source, PetriNet.Transition)
     }
     return incoming_transitions == {transition}
 
