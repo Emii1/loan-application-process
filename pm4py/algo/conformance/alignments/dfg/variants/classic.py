@@ -737,31 +737,48 @@ def project_alignments_on_dfg(log: Union[EventLog, pd.DataFrame],
                                                               Parameters], Any]] = None,
                               ) -> Tuple[Dict[Tuple[str, str], Dict[str, int]], Dict[str, Dict[str, int]]]:
     """
-    Performs the DFG-based alignments and "projects" the results on the DFG.
-    The conformance-annotated DFG and the conformance-annotated activity dictionary are returned.
+    Projects alignment results onto the directly-follows graph (DFG) and activity dictionary.
 
-    The conformance-annotated DFG reports for each edge the number of SYNC and MM executions.
-    The conformance-annotated activity dictionary reports for each activity the number of SYNC, MM, and LM executions.
+    This method performs a DFG-based alignment between an event log (or DataFrame) and a process model
+    represented by a directly-follows graph. The alignment moves are categorized into three types:
+
+      - SYNC (Synchronous Move): Both the log event and the model activity match.
+      - MM (Model Move): The model activity is executed without a corresponding log event.
+      - LM (Log Move): A log event occurs without a corresponding model activity.
+
+    After computing the alignments using the provided log and DFG (via the `apply_log` function),
+    the method "projects" these results by aggregating:
+
+      - For each DFG edge (transition), the number of SYNC and MM moves.
+      - For each activity, the number of SYNC, MM, and LM moves.
 
     Parameters
-    -------------------
-    log
-        Event log / Pandas dataframe
-    dfg
-        Directly-follows graph
-    sa
-        Start activities
-    ea
-        End activities
-    parameters
-        Optional parameters of the method
+    ----------
+    log : Union[EventLog, pd.DataFrame]
+        The event log or DataFrame containing the events.
+    dfg : Dict[Tuple[str, str], int]
+        A dictionary representing the directly-follows graph where each key is a tuple of activities
+        (from, to) and each value is the frequency of that transition.
+    sa : Dict[str, int]
+        A dictionary of start activities with their corresponding frequencies.
+    ea : Dict[str, int]
+        A dictionary of end activities with their corresponding frequencies.
+    parameters : Optional[Dict[Union[str, Parameters], Any]], optional
+        Additional parameters to control the alignment process, by default None.
 
     Returns
-    -------------------
-    conformance_dfg
-        Conformance-annotated DFG reporting for each edge the number of SYNC and MM executions.
-    conformance_activities
-        Conformance-annotated activity dictionary reporting for each activity the number of SYNC, MM, and LM executions.
+    -------
+    Tuple[Dict[Tuple[str, str], Dict[str, int]], Dict[str, Dict[str, int]]]
+        A tuple containing:
+          - conformance_dfg: A dictionary where each key is an edge (tuple of activities) from the DFG,
+            and the value is a dictionary with keys:
+                'sync' : count of synchronous moves on that edge.
+                'mm'   : count of model moves on that edge.
+          - conformance_activities: A dictionary where each key is an activity and the value is a dictionary
+            with keys:
+                'sync' : count of synchronous moves for the activity.
+                'mm'   : count of model moves for the activity.
+                'lm'   : count of log moves for the activity.
     """
     if parameters is None:
         parameters = {}
