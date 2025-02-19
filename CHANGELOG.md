@@ -6,12 +6,18 @@
 ### Added
 * c3400ac1f3cc3bc23ff66980f39c7c5c6458d2b7
   * added linting to pipelines
+* 4ba50b071493387be5f7f65be6f2d0e9920592ad
+  * possibility for read.py read methods to accept URIs
 
 ### Changed
+* 016926ee785351c98c6397c6e6519c1033ea6e9f
+  * slight improvement reduction rules for Petri nets
 
 ### Deprecated
 
 ### Fixed
+* a6f52380e597a70ceea8dd1e4bc27654ed72e56f
+  * fix exporting OCEL to SQLite (timestamps)
 
 ### Removed
 
