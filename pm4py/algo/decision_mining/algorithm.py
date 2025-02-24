@@ -509,37 +509,6 @@ def get_decision_points(
     return decision_points
 
 
-def simplify_token_replay(replay):
-    """
-    Removes duplicate traces from the token replay result,
-    keeping only one entry for each unique sequence of activated transitions.
-
-    Parameters
-    ----------
-    replay : list
-        The token replay result.
-
-    Returns
-    -------
-    list
-        The 'compressed' list of token replay results.
-    """
-    visited = {}
-    for element in replay:
-        key = tuple(element["activated_transitions"])
-        if key not in visited:
-            visited[key] = True
-
-    # Keep only one result for each unique set of transitions
-    compressed = []
-    for element in replay:
-        key = tuple(element["activated_transitions"])
-        if visited[key]:
-            compressed.append(element)
-            visited[key] = False
-    return compressed
-
-
 def get_attributes(
         log,
         decision_points,
@@ -606,12 +575,14 @@ def get_attributes(
     variants_idxs = variants_module.get_variants_from_log_trace_idx(log, parameters=parameters)
     unique_variants = list(variants_idxs.keys())
 
+    filtered_log = EventLog()
+    for variant_name in variants_idxs:
+        filtered_log.append(log[variants_idxs[variant_name][0]])
+
     # Token replay over the entire log
     replay_result = token_replay.apply(
-        log, net, initial_marking, final_marking, parameters=parameters
+        filtered_log, net, initial_marking, final_marking, parameters=parameters
     )
-    # Simplify the replay so that we only keep one "activated_transitions" sequence per variant
-    replay_result = simplify_token_replay(replay_result)
 
     # For each replayed variant
     for variant_idx, variant_name in enumerate(unique_variants):
