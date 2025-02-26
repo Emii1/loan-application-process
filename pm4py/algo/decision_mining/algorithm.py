@@ -871,7 +871,10 @@ def _extract_decisions_alignment(
 
         # CASE A: If model_name != '>>', we have a move in the *model* (either synchronous or model-only)
         if model_name != ">>":
-            chosen_transition = model_label if labels else model_name
+            if labels:
+                chosen_transition = model_label if model_label is not None else model_name
+            else:
+                chosen_transition = model_name
 
             # Now check if that chosen_transition is in some place's outgoing transitions
             # If your decision_points dict is keyed by place_name -> [labels],
