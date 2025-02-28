@@ -14,7 +14,7 @@ def execute_script():
     visualizer.view(gviz)
 
     # visualize the variants aligning on (the first occurrence of) a given activity
-    gviz = visualizer.apply(log, parameters={"format": "svg", "alignment_criteria": "T02 Check confirmation of receipt"})
+    gviz = visualizer.apply(log, parameters={"format": "svg", "alignment_criteria": "T02 Check confirmation of receipt", "max_variants": 10})
     visualizer.view(gviz)
 
 
