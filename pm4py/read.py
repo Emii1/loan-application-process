@@ -86,7 +86,7 @@ def read_xes(
     if variant is None:
         if importlib.util.find_spec("rustxes"):
             __rustxes_usage_warning()
-            variant = constants.DEFAULT_XES_PARSER
+            variant = "rustxes"
         else:
             __rustxes_non_usage_warning()
             variant = constants.DEFAULT_XES_PARSER
@@ -449,7 +449,7 @@ def read_ocel2_json(
 
     if importlib.util.find_spec("rustxes"):
         __rustxes_usage_warning()
-        variant = jsonocel_importer.Variants.OCEL20_STANDARD
+        variant = jsonocel_importer.Variants.OCEL20_RUSTXES
     else:
         __rustxes_non_usage_warning()
         variant = jsonocel_importer.Variants.OCEL20_STANDARD
@@ -508,7 +508,7 @@ def read_ocel2_xml(
 
     if importlib.util.find_spec("rustxes"):
         __rustxes_usage_warning()
-        variant = xml_importer.Variants.OCEL20
+        variant = xml_importer.Variants.OCEL20_RUSTXES
     else:
         __rustxes_non_usage_warning()
         variant = xml_importer.Variants.OCEL20

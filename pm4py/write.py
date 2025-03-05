@@ -67,7 +67,7 @@ def write_xes(
     if variant_str is None and importlib.util.find_spec("rustxes"):
         __rustxes_usage_warning()
         variant_str = "rustxes"
-    
+
     if variant_str is None or variant_str == "line_by_line":
         __rustxes_non_usage_warning()
         from pm4py.objects.log.exporter.xes import exporter as xes_exporter
