@@ -15,6 +15,8 @@ def execute_script():
     # print each one of the returned sub-logs (that is a Pandas dataframe)
     for sl in returned_sublogs:
         print(sl)
+        dfg, sa, ea = pm4py.discover_dfg(sl)
+        pm4py.view_dfg(dfg, sa, ea, format="svg")
 
 
 if __name__ == "__main__":
