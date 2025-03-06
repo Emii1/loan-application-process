@@ -61,7 +61,6 @@ def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Any, Any
     **Notes**
     --------
     - The method uses a permutation test to compare feature vectors (e.g., Relation Type Count) extracted from sub-logs within sliding windows. Change points are identified where the p-value falls below the threshold.
-    - The current implementation accumulates traces into `returned_sublogs` up to each change point without resetting, which may not align with the typical expectation of returning segments between change points. This behavior could be a bug or an intentional design choice not fully aligned with the paper's intent.
     """
     if parameters is None:
         parameters = {}
@@ -98,8 +97,11 @@ def apply(log: Union[EventLog, pd.DataFrame], parameters: Optional[Dict[Any, Any
     i = 0
     while i < len(sub_logs):
         curr = curr + [",".join(x) for x in sub_logs[i]]
-        if i in change_indexes or i == len(sub_logs) - 1:
-            returned_sublogs.append(pm4py.parse_event_log_string(curr))
+        if i+1 in change_indexes or i == len(sub_logs) - 1:
+            if curr:
+                returned_sublogs.append(pm4py.parse_event_log_string(curr))
+                curr = None
+                curr = []
         i = i + 1
 
     return returned_sublogs, change_timestamps, p_values
