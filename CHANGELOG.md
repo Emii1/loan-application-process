@@ -18,6 +18,12 @@
 ### Fixed
 * a6f52380e597a70ceea8dd1e4bc27654ed72e56f
   * fix exporting OCEL to SQLite (timestamps)
+* f5e78bb0d34cda8f8895c1d3b060a9a87279039e
+  * bug fix POWL
+* 538e6707b6ec10976e411e902d77fa90fbe08d0e
+  * removed unnecessary conversion in powl discovery
+* 4ebd734f4e4c8706b57bd8bb102143437c0369a1
+  * small fix ocel2 sqlite importing
 
 ### Removed
 
