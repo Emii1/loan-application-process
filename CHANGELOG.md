@@ -12,6 +12,14 @@
 ### Changed
 * 016926ee785351c98c6397c6e6519c1033ea6e9f
   * slight improvement reduction rules for Petri nets
+* 8e6f441fdf6067953c93bb034cc5da1646fd9854
+  * refactoring business hours for improving performance
+* e1558c11f6781fd1228f4d1a971589ab715b228d
+  * make DFG filtering more efficient
+* 6f535baa0eff00730099e6363121dc5ec2a2ec77
+  * make DFG playout more efficient
+* d16b068b4b2d88792b42f6fe43e1269ceb095106
+  * optimizing DFG calculation
 
 ### Deprecated
 
