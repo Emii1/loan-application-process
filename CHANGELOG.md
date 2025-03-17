@@ -1,6 +1,25 @@
 # Changelog of pm4py
 
 
+## pm4py 2.7.17 (2025.XX.YY)
+
+### Added
+
+### Changed
+* cdee940e1825194c54edadb61a69ef97785f46e1
+  * Small update Anthropic connector
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
+---
+
 ## pm4py 2.7.16 (2025.02.XX)
 
 ### Added
