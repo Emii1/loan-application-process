@@ -196,6 +196,11 @@ def get_dfg_graph(
             # Calculate all metrics at once (more efficient than separate calls)
             metrics = grouped.agg(['mean', 'median', 'max', 'min', 'sum', 'std'])
 
+            if type(metrics) is pd.DataFrame:
+                metrics = metrics.iterrows()
+            else:
+                metrics = metrics.to_pandas().iterrows()
+
             # Convert to the expected dictionary structure
             dfg_performance = {
                 group: {
@@ -206,7 +211,7 @@ def get_dfg_graph(
                     'sum': row['sum'],
                     'stdev': row['std']
                 }
-                for group, row in metrics.iterrows()
+                for group, row in metrics
             }
         elif perf_aggregation_key == "raw_values":
             dfg_performance = grouped.agg(list).to_dict()
