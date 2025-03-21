@@ -1,3 +1,5 @@
+import numpy as np
+
 from pm4py.util import xes_constants, pandas_utils, constants
 from pm4py.util.business_hours import soj_time_business_hours_diff
 
@@ -54,9 +56,6 @@ def get_dfg_graph(
     dfg
         DFG in the chosen measure (may be only the frequency, only the performance, or both)
     """
-    import pandas as pd
-    import numpy as np
-
     # added support to specify an activity key for the target event which is different
     # from the activity key of the source event.
     if target_activity_key is None:
@@ -103,7 +102,7 @@ def get_dfg_graph(
     df_shifted.columns = shifted_cols
 
     # Concatenate the dataframes efficiently
-    df_successive_rows = pd.concat([df, df_shifted], axis=1)
+    df_successive_rows = pandas_utils.DATAFRAME.concat([df, df_shifted], axis=1)
 
     # Filter for matching case IDs (more efficient with direct access)
     case_id_col = case_id_glue
@@ -142,8 +141,8 @@ def get_dfg_graph(
                 start_ts_values = np.array(df_successive_rows[start_timestamp_key + suffix].dt.to_pydatetime())
             else:
                 # If timestamps are pandas Timestamp objects or strings, convert properly
-                ts_values = np.array(pd.to_datetime(df_successive_rows[timestamp_key]).dt.to_pydatetime())
-                start_ts_values = np.array(pd.to_datetime(df_successive_rows[start_timestamp_key + suffix]).dt.to_pydatetime())
+                ts_values = np.array(pandas_utils.DATAFRAME.to_datetime(df_successive_rows[timestamp_key]).dt.to_pydatetime())
+                start_ts_values = np.array(pandas_utils.DATAFRAME.to_datetime(df_successive_rows[start_timestamp_key + suffix]).dt.to_pydatetime())
 
             # Use list comprehension which is faster than apply but handles datetime objects correctly
             flow_times = [
