@@ -2,6 +2,7 @@ import numpy as np
 
 from pm4py.util import xes_constants, pandas_utils, constants
 from pm4py.util.business_hours import soj_time_business_hours_diff
+import pandas as pd
 
 
 def get_dfg_graph(
@@ -171,7 +172,7 @@ def get_dfg_graph(
     # Create dictionary directly rather than creating a Series object first (more efficient)
     if measure == "frequency" or measure == "both":
         # Use value_counts which is more efficient than groupby+size for frequency
-        if len(group_cols) == 2:  # Most common case
+        if type(df) is pd.DataFrame and len(group_cols) == 2:  # Most common case
             temp_df = df_successive_rows[group_cols].copy()
             temp_df['dummy'] = 1  # Add a column to count
             pivot = temp_df.pivot_table(
