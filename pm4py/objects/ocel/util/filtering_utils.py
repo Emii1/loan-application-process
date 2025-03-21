@@ -152,7 +152,9 @@ def propagate_object_filtering(
                 ocel.o2o[object_id_2].isin(selected_object_ids))
     ocel.o2o = ocel.o2o[o2o_mask]
 
-    ocel.object_changes = ocel.object_changes[ocel.object_changes[object_id].isin(selected_object_ids)]
+    ocel.object_changes = ocel.object_changes[
+        ocel.object_changes[object_id].isin(selected_object_ids)
+    ]
 
     return ocel
 
@@ -232,6 +234,8 @@ def propagate_relations_filtering(
                 ocel.o2o[object_id_2].isin(selected_object_ids))
     ocel.o2o = ocel.o2o[o2o_mask]
 
-    ocel.object_changes = ocel.object_changes[ocel.object_changes[object_id].isin(selected_object_ids)]
+    ocel.object_changes = ocel.object_changes[
+        ocel.object_changes[object_id].isin(selected_object_ids)
+    ]
 
     return ocel
