@@ -40,7 +40,8 @@ def apply(
     min_horizontal_distance = exec_utils.get_param_value(Parameters.MIN_HORIZONTAL_DISTANCE, parameters, 1.5)
     max_horizontal_distance = exec_utils.get_param_value(Parameters.MAX_HORIZONTAL_DISTANCE, parameters, 4.5)
     layout_ext_multiplier = exec_utils.get_param_value(Parameters.LAYOUT_EXT_MULTIPLIER, parameters, 75)
-    enable_graph_title = exec_utils.get_param_value(Parameters.ENABLE_GRAPH_TITLE, parameters, constants.DEFAULT_ENABLE_GRAPH_TITLES)
+    enable_graph_title = exec_utils.get_param_value(Parameters.ENABLE_GRAPH_TITLE, parameters,
+                                                    constants.DEFAULT_ENABLE_GRAPH_TITLES)
     graph_title = exec_utils.get_param_value(Parameters.GRAPH_TITLE, parameters, "Process Variants Paths and Durations")
 
     # Required column names
@@ -134,13 +135,27 @@ def apply(
                 variant_node_positions[variant][activity] += shift
     else:
         # alignment_criteria is the name of some activity
-        for variant in top_variants:
-            if alignment_criteria in variant_node_positions[variant]:
-                align_pos = variant_node_positions[variant][alignment_criteria]
-                shift = -align_pos
-                for activity in variant_node_positions[variant]:
-                    variant_node_positions[variant][activity] += shift
-            # Variants without the activity remain aligned to start (no shift)
+        variants_with_activity = [
+            variant for variant in top_variants
+            if alignment_criteria in variant_node_positions[variant]
+        ]
+        variants_without_activity = [
+            variant for variant in top_variants
+            if alignment_criteria not in variant_node_positions[variant]
+        ]
+
+        if variants_without_activity:
+            missing_variants = ", ".join(str(v) for v in variants_without_activity)
+            raise ValueError(
+                f"Alignment activity '{alignment_criteria}' not found in variants: {missing_variants}. "
+                "All variants must contain the alignment activity."
+            )
+
+        for variant in variants_with_activity:
+            align_pos = variant_node_positions[variant][alignment_criteria]
+            shift = -align_pos
+            for activity in variant_node_positions[variant]:
+                variant_node_positions[variant][activity] += shift
 
     # Create node labels for each variant
     for i, variant in enumerate(top_variants):
