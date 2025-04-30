@@ -1,6 +1,6 @@
 '''
-    PM4Py – A Process Mining Library for Python
-Copyright (C) 2024 Process Intelligence Solutions UG (haftungsbeschränkt)
+    PM4Py â€“ A Process Mining Library for Python
+Copyright (C) 2024 Process Intelligence Solutions UG (haftungsbeschrÃ¤nkt)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -45,8 +45,6 @@ class Parameters(Enum):
     PETRI_SEMANTICS = "petri_semantics"
     ADD_ONLY_IF_FM_IS_REACHED = "add_only_if_fm_is_reached"
     FM_LEQ_ACCEPTED = "fm_leq_accepted"
-    INITIAL_TIMESTAMP = "initial_timestamp"
-    INITIAL_CASE_ID = "initial_case_id"
 
 
 def apply_playout(
@@ -76,10 +74,6 @@ def apply_playout(
         Number of traces to generate
     max_trace_length
         Maximum number of events per trace (do break)
-    initial_timestamp
-        Increased timestamp from 1970 for the first event
-    initial_case_id
-        Case id of the first event
     case_id_key
         Trace attribute that is the case ID
     activity_key
@@ -96,7 +90,7 @@ def apply_playout(
         Accepts traces ending in a marking that is a superset of the final marking
     """
     # assigns to each event an increased timestamp from 1970
-    curr_timestamp = initial_timestamp
+    curr_timestamp = 10000000
     all_visited_elements = []
 
     i = 0
@@ -158,7 +152,7 @@ def apply_playout(
 
     for index, visited_elements in enumerate(all_visited_elements):
         trace = log_instance.Trace()
-        trace.attributes[case_id_key] = str(index+initial_case_id)
+        trace.attributes[case_id_key] = str(index)
         for element in visited_elements:
             if (
                 type(element) is PetriNet.Transition
@@ -198,8 +192,6 @@ def apply(
         Parameters of the algorithm:
             Parameters.NO_TRACES -> Number of traces of the log to generate
             Parameters.MAX_TRACE_LENGTH -> Maximum trace length
-            Parameters.INITIAL_TIMESTAMP -> The first event is set with INITIAL_TIMESTAMP increased from 1970
-            Parameters.INITIAL_CASE_ID -> Numeric case id for the first trace
             Parameters.PETRI_SEMANTICS -> Petri net semantics to be used (default: petri_nets.semantics.ClassicSemantics())
             Parameters.ADD_ONLY_IF_FM_IS_REACHED -> adds the case only if the final marking is reached
             Parameters.FM_LEQ_ACCEPTED -> Accepts traces ending in a marking that is a superset of the final marking
