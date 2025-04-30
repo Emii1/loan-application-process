@@ -1,25 +1,7 @@
-'''
-    PM4Py – A Process Mining Library for Python
-Copyright (C) 2024 Process Intelligence Solutions UG (haftungsbeschränkt)
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see this software project's root or
-visit <https://www.gnu.org/licenses/>.
-
-Website: https://processintelligence.solutions
-Contact: info@processintelligence.solutions
-'''
-from pm4py.objects.ocel.util import events_per_type_per_activity, objects_per_type_per_activity
+from pm4py.objects.ocel.util import (
+    events_per_type_per_activity,
+    objects_per_type_per_activity,
+)
 from typing import Optional, Dict, Any
 from pm4py.objects.ocel.obj import OCEL
 
@@ -46,8 +28,12 @@ def apply(ocel: OCEL, parameters: Optional[Dict[Any, Any]] = None):
     if parameters is None:
         parameters = {}
 
-    ev_per_type_per_act = events_per_type_per_activity.apply(ocel, parameters=parameters)
-    obj_per_type_per_act = objects_per_type_per_activity.apply(ocel, parameters=parameters)
+    ev_per_type_per_act = events_per_type_per_activity.apply(
+        ocel, parameters=parameters
+    )
+    obj_per_type_per_act = objects_per_type_per_activity.apply(
+        ocel, parameters=parameters
+    )
 
     ret = {"divergence": set(), "convergence": set()}
 

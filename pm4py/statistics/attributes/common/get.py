@@ -1,25 +1,5 @@
-'''
-    PM4Py – A Process Mining Library for Python
-Copyright (C) 2024 Process Intelligence Solutions UG (haftungsbeschränkt)
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see this software project's root or
-visit <https://www.gnu.org/licenses/>.
-
-Website: https://processintelligence.solutions
-Contact: info@processintelligence.solutions
-'''
-import json, logging
+import json
+import logging
 import importlib.util
 
 from pm4py.util.points_subset import pick_chosen_points_list
@@ -53,7 +33,9 @@ def get_sorted_attributes_list(attributes):
     return listattr
 
 
-def get_attributes_threshold(alist, decreasing_factor, min_activity_count=1, max_activity_count=25):
+def get_attributes_threshold(
+    alist, decreasing_factor, min_activity_count=1, max_activity_count=25
+):
     """
     Get attributes cutting threshold
 
@@ -113,12 +95,20 @@ def get_kde_numeric_attribute(values, parameters=None):
         if parameters is None:
             parameters = {}
 
-        graph_points = exec_utils.get_param_value(Parameters.GRAPH_POINTS, parameters, 200)
+        graph_points = exec_utils.get_param_value(
+            Parameters.GRAPH_POINTS, parameters, 200
+        )
         values = sorted(values)
         density = gaussian_kde(values)
 
-        xs1 = list(np.linspace(min(values), max(values), int(graph_points / 2)))
-        xs2 = list(np.geomspace(max(min(values), 0.000001), max(values), int(graph_points / 2)))
+        xs1 = list(
+            np.linspace(min(values), max(values), int(graph_points / 2))
+        )
+        xs2 = list(
+            np.geomspace(
+                max(min(values), 0.000001), max(values), int(graph_points / 2)
+            )
+        )
         xs = sorted(xs1 + xs2)
 
         return [xs, list(density(xs))]
@@ -183,15 +173,20 @@ def get_kde_date_attribute(values, parameters=None):
         if parameters is None:
             parameters = {}
 
-        graph_points = exec_utils.get_param_value(Parameters.GRAPH_POINTS, parameters, 200)
-        points_to_sample = exec_utils.get_param_value(Parameters.POINT_TO_SAMPLE, parameters, 400)
+        graph_points = exec_utils.get_param_value(
+            Parameters.GRAPH_POINTS, parameters, 200
+        )
+        points_to_sample = exec_utils.get_param_value(
+            Parameters.POINT_TO_SAMPLE, parameters, 400
+        )
 
         red_values = pick_chosen_points_list(points_to_sample, values)
         int_values = sorted(
-            [x.replace(tzinfo=None).timestamp() for x in red_values])
+            [x.replace(tzinfo=None).timestamp() for x in red_values]
+        )
         density = gaussian_kde(int_values)
         xs = np.linspace(min(int_values), max(int_values), graph_points)
-        xs_transf = pd.to_datetime(xs * 10 ** 9, unit="ns")
+        xs_transf = pd.to_datetime(xs * 10**9, unit="ns")
 
         return [xs_transf, density(xs)]
     else:
