@@ -118,6 +118,9 @@ DEFAULT_XES_TIMESTAMP_PARSE_FORMAT = get_param_from_env(
     get_default_xes_timestamp_format(),
 )
 
+DEFAULT_START_SYMBOL_GRAPHS = get_param_from_env("PM4PY_DEFAULT_START_SYMBOL_GRAPHS", "<&#9679;>")
+DEFAULT_END_SYMBOL_GRAPHS = get_param_from_env("PM4PY_DEFAULT_END_SYMBOL_GRAPHS", "<&#9632;>")
+
 ENABLE_MULTIPROCESSING_DEFAULT = (
     True
     if get_param_from_env(
