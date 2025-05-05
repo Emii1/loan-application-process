@@ -24,6 +24,10 @@
 ### Removed
 
 ### Other
+* aaad23ac060ed92e79c822008264519fd3bceb24
+  * roadtraffic.parquet example
+
+---
 
 
 ## pm4py 2.7.17 (2025.04.11)
