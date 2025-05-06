@@ -252,6 +252,10 @@ from pm4py.analysis import (
     insert_case_service_waiting_time,
     get_enabled_transitions,
     simplicity_petri_net,
+    behavioral_similarity,
+    structural_similarity,
+    embeddings_similarity,
+    get_activity_labels
 )
 from pm4py.stats import (
     get_start_activities,
