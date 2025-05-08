@@ -37,13 +37,14 @@ from pm4py.objects.log.obj import EventLog
 import pandas as pd
 from pm4py.objects.petri_net.obj import PetriNet, Marking
 from pm4py.util import typing
-from collections import Counter
+from collections import deque
 from pm4py.objects.conversion.log import converter as log_converter
 
 
 class Parameters(Enum):
     CASE_ID_KEY = constants.PARAMETER_CONSTANT_CASEID_KEY
     ACTIVITY_KEY = constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    EXHAUSTIVE_INVISIBLE_EXPLORATION = "exhaustive_invisible_exploration"
     PARAMETER_VARIANT_DELIMITER = "variant_delimiter"
     VARIANTS = "variants"
     PLACES_SHORTEST_PATH_BY_HIDDEN = "places_shortest_path_by_hidden"
@@ -264,6 +265,7 @@ def enable_hidden_transitions(
     all_visited_markings,
     hidden_transitions_to_enable,
     t,
+    exhaustive_invisible_exploration
 ):
     """
     Actually enable hidden transitions on the Petri net
@@ -285,43 +287,68 @@ def enable_hidden_transitions(
     t
         Transition against we should check if they are enabled
     """
-    j_indexes = [0] * len(hidden_transitions_to_enable)
-    for z in range(10000000):
-        something_changed = False
-        for k in range(
-            j_indexes[z % len(hidden_transitions_to_enable)],
-            len(
-                hidden_transitions_to_enable[
+    if exhaustive_invisible_exploration:
+        queue = deque([(marking, activated_transitions, visited_transitions, all_visited_markings)])
+        seen_markings = set()
+
+        while queue:
+            curr_marking, curr_act_trans, curr_visit_trans, curr_vis_mark = queue.popleft()
+            if semantics.is_enabled(t, net, curr_marking):
+                return [curr_marking, curr_act_trans, curr_visit_trans, curr_vis_mark]
+
+            marking_hash = hash(curr_marking)
+            if marking_hash in seen_markings:
+                continue
+            seen_markings.add(marking_hash)
+
+            for group in hidden_transitions_to_enable:
+                for t3 in group:
+                    if t3 != t and t3 not in curr_visit_trans and semantics.is_enabled(t3, net, curr_marking):
+                        new_marking = semantics.execute(t3, net, curr_marking)
+                        new_act_trans = curr_act_trans + [t3]
+                        new_visit_trans = curr_visit_trans | {t3}
+                        new_vis_mark = curr_vis_mark + [new_marking]
+                        queue.append((new_marking, new_act_trans, new_visit_trans, new_vis_mark))
+
+        return [marking, activated_transitions, visited_transitions, all_visited_markings]
+    else:
+        j_indexes = [0] * len(hidden_transitions_to_enable)
+        for z in range(10000000):
+            something_changed = False
+            for k in range(
+                j_indexes[z % len(hidden_transitions_to_enable)],
+                len(
+                    hidden_transitions_to_enable[
+                        z % len(hidden_transitions_to_enable)
+                    ]
+                ),
+            ):
+                t3 = hidden_transitions_to_enable[
                     z % len(hidden_transitions_to_enable)
-                ]
-            ),
-        ):
-            t3 = hidden_transitions_to_enable[
-                z % len(hidden_transitions_to_enable)
-            ][j_indexes[z % len(hidden_transitions_to_enable)]]
-            if not t3 == t:
-                if semantics.is_enabled(t3, net, marking):
-                    if t3 not in visited_transitions:
-                        marking = semantics.execute(t3, net, marking)
-                        activated_transitions.append(t3)
-                        visited_transitions.add(t3)
-                        all_visited_markings.append(marking)
-                        something_changed = True
-            j_indexes[z % len(hidden_transitions_to_enable)] = (
-                j_indexes[z % len(hidden_transitions_to_enable)] + 1
-            )
+                ][j_indexes[z % len(hidden_transitions_to_enable)]]
+                if not t3 == t:
+                    if semantics.is_enabled(t3, net, marking):
+                        if t3 not in visited_transitions:
+                            marking = semantics.execute(t3, net, marking)
+                            activated_transitions.append(t3)
+                            visited_transitions.add(t3)
+                            all_visited_markings.append(marking)
+                            something_changed = True
+                j_indexes[z % len(hidden_transitions_to_enable)] = (
+                    j_indexes[z % len(hidden_transitions_to_enable)] + 1
+                )
+                if semantics.is_enabled(t, net, marking):
+                    break
             if semantics.is_enabled(t, net, marking):
                 break
-        if semantics.is_enabled(t, net, marking):
-            break
-        if not something_changed:
-            break
-    return [
-        marking,
-        activated_transitions,
-        visited_transitions,
-        all_visited_markings,
-    ]
+            if not something_changed:
+                break
+        return [
+            marking,
+            activated_transitions,
+            visited_transitions,
+            all_visited_markings,
+        ]
 
 
 def apply_hidden_trans(
@@ -333,6 +360,7 @@ def apply_hidden_trans(
     rec_depth,
     visit_trans,
     vis_mark,
+    exhaustive_invisible_exploration
 ):
     """
     Apply hidden transitions in order to enable a given transition
@@ -379,6 +407,7 @@ def apply_hidden_trans(
             vis_mark,
             hidden_transitions_to_enable,
             t,
+            exhaustive_invisible_exploration
         )
         if not semantics.is_enabled(t, net, marking):
             hidden_transitions_to_enable = get_hidden_transitions_to_enable(
@@ -400,6 +429,7 @@ def apply_hidden_trans(
                                         rec_depth + 1,
                                         visit_trans,
                                         vis_mark,
+                                        exhaustive_invisible_exploration
                                     )
                                 )
                             if semantics.is_enabled(t4, net, marking):
@@ -418,6 +448,7 @@ def apply_hidden_trans(
                     rec_depth + 1,
                     visit_trans,
                     vis_mark,
+                    exhaustive_invisible_exploration
                 )
 
     return [net, marking, act_tr, vis_mark]
@@ -468,6 +499,7 @@ def apply_trace(
     s_components=None,
     trace_occurrences=1,
     consider_activities_not_in_model_in_fitness=False,
+    exhaustive_invisible_exploration=False
 ):
     """
     Apply the token replaying algorithm to a trace
@@ -611,6 +643,7 @@ def apply_trace(
                                 0,
                                 copy(visited_transitions),
                                 copy(vis_mark),
+                                exhaustive_invisible_exploration
                             )
                         )
                         for jj5 in range(len(act_trans), len(new_act_trans)):
@@ -1032,6 +1065,7 @@ class ApplyTraceTokenReplay:
         s_components=None,
         trace_occurrences=1,
         consider_activities_not_in_model_in_fitness=False,
+        exhaustive_invisible_exploration=False
     ):
         """
         Constructor
@@ -1127,6 +1161,7 @@ class ApplyTraceTokenReplay:
         self.produced = None
         self.s_components = s_components
         self.trace_occurrences = trace_occurrences
+        self.exhaustive_invisible_exploration = exhaustive_invisible_exploration
 
     def run(self):
         """
@@ -1167,6 +1202,7 @@ class ApplyTraceTokenReplay:
                          s_components=self.s_components,
                          trace_occurrences=self.trace_occurrences,
                          consider_activities_not_in_model_in_fitness=self.consider_activities_not_in_model_in_fitness,
+                         exhaustive_invisible_exploration=self.exhaustive_invisible_exploration
                          )
         self.thread_is_alive = False
 
@@ -1273,6 +1309,7 @@ def apply_log(
     show_progress_bar=True,
     consider_activities_not_in_model_in_fitness=False,
     case_id_key=constants.CASE_CONCEPT_NAME,
+    exhaustive_invisible_exploration = False
 ):
     """
     Apply token-based replay to a log
@@ -1442,6 +1479,7 @@ def apply_log(
                     s_components=s_components,
                     trace_occurrences=1,
                     consider_activities_not_in_model_in_fitness=consider_activities_not_in_model_in_fitness,
+                    exhaustive_invisible_exploration=exhaustive_invisible_exploration
                 )
                 t.run()
                 threads_results[case_position] = transcribe_result(
@@ -1480,6 +1518,7 @@ def apply_log(
                 s_components=s_components,
                 trace_occurrences=len(vc[i][1]),
                 consider_activities_not_in_model_in_fitness=consider_activities_not_in_model_in_fitness,
+                exhaustive_invisible_exploration=exhaustive_invisible_exploration
             )
             t.run()
 
@@ -1590,6 +1629,8 @@ def apply(
         Parameters.CASE_ID_KEY, parameters, constants.CASE_CONCEPT_NAME
     )
 
+    exhaustive_invisible_exploration = exec_utils.get_param_value(Parameters.EXHAUSTIVE_INVISIBLE_EXPLORATION, parameters, False)
+
     if type(log) is not pd.DataFrame:
         log = log_converter.apply(
             log,
@@ -1617,6 +1658,7 @@ def apply(
         show_progress_bar=show_progress_bar,
         consider_activities_not_in_model_in_fitness=consider_activities_not_in_model_in_fitness,
         case_id_key=case_id_key,
+        exhaustive_invisible_exploration=exhaustive_invisible_exploration
     )
 
 
