@@ -26,20 +26,14 @@ class LoopCut(Cut[T], ABC, Generic[T]):
 
     @classmethod
     def holds(
-        cls, obj: T, parameters: Optional[Dict[str, Any]] = None
+            cls, obj: T, parameters: Optional[Dict[str, Any]] = None
     ) -> Optional[List[Collection[Any]]]:
         """
-        This method finds a loop cut in the dfg.
-        Implementation follows function LoopCut on page 190 of
-        "Robust Process Mining with Guarantees" by Sander J.J. Leemans (ISBN: 978-90-386-4257-4)
+        Finds a loop cut in the DFG and returns exactly two groups:
+        - groups[0]: the 'do' group (start ∪ end activities plus merged components as per checks)
+        - groups[1]: a single 'redo' group obtained by merging all remaining non-empty groups
 
-        Basic Steps:
-        1. merge all start and end activities in one group ('do' group)
-        2. remove start/end activities from the dfg
-        3. detect connected components in (undirected representative) of the reduced graph
-        4. check if each component meets the start/end criteria of the loop cut definition (merge with the 'do' group if not)
-        5. return the cut if at least two groups remain
-
+        If no non-empty redo part remains, returns None.
         """
         dfg = obj.dfg
         start_activities = set(dfg.start_activities.keys())
@@ -47,28 +41,30 @@ class LoopCut(Cut[T], ABC, Generic[T]):
         if len(dfg.graph) == 0:
             return None
 
+        # Initial groups: do-part is start ∪ end; other parts are connected components after removing boundaries
         groups = [start_activities.union(end_activities)]
-        for c in cls._compute_connected_components(
-            dfg, start_activities, end_activities
-        ):
+        for c in cls._compute_connected_components(dfg, start_activities, end_activities):
             groups.append(set(c.nodes))
 
-        groups = cls._exclude_sets_non_reachable_from_start(
-            dfg, start_activities, end_activities, groups
-        )
-        groups = cls._exclude_sets_no_reachable_from_end(
-            dfg, start_activities, end_activities, groups
-        )
-        groups = cls._check_start_completeness(
-            dfg, start_activities, end_activities, groups
-        )
-        groups = cls._check_end_completeness(
-            dfg, start_activities, end_activities, groups
-        )
+        # Apply the original reachability/completeness checks
+        groups = cls._exclude_sets_non_reachable_from_start(dfg, start_activities, end_activities, groups)
+        groups = cls._exclude_sets_no_reachable_from_end(dfg, start_activities, end_activities, groups)
+        groups = cls._check_start_completeness(dfg, start_activities, end_activities, groups)
+        groups = cls._check_end_completeness(dfg, start_activities, end_activities, groups)
 
-        groups = list(filter(lambda g: len(g) > 0, groups))
+        # Keep only non-empty groups
+        groups = [set(g) for g in groups if len(g) > 0]
 
-        return groups if len(groups) > 1 else None
+        # Require at least a do group and something to redo
+        if len(groups) <= 1:
+            return None
+
+        # Merge all remaining non-empty groups (from the second to the last) into a single redo group
+        redo_merged = set()
+        for g in groups[1:]:
+            redo_merged.update(g)
+
+        return [set(groups[0]), redo_merged]
 
     @classmethod
     def _check_start_completeness(
