@@ -758,7 +758,7 @@ def cluster_equivalent_ocel(
     for index, oc in enumerate(lst_ocels):
         oc_ren = rename_objs_ot_tim_lex.apply(oc)
         descr = ocel_description.apply(
-            oc_ren, parameters={"include_timestamps": False}
+            oc_ren, variant=ocel_description.Variants.VARIANT2, parameters={"include_timestamps": False}
         )
         if descr not in ret:
             ret[descr] = []
