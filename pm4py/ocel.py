@@ -10,6 +10,7 @@ from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants, pandas_utils
 import sys
 import random
+import time
 
 
 def ocel_get_object_types(ocel: OCEL) -> List[str]:
@@ -749,11 +750,15 @@ def cluster_equivalent_ocel(
         algorithm as ocel_description,
     )
 
+    #aa = time.time_ns()
     lst_ocels = split_ocel_algorithm.apply(
         ocel,
         variant=split_ocel_algorithm.Variants.ANCESTORS_DESCENDANTS,
         parameters={"object_type": object_type, "max_objs": max_objs},
     )
+    #bb = time.time_ns()
+    #print((bb-aa)/10**9)
+
     ret = {}
     for index, oc in enumerate(lst_ocels):
         oc_ren = rename_objs_ot_tim_lex.apply(oc)
