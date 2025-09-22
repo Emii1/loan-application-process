@@ -5,6 +5,7 @@ The ``pm4py.ocel`` module contains the object-centric process mining features of
 from typing import List, Dict, Collection, Any, Optional, Set, Tuple
 
 import pandas as pd
+import numpy as np
 
 from pm4py.objects.ocel.obj import OCEL
 from pm4py.util import constants, pandas_utils
@@ -716,6 +717,38 @@ def ocel_add_index_based_timedelta(ocel: OCEL) -> OCEL:
     del ocel.events["@@timedelta"]
     del ocel.relations["@@timedelta"]
     return ocel
+
+
+def __clusters_to_vectors(clusters: Dict[str, Collection[OCEL]]):
+    keys = set()
+    clusters_keys = list(clusters.keys())
+    objects = []
+    for c in clusters_keys:
+        for i in range(len(c[0])):
+            if i < len(c[0])-1:
+                keys.add((c[0][i][0], c[0][i + 1][0], "DF"))
+                pass
+            for j in range(1, len(c[0][i])):
+                keys.add((c[0][i][0], c[0][i][j], "E2O"))
+                pass
+        V = clusters[c]
+        objects.append([])
+        for v in V:
+            objects[-1].append(v.parameters["@@central_object"])
+    keys = list(keys)
+    vectors = [[0] * len(keys) for i in range(len(clusters))]
+    for z, c in enumerate(clusters_keys):
+        for i in range(len(c[0])):
+            if i < len(c[0])-1:
+                idx = keys.index((c[0][i][0], c[0][i + 1][0], "DF"))
+                vectors[z][idx] = 1
+                pass
+            for j in range(1, len(c[0][i])):
+                idx = keys.index((c[0][i][0], c[0][i][j], "E2O"))
+                vectors[z][idx] = 1
+                pass
+
+    return keys, vectors, objects
 
 
 def cluster_equivalent_ocel(
