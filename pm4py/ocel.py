@@ -719,7 +719,15 @@ def ocel_add_index_based_timedelta(ocel: OCEL) -> OCEL:
     return ocel
 
 
-def __clusters_to_vectors(clusters: Dict[str, Collection[OCEL]]):
+def __vectors_to_clusters(keys, vectors, objects):
+    from sklearn.metrics import pairwise_distances
+    D = pairwise_distances(vectors, metric="hamming")
+    A = 1.0 - D
+    np.fill_diagonal(A, 1.0)
+    return D, A
+
+
+def __eqocel_to_vectors(clusters: Dict[str, Collection[OCEL]]):
     keys = set()
     clusters_keys = list(clusters.keys())
     objects = []
