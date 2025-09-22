@@ -727,36 +727,37 @@ def __vectors_to_clusters(keys, vectors, objects):
     return D, A
 
 
-def __eqocel_to_vectors(clusters: Dict[str, Collection[OCEL]]):
-    keys = set()
+def __eqocel_to_keyset(clusters: Dict[str, Collection[OCEL]]):
     clusters_keys = list(clusters.keys())
+    keyset = []
     objects = []
     for c in clusters_keys:
+        keyset.append(set())
         for i in range(len(c[0])):
             if i < len(c[0])-1:
-                keys.add((c[0][i][0], c[0][i + 1][0], "DF"))
+                keyset[-1].add((c[0][i][0], c[0][i + 1][0], "DF"))
                 pass
             for j in range(1, len(c[0][i])):
-                keys.add((c[0][i][0], c[0][i][j], "E2O"))
+                keyset[-1].add((c[0][i][0], c[0][i][j], "E2O"))
                 pass
         V = clusters[c]
         objects.append([])
         for v in V:
             objects[-1].append(v.parameters["@@central_object"])
-    keys = list(keys)
-    vectors = [[0] * len(keys) for i in range(len(clusters))]
-    for z, c in enumerate(clusters_keys):
-        for i in range(len(c[0])):
-            if i < len(c[0])-1:
-                idx = keys.index((c[0][i][0], c[0][i + 1][0], "DF"))
-                vectors[z][idx] = 1
-                pass
-            for j in range(1, len(c[0][i])):
-                idx = keys.index((c[0][i][0], c[0][i][j], "E2O"))
-                vectors[z][idx] = 1
-                pass
+    return keyset, objects
 
-    return keys, vectors, objects
+
+def __eqocel_to_vectors(clusters: Dict[str, Collection[OCEL]]):
+    keyset, objects = __eqocel_to_keyset(clusters)
+    print(keyset)
+    keys = list(set(y for x in keyset for y in x))
+    keys = {x: i for i, x in enumerate(keys)}
+    vectors = [[0] * len(keys) for i in range(len(clusters))]
+    for z, ks in enumerate(keyset):
+        for k in ks:
+            vectors[z][keys[k]] = 1
+
+    return keys, keyset, vectors, objects
 
 
 def cluster_equivalent_ocel(
