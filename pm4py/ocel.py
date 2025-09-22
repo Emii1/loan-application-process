@@ -719,7 +719,7 @@ def ocel_add_index_based_timedelta(ocel: OCEL) -> OCEL:
 
 
 def cluster_equivalent_ocel(
-    ocel: OCEL, object_type: str, max_objs: int = sys.maxsize
+    ocel: OCEL, object_type: str, max_objs: int = sys.maxsize, exclude_object_types_from_renaming : Optional[Set[str]] = None
 ) -> Dict[str, Collection[OCEL]]:
     """
     Clusters the object-centric event log based on the 'executions' of a single object type.
@@ -761,7 +761,7 @@ def cluster_equivalent_ocel(
 
     ret = {}
     for index, oc in enumerate(lst_ocels):
-        oc_ren = rename_objs_ot_tim_lex.apply(oc)
+        oc_ren = rename_objs_ot_tim_lex.apply(oc, parameters={"exclude_object_types": exclude_object_types_from_renaming})
         descr = ocel_description.apply(
             oc_ren, variant=ocel_description.Variants.VARIANT2, parameters={"include_timestamps": False}
         )
