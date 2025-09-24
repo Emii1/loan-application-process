@@ -79,18 +79,16 @@ def get_kde_numeric_attribute(values, parameters=None):
         Possible parameters of the algorithm, including:
             graph_points -> number of points to include in the graph
 
-
     Returns
     --------------
     x
-        X-axis values to represent
+        X-axis values to represent (including the exact min and max)
     y
         Y-axis values to represent
     """
     if importlib.util.find_spec("scipy") and importlib.util.find_spec("numpy"):
         from scipy.stats import gaussian_kde
         import numpy as np
-        import pandas as pd
 
         if parameters is None:
             parameters = {}
@@ -98,20 +96,46 @@ def get_kde_numeric_attribute(values, parameters=None):
         graph_points = exec_utils.get_param_value(
             Parameters.GRAPH_POINTS, parameters, 200
         )
-        values = sorted(values)
+        values = np.sort(values)
+        
+        # Check if we have enough unique values for KDE
+        unique_values = np.unique(values)
+        if len(unique_values) < 2:
+            # Handle edge case: not enough unique values for KDE
+            if len(unique_values) == 0:
+                # No values at all
+                return [], []
+            else:
+                # Single unique value - create a simple representation
+                single_val = float(unique_values[0])
+                # Create a small range around the single value for visualization
+                eps = max(abs(single_val) * 0.01, 1e-6) if single_val != 0 else 1.0
+                xs = np.linspace(single_val - eps, single_val + eps, graph_points)
+                # Create a spike at the single value
+                ys = np.zeros(graph_points)
+                mid_idx = graph_points // 2
+                ys[mid_idx] = 1.0
+                return xs.tolist(), ys.tolist()
+        
         density = gaussian_kde(values)
 
-        xs1 = list(
-            np.linspace(min(values), max(values), int(graph_points / 2))
-        )
-        xs2 = list(
-            np.geomspace(
-                max(min(values), 0.000001), max(values), int(graph_points / 2)
-            )
-        )
-        xs = sorted(xs1 + xs2)
+        # ensure we have at least two points for each spacing
+        half = max(int(graph_points // 2), 2)
 
-        return [xs, list(density(xs))]
+        min_val, max_val = values[0], values[-1]
+        eps = 1e-6
+
+        # linear space including both endpoints
+        xs1 = np.linspace(min_val, max_val, half, endpoint=True)
+        # geometric space including both endpoints (avoid zero)
+        xs2 = np.geomspace(max(min_val, eps), max_val, half, endpoint=True)
+
+        # combine, add exact endpoints, dedupe & sort
+        xs = np.unique(
+            np.concatenate([xs1, xs2, [min_val, max_val]])
+        )
+
+        return xs.tolist(), density(xs).tolist()
     else:
         msg = "scipy is not available. graphs cannot be built!"
         logging.error(msg)
@@ -180,10 +204,31 @@ def get_kde_date_attribute(values, parameters=None):
             Parameters.POINT_TO_SAMPLE, parameters, 400
         )
 
-        red_values = pick_chosen_points_list(points_to_sample, values)
+        red_values = pick_chosen_points_list(points_to_sample, values, include_extremes=True)
         int_values = sorted(
             [x.replace(tzinfo=None).timestamp() for x in red_values]
         )
+        
+        # Check if we have enough unique values for KDE
+        unique_int_values = np.unique(int_values)
+        if len(unique_int_values) < 2:
+            # Handle edge case: not enough unique values for KDE
+            if len(unique_int_values) == 0:
+                # No values at all
+                return [[], []]
+            else:
+                # Single unique value - create a simple representation
+                single_val = float(unique_int_values[0])
+                # Create a small time range around the single value (1 hour range)
+                time_eps = 3600  # 1 hour in seconds
+                xs = np.linspace(single_val - time_eps, single_val + time_eps, graph_points)
+                xs_transf = pd.to_datetime(xs * 10**9, unit="ns")
+                # Create a spike at the single value
+                ys = np.zeros(graph_points)
+                mid_idx = graph_points // 2
+                ys[mid_idx] = 1.0
+                return [xs_transf, ys.tolist()]
+        
         density = gaussian_kde(int_values)
         xs = np.linspace(min(int_values), max(int_values), graph_points)
         xs_transf = pd.to_datetime(xs * 10**9, unit="ns")

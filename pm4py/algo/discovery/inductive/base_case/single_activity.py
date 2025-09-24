@@ -3,7 +3,7 @@ from pm4py.algo.discovery.inductive.dtypes.im_ds import (
     IMDataStructureUVCL,
     IMDataStructureDFG,
 )
-from pm4py.objects.process_tree.obj import ProcessTree
+from pm4py.objects.process_tree.obj import ProcessTree, Operator
 from typing import Optional, Dict, Any
 
 
@@ -55,4 +55,5 @@ class SingleActivityBaseCaseDFG(BaseCase[IMDataStructureDFG]):
         obj=IMDataStructureDFG,
         parameters: Optional[Dict[str, Any]] = None,
     ) -> ProcessTree:
-        return ProcessTree(label=list(obj.dfg.start_activities)[0])
+        leaf = ProcessTree(label=list(obj.dfg.start_activities)[0])
+        return leaf
