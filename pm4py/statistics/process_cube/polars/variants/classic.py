@@ -21,8 +21,6 @@ Contact: info@processintelligence.solutions
 '''
 """Polars-based classic process cube variant."""
 
-from __future__ import annotations
-
 from bisect import bisect_right
 import math
 from enum import Enum
