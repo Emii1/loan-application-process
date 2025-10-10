@@ -189,7 +189,6 @@ def select_string_column(
             + str(c)
             .encode("ascii", errors="ignore")
             .decode("ascii")
-            .replace(" ", "")
             for c in crosstab.columns
         ]
         # Merge once with all columns
@@ -228,7 +227,6 @@ def select_string_column(
                 + str(c)
                 .encode("ascii", errors="ignore")
                 .decode("ascii")
-                .replace(" ", "")
                 for c in pivot.columns
             ]
 

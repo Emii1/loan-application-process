@@ -33,7 +33,6 @@ def _sanitize_feature_name(prefix: str, value: Any) -> str:
         str(value)
         .encode("ascii", errors="ignore")
         .decode("ascii")
-        .replace(" ", "")
     )
     if not sanitized:
         sanitized = "value"
