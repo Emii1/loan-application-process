@@ -279,32 +279,18 @@ def get_partial_order_dataframe(
 
     df = _ensure_row_index(df, event_index)
 
-    shifted = df.with_columns(
-        [
-            pl.col(activity_key)
-            .shift(-1)
-            .over(case_id_glue)
-            .alias(activity_key + "_2"),
-            pl.col(start_timestamp_key)
-            .shift(-1)
-            .over(case_id_glue)
-            .alias(start_timestamp_key + "_2"),
-            pl.col(timestamp_key)
-            .shift(-1)
-            .over(case_id_glue)
-            .alias(timestamp_key + "_2"),
-        ]
+    joined = df.join(df, on=case_id_glue, how="inner", suffix="_2")
+    joined = joined.filter(
+        pl.col(event_index) < pl.col(event_index + "_2")
     )
-
-    shifted = shifted.filter(pl.col(activity_key + "_2").is_not_null())
-    shifted = shifted.filter(
+    joined = joined.filter(
         pl.col(timestamp_key) <= pl.col(start_timestamp_key + "_2")
     )
 
     if business_hours:
         if business_hours_slot is None:
             business_hours_slot = constants.DEFAULT_BUSINESS_HOUR_SLOTS
-        shifted = shifted.with_columns(
+        joined = joined.with_columns(
             pl.struct(
                 [pl.col(timestamp_key), pl.col(start_timestamp_key + "_2")]
             )
@@ -320,7 +306,7 @@ def get_partial_order_dataframe(
             .alias(constants.DEFAULT_FLOW_TIME)
         )
     else:
-        shifted = shifted.with_columns(
+        joined = joined.with_columns(
             (
                 pl.col(start_timestamp_key + "_2") - pl.col(timestamp_key)
             )
@@ -329,9 +315,12 @@ def get_partial_order_dataframe(
         )
 
     if keep_first_following:
-        shifted = shifted.unique(subset=[event_index], keep="first")
+        joined = joined.sort([case_id_glue, event_index, event_index + "_2"])
+        joined = joined.unique(
+            subset=[event_index], keep="first", maintain_order=True
+        )
 
-    return shifted
+    return joined
 
 
 def get_concurrent_events_dataframe(
