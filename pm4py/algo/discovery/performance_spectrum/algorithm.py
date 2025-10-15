@@ -1,24 +1,5 @@
-'''
-    PM4Py â€“ A Process Mining Library for Python
-Copyright (C) 2024 Process Intelligence Solutions UG (haftungsbeschrÃ¤nkt)
+import importlib.util
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see this software project's root or
-visit <https://www.gnu.org/licenses/>.
-
-Website: https://processintelligence.solutions
-Contact: info@processintelligence.solutions
-'''
 from pm4py.algo.discovery.performance_spectrum.variants import (
     dataframe,
     log,
@@ -51,6 +32,22 @@ class Variants(Enum):
     LOG = log
     DATAFRAME_DISCONNECTED = dataframe_disconnected
     LOG_DISCONNECTED = log_disconnected
+
+
+if importlib.util.find_spec("polars"):
+    from pm4py.algo.discovery.performance_spectrum.variants import (
+        lazyframe,
+        lazyframe_disconnected,
+    )
+
+    Variants.LAZYFRAME = lazyframe
+    Variants.LAZYFRAME_DISCONNECTED = lazyframe_disconnected
+
+
+def is_polars_lazyframe(df: Any) -> bool:
+    """Return True if the provided dataframe is a Polars LazyFrame."""
+    df_type = str(type(df)).lower()
+    return "polars" in df_type and "lazyframe" in df_type
 
 
 def apply(
@@ -99,7 +96,10 @@ def apply(
 
     if pandas_utils.check_is_pandas_dataframe(log):
         if variant is None:
-            variant = Variants.DATAFRAME
+            if is_polars_lazyframe(log):
+                variant = Variants.LAZYFRAME
+            else:
+                variant = Variants.DATAFRAME
 
         points = exec_utils.get_variant(variant).apply(
             log, list_activities, sample_size, parameters
