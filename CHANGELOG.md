@@ -1,6 +1,34 @@
 # Changelog of pm4py
 
 
+## pm4py 2.7.18.1 (2025.05.08)
+
+### Added
+* c02d02d7d146f8760c82ae9cf096ca7832008ab2
+  * example for label replacement in models
+* 0255f91f83ec4f6ff1fcc8a91082746951ac1710
+  * example computation M2M similarities
+
+### Changed
+* 5a661bb3a7498d3cfc5efaac2b4eee8ff1a27864
+  da9aa0cf8e40607570307425567939ab00f08411
+  d410501438c42ddfe945168e628fd3c533b64bc0
+  * Updated examples directory
+* 03964b640a73daaabf79a988d35f46a8f1b6de51
+  * parameter for extensive visit of the state space
+    to traverse invisibles.
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Other
+
+
+---
+
 ## pm4py 2.7.18 (2025.05.05)
 
 ### Added
