@@ -11,13 +11,15 @@ from pm4py.util.business_hours import soj_time_business_hours_diff
 def _ensure_start_timestamp(
     lf: pl.LazyFrame, start_timestamp_key: str, timestamp_key: str
 ) -> pl.LazyFrame:
-    if start_timestamp_key not in lf.schema:
+    schema_names = lf.collect_schema().names()
+    if start_timestamp_key not in schema_names:
         lf = lf.with_columns(pl.col(timestamp_key).alias(start_timestamp_key))
     return lf
 
 
 def _ensure_row_index(lf: pl.LazyFrame, column_name: str) -> pl.LazyFrame:
-    if column_name in lf.schema:
+    schema_names = lf.collect_schema().names()
+    if column_name in schema_names:
         return lf
     return lf.with_row_count(column_name)
 
@@ -49,12 +51,12 @@ def get_dfg_graph(
     if start_timestamp_key is None:
         start_timestamp_key = xes_constants.DEFAULT_START_TIMESTAMP_KEY
 
-    schema = dict(df.schema)
+    schema_names = df.collect_schema().names()
     st_eq_ct = start_timestamp_key == timestamp_key
 
-    if start_timestamp_key not in schema:
+    if start_timestamp_key not in schema_names:
         df = df.with_columns(pl.col(timestamp_key).alias(start_timestamp_key))
-        schema = dict(df.schema)
+        schema_names = df.collect_schema().names()
         st_eq_ct = True
 
     needed_columns = {case_id_glue, activity_key, target_activity_key}
@@ -64,19 +66,20 @@ def get_dfg_graph(
         needed_columns.add(cost_attribute)
 
     if reduce_columns:
-        available = [col for col in schema if col in needed_columns]
+        available = [col for col in schema_names if col in needed_columns]
         df = df.select([pl.col(col) for col in available])
-        schema = dict(df.schema)
+        schema_names = df.collect_schema().names()
 
     if measure == "cost" and cost_attribute:
         df = df.with_columns(pl.col(cost_attribute).fill_null(0))
+        schema_names = df.collect_schema().names()
 
     if sort_caseid_required:
         if sort_timestamp_along_case_id:
             sort_cols = [case_id_glue]
-            if start_timestamp_key in schema:
+            if start_timestamp_key in schema_names:
                 sort_cols.append(start_timestamp_key)
-            if timestamp_key in schema:
+            if timestamp_key in schema_names:
                 sort_cols.append(timestamp_key)
             df = df.sort(sort_cols)
         else:
@@ -94,14 +97,14 @@ def get_dfg_graph(
         .alias(target_activity_key + suffix),
     ]
 
-    if start_timestamp_key in schema or start_timestamp_key == timestamp_key:
+    if start_timestamp_key in schema_names or start_timestamp_key == timestamp_key:
         shift_exprs.append(
             pl.col(start_timestamp_key)
             .shift(-window)
             .over(case_id_glue)
             .alias(start_timestamp_key + suffix)
         )
-    if timestamp_key in schema:
+    if timestamp_key in schema_names:
         shift_exprs.append(
             pl.col(timestamp_key)
             .shift(-window)
@@ -261,15 +264,16 @@ def get_partial_order_dataframe(
     df = _ensure_start_timestamp(df, start_timestamp_key, timestamp_key)
 
     if reduce_dataframe:
+        schema_names = df.collect_schema().names()
         columns = {
             case_id_glue,
             activity_key,
             start_timestamp_key,
             timestamp_key,
         }
-        if event_index in df.schema:
+        if event_index in schema_names:
             columns.add(event_index)
-        df = df.select([pl.col(col) for col in df.schema if col in columns])
+        df = df.select([pl.col(col) for col in schema_names if col in columns])
 
     if sort_caseid_required:
         if sort_timestamp_along_case_id:
