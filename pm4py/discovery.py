@@ -867,9 +867,13 @@ def discover_eventually_follows_graph(
             timestamp_key=timestamp_key,
             case_id_key=case_id_key,
         )
-        from pm4py.statistics.eventually_follows.pandas import get
 
-        return get.apply(log, parameters=properties)
+        if is_polars_lazyframe(log):
+            from pm4py.statistics.eventually_follows.polars import get
+            return get.apply(log, parameters=properties)
+        else:
+            from pm4py.statistics.eventually_follows.pandas import get
+            return get.apply(log, parameters=properties)
     else:
         from pm4py.statistics.eventually_follows.log import get
 
