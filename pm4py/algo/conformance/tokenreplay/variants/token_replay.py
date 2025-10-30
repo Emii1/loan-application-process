@@ -1420,10 +1420,13 @@ def apply_log(
 
     case_runs = {}
 
-    execute_case = lambda considered_case, trace_occurrences, positions: (
+    execute_case = lambda considered_case, trace_occurrences, positions, update_progress=True: (
         (lambda runner: (
             runner.run(),
             [case_runs.__setitem__(pos, runner) for pos in positions],
+            progress.update()
+            if progress is not None and update_progress
+            else None,
             runner,
         )[-1])(
             ApplyTraceTokenReplay(
@@ -1454,16 +1457,11 @@ def apply_log(
             )
         )
     )
-    transcribe_case = lambda case_position, runner, update_progress: (
-        threads_results.__setitem__(
-            case_position,
-            transcribe_result(
-                runner, return_object_names=return_object_names
-            ),
+    transcribe_case = lambda case_position, runner: threads_results.__setitem__(
+        case_position,
+        transcribe_result(
+            runner, return_object_names=return_object_names
         ),
-        progress.update()
-        if progress is not None and update_progress
-        else None,
     )
     tm = thread_utils.Pm4pyThreadManager()
 
@@ -1495,14 +1493,12 @@ def apply_log(
             log
         ):
             for case_position in all_cases:
-                transcribe_case(case_position, case_runs[case_position], True)
+                transcribe_case(case_position, case_runs[case_position])
         else:
             for case_position in all_cases:
                 transcribe_case(
-                    case_position, case_runs[case_position], False
+                    case_position, case_runs[case_position]
                 )
-            if progress is not None:
-                progress.update()
 
     for i in range(len(traces)):
         aligned_traces.append(threads_results[i])
