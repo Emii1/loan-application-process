@@ -1418,8 +1418,14 @@ def apply_log(
                 desc="replaying log with TBR, completed traces :: ",
             )
 
-    execute_case = lambda considered_case, trace_occurrences: (
-        (lambda runner: (runner.run(), runner)[1])(
+    case_runs = {}
+
+    execute_case = lambda considered_case, trace_occurrences, positions: (
+        (lambda runner: (
+            runner.run(),
+            [case_runs.__setitem__(pos, runner) for pos in positions],
+            runner,
+        )[-1])(
             ApplyTraceTokenReplay(
                 considered_case,
                 net,
@@ -1459,8 +1465,7 @@ def apply_log(
         if progress is not None and update_progress
         else None,
     )
-
-    case_runs = {}
+    tm = thread_utils.Pm4pyThreadManager()
 
     for i in range(len(vc)):
         variant = vc[i][0]
@@ -1471,7 +1476,7 @@ def apply_log(
         ):
             for case_position in all_cases:
                 considered_case = log[case_position]
-                case_runs[case_position] = execute_case(considered_case, 1)
+                tm.submit(execute_case, considered_case, 1, [case_position])
         else:
             considered_case = variants_util.variant_to_trace(
                 variant,
@@ -1479,9 +1484,9 @@ def apply_log(
                     constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key
                 },
             )
-            runner = execute_case(considered_case, len(all_cases))
-            for case_position in all_cases:
-                case_runs[case_position] = runner
+            tm.submit(execute_case, considered_case, len(all_cases), all_cases)
+
+    tm.join()
 
     for i in range(len(vc)):
         all_cases = vc[i][1]
