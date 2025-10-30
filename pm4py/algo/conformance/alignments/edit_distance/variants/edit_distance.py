@@ -8,6 +8,7 @@ from pm4py.objects.petri_net.utils import align_utils
 from pm4py.util import exec_utils
 from pm4py.util import string_distance
 from pm4py.util import typing
+from pm4py.util import thread_utils
 from pm4py.util import constants, xes_constants
 import pandas as pd
 from pm4py.objects.conversion.log import converter as log_converter
@@ -87,17 +88,13 @@ def apply(
 
     best_worst_cost = min(len(x) for x in list_encodings)
 
+    thm = thread_utils.Pm4pyThreadManager()
+    f = lambda x, y : (y.append(align_trace(x, list_encodings, set_encodings, mapping, cache_align=cache_align, parameters=parameters)))
+
     for trace in log1:
-        # gets the alignment
-        align_result = align_trace(
-            trace,
-            list_encodings,
-            set_encodings,
-            mapping,
-            cache_align=cache_align,
-            parameters=parameters,
-        )
-        aligned_traces.append(align_result)
+        thm.submit(f, trace, aligned_traces)
+
+    thm.join()
 
     # assign fitness to traces
     for index, align in enumerate(aligned_traces):
