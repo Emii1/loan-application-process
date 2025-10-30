@@ -8,7 +8,7 @@ from pm4py.objects.petri_net.utils.align_utils import (
     get_visible_transitions_eventually_enabled_by_marking,
 )
 from pm4py.utils import is_polars_lazyframe
-from pm4py.util import exec_utils
+from pm4py.util import exec_utils, pandas_utils
 from enum import Enum
 from pm4py.util import constants
 from typing import Optional, Dict, Any, Union
@@ -109,7 +109,7 @@ def apply(
         token_replay.Parameters.ACTIVITY_KEY: activity_key,
     }
 
-    if type(log) is not pd.DataFrame:
+    if not pandas_utils.check_is_pandas_dataframe(log):
         log = log_converter.apply(
             log,
             variant=log_converter.Variants.TO_EVENT_LOG,

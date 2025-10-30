@@ -1375,14 +1375,8 @@ def apply_log(
         trans_map[t.label] = t
 
     if pandas_utils.check_is_pandas_dataframe(log):
-        traces = [
-            (tuple(x), y)
-            for y, x in log.groupby(case_id_key)[activity_key]
-            .agg(list)
-            .to_dict()
-            .items()
-        ]
-        traces = [(traces[i][0], i) for i in range(len(traces))]
+        traces = pandas_utils.get_traces(log, case_id_key, activity_key)
+        traces = [(x, i) for i, x in enumerate(traces)]
     else:
         traces = [
             (tuple(x[activity_key] for x in log[i]), i)
@@ -1428,13 +1422,9 @@ def apply_log(
         variant = vc[i][0]
         all_cases = vc[i][1]
 
-        if disable_variants and not pandas_utils.check_is_pandas_dataframe(
-            log
-        ):
-            for j in range(len(all_cases)):
-                case_position = all_cases[j]
-                considered_case = log[case_position]
-                t = ApplyTraceTokenReplay(
+        execute_case = lambda considered_case, trace_occurrences: (
+            (lambda runner: (runner.run(), runner)[1])(
+                ApplyTraceTokenReplay(
                     considered_case,
                     net,
                     initial_marking,
@@ -1456,13 +1446,24 @@ def apply_log(
                     thread_maximum_ex_time=thread_maximum_ex_time,
                     cleaning_token_flood=cleaning_token_flood,
                     s_components=s_components,
-                    trace_occurrences=1,
+                    trace_occurrences=trace_occurrences,
                     consider_activities_not_in_model_in_fitness=consider_activities_not_in_model_in_fitness,
-                    exhaustive_invisible_exploration=exhaustive_invisible_exploration
+                    exhaustive_invisible_exploration=exhaustive_invisible_exploration,
                 )
-                t.run()
+            )
+        )
+
+        if disable_variants and not pandas_utils.check_is_pandas_dataframe(
+            log
+        ):
+            case_runs = {case_position: None for case_position in all_cases}
+            for case_position in case_runs:
+                considered_case = log[case_position]
+                case_runs[case_position] = execute_case(considered_case, 1)
+            for case_position in all_cases:
                 threads_results[case_position] = transcribe_result(
-                    t, return_object_names=return_object_names
+                    case_runs[case_position],
+                    return_object_names=return_object_names,
                 )
                 if progress is not None:
                     progress.update()
@@ -1473,41 +1474,16 @@ def apply_log(
                     constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key
                 },
             )
-            t = ApplyTraceTokenReplay(
-                considered_case,
-                net,
-                initial_marking,
-                final_marking,
-                trans_map,
-                enable_pltr_fitness,
-                place_fitness_per_trace,
-                transition_fitness_per_trace,
-                notexisting_activities_in_model,
-                places_shortest_path_by_hidden,
-                consider_remaining_in_fitness,
-                activity_key=activity_key,
-                reach_mark_through_hidden=reach_mark_through_hidden,
-                stop_immediately_when_unfit=stop_immediately_unfit,
-                walk_through_hidden_trans=walk_through_hidden_trans,
-                post_fix_caching=post_fix_cache,
-                marking_to_activity_caching=marking_to_activity_cache,
-                is_reduction=is_reduction,
-                thread_maximum_ex_time=thread_maximum_ex_time,
-                cleaning_token_flood=cleaning_token_flood,
-                s_components=s_components,
-                trace_occurrences=len(vc[i][1]),
-                consider_activities_not_in_model_in_fitness=consider_activities_not_in_model_in_fitness,
-                exhaustive_invisible_exploration=exhaustive_invisible_exploration
-            )
-            t.run()
-
-            for j in range(len(all_cases)):
-                case_position = all_cases[j]
-
-                threads_results[case_position] = transcribe_result(
-                    t, return_object_names=return_object_names
+            case_runs = {"variant": None}
+            for key in case_runs:
+                case_runs[key] = execute_case(
+                    considered_case, len(all_cases)
                 )
-
+            for case_position in all_cases:
+                threads_results[case_position] = transcribe_result(
+                    case_runs["variant"],
+                    return_object_names=return_object_names,
+                )
             if progress is not None:
                 progress.update()
 
@@ -1610,7 +1586,7 @@ def apply(
 
     exhaustive_invisible_exploration = exec_utils.get_param_value(Parameters.EXHAUSTIVE_INVISIBLE_EXPLORATION, parameters, False)
 
-    if type(log) is not pd.DataFrame:
+    if not pandas_utils.check_is_pandas_dataframe(log):
         log = log_converter.apply(
             log,
             variant=log_converter.Variants.TO_EVENT_LOG,
