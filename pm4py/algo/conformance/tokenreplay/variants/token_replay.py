@@ -9,7 +9,7 @@ from pm4py.objects.petri_net.utils import align_utils
 from copy import copy
 from enum import Enum
 from pm4py.util import exec_utils, constants
-from pm4py.util import variants_util, pandas_utils
+from pm4py.util import variants_util, pandas_utils, thread_utils
 import importlib.util
 from typing import Optional, Dict, Any, Union
 from pm4py.objects.log.obj import EventLog
@@ -1418,40 +1418,40 @@ def apply_log(
                 desc="replaying log with TBR, completed traces :: ",
             )
 
+    execute_case = lambda considered_case, trace_occurrences: (
+        (lambda runner: (runner.run(), runner)[1])(
+            ApplyTraceTokenReplay(
+                considered_case,
+                net,
+                initial_marking,
+                final_marking,
+                trans_map,
+                enable_pltr_fitness,
+                place_fitness_per_trace,
+                transition_fitness_per_trace,
+                notexisting_activities_in_model,
+                places_shortest_path_by_hidden,
+                consider_remaining_in_fitness,
+                activity_key=activity_key,
+                reach_mark_through_hidden=reach_mark_through_hidden,
+                stop_immediately_when_unfit=stop_immediately_unfit,
+                walk_through_hidden_trans=walk_through_hidden_trans,
+                post_fix_caching=post_fix_cache,
+                marking_to_activity_caching=marking_to_activity_cache,
+                is_reduction=is_reduction,
+                thread_maximum_ex_time=thread_maximum_ex_time,
+                cleaning_token_flood=cleaning_token_flood,
+                s_components=s_components,
+                trace_occurrences=trace_occurrences,
+                consider_activities_not_in_model_in_fitness=consider_activities_not_in_model_in_fitness,
+                exhaustive_invisible_exploration=exhaustive_invisible_exploration,
+            )
+        )
+    )
+
     for i in range(len(vc)):
         variant = vc[i][0]
         all_cases = vc[i][1]
-
-        execute_case = lambda considered_case, trace_occurrences: (
-            (lambda runner: (runner.run(), runner)[1])(
-                ApplyTraceTokenReplay(
-                    considered_case,
-                    net,
-                    initial_marking,
-                    final_marking,
-                    trans_map,
-                    enable_pltr_fitness,
-                    place_fitness_per_trace,
-                    transition_fitness_per_trace,
-                    notexisting_activities_in_model,
-                    places_shortest_path_by_hidden,
-                    consider_remaining_in_fitness,
-                    activity_key=activity_key,
-                    reach_mark_through_hidden=reach_mark_through_hidden,
-                    stop_immediately_when_unfit=stop_immediately_unfit,
-                    walk_through_hidden_trans=walk_through_hidden_trans,
-                    post_fix_caching=post_fix_cache,
-                    marking_to_activity_caching=marking_to_activity_cache,
-                    is_reduction=is_reduction,
-                    thread_maximum_ex_time=thread_maximum_ex_time,
-                    cleaning_token_flood=cleaning_token_flood,
-                    s_components=s_components,
-                    trace_occurrences=trace_occurrences,
-                    consider_activities_not_in_model_in_fitness=consider_activities_not_in_model_in_fitness,
-                    exhaustive_invisible_exploration=exhaustive_invisible_exploration,
-                )
-            )
-        )
 
         if disable_variants and not pandas_utils.check_is_pandas_dataframe(
             log
