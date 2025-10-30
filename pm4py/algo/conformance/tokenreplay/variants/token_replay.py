@@ -1448,6 +1448,19 @@ def apply_log(
             )
         )
     )
+    transcribe_case = lambda case_position, runner, update_progress: (
+        threads_results.__setitem__(
+            case_position,
+            transcribe_result(
+                runner, return_object_names=return_object_names
+            ),
+        ),
+        progress.update()
+        if progress is not None and update_progress
+        else None,
+    )
+
+    case_runs = {}
 
     for i in range(len(vc)):
         variant = vc[i][0]
@@ -1456,17 +1469,9 @@ def apply_log(
         if disable_variants and not pandas_utils.check_is_pandas_dataframe(
             log
         ):
-            case_runs = {case_position: None for case_position in all_cases}
-            for case_position in case_runs:
+            for case_position in all_cases:
                 considered_case = log[case_position]
                 case_runs[case_position] = execute_case(considered_case, 1)
-            for case_position in all_cases:
-                threads_results[case_position] = transcribe_result(
-                    case_runs[case_position],
-                    return_object_names=return_object_names,
-                )
-                if progress is not None:
-                    progress.update()
         else:
             considered_case = variants_util.variant_to_trace(
                 variant,
@@ -1474,15 +1479,22 @@ def apply_log(
                     constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key
                 },
             )
-            case_runs = {"variant": None}
-            for key in case_runs:
-                case_runs[key] = execute_case(
-                    considered_case, len(all_cases)
-                )
+            runner = execute_case(considered_case, len(all_cases))
             for case_position in all_cases:
-                threads_results[case_position] = transcribe_result(
-                    case_runs["variant"],
-                    return_object_names=return_object_names,
+                case_runs[case_position] = runner
+
+    for i in range(len(vc)):
+        all_cases = vc[i][1]
+
+        if disable_variants and not pandas_utils.check_is_pandas_dataframe(
+            log
+        ):
+            for case_position in all_cases:
+                transcribe_case(case_position, case_runs[case_position], True)
+        else:
+            for case_position in all_cases:
+                transcribe_case(
+                    case_position, case_runs[case_position], False
                 )
             if progress is not None:
                 progress.update()
