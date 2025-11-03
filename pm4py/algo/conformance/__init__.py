@@ -9,5 +9,6 @@ if pm4_constants.ENABLE_INTERNAL_IMPORTS:
         log_skeleton,
         multialignments,
         temporal_profile,
-        tokenreplay
+        tokenreplay,
+        ocel
     )
