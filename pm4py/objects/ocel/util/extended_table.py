@@ -21,7 +21,7 @@ class Parameters(Enum):
 
 
 def _construct_progress_bar(progress_length):
-    if importlib.util.find_spec("tqdm"):
+    if importlib.util.find_spec("tqdm") and pm4_constants.SHOW_PROGRESS_BAR:
         if progress_length > 1:
             from tqdm.auto import tqdm
 
