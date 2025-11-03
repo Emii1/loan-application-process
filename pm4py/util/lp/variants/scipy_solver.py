@@ -14,12 +14,12 @@ class Parameters:
 
 
 def apply(
-    c: list,
-    Aub: np.ndarray,
-    bub: np.matrix,
-    Aeq: np.matrix,
-    beq: np.matrix,
-    parameters: Optional[Dict[Any, Any]] = None,
+        c: list,
+        Aub: np.ndarray,
+        bub: np.matrix,
+        Aeq: np.matrix,
+        beq: np.matrix,
+        parameters: Optional[Dict[Any, Any]] = None,
 ) -> OptimizeResult:
     if parameters is None:
         parameters = {}
@@ -27,12 +27,10 @@ def apply(
     integrality = exec_utils.get_param_value(
         Parameters.INTEGRALITY, parameters, None
     )
-    method = exec_utils.get_param_value(Parameters.METHOD, parameters, "highs")
+    method = exec_utils.get_param_value(Parameters.METHOD, parameters, "revised simplex")
     bounds = exec_utils.get_param_value(Parameters.BOUNDS, parameters, None)
-    sol = None
 
-    try:
-        LP_LOCK.acquire()
+    with LP_LOCK:
         sol = linprog(
             c,
             A_ub=Aub,
@@ -43,22 +41,21 @@ def apply(
             bounds=bounds,
             method=method,
         )
-        LP_LOCK.release()
-    except:
-        LP_LOCK.release()
 
     return sol
 
 
 def get_prim_obj_from_sol(
-    sol: OptimizeResult, parameters: Optional[Dict[Any, Any]] = None
-) -> int:
+        sol: OptimizeResult, parameters: Optional[Dict[Any, Any]] = None
+) -> Optional[int]:
     if sol is not None and sol.fun is not None:
         return round(sol.fun)
+    return None
 
 
 def get_points_from_sol(
-    sol: OptimizeResult, parameters: Optional[Dict[Any, Any]] = None
-) -> List[int]:
+        sol: OptimizeResult, parameters: Optional[Dict[Any, Any]] = None
+) -> Optional[List[int]]:
     if sol is not None and sol.x is not None:
         return [round(y) for y in sol.x]
+    return None
