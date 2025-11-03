@@ -15,7 +15,6 @@ if pm4_constants.ENABLE_INTERNAL_IMPORTS:
         merging,
         organizational_mining,
         querying,
-        reduction,
         simulation,
         transformation,
     )
