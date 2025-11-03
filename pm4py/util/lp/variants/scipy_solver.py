@@ -1,9 +1,13 @@
 import numpy as np
+import warnings
 from scipy.optimize import linprog, OptimizeResult
 from typing import Optional, Dict, Any, List
 from pm4py.util import exec_utils
 from threading import Lock
+from scipy.optimize import OptimizeWarning
 
+
+warnings.filterwarnings('ignore', category=OptimizeWarning)
 LP_LOCK = Lock()
 
 
