@@ -2,6 +2,9 @@ import numpy as np
 from scipy.optimize import linprog, OptimizeResult
 from typing import Optional, Dict, Any, List
 from pm4py.util import exec_utils
+from threading import Lock
+
+LP_LOCK = Lock()
 
 
 class Parameters:
@@ -26,17 +29,23 @@ def apply(
     )
     method = exec_utils.get_param_value(Parameters.METHOD, parameters, "highs")
     bounds = exec_utils.get_param_value(Parameters.BOUNDS, parameters, None)
+    sol = None
 
-    sol = linprog(
-        c,
-        A_ub=Aub,
-        b_ub=bub,
-        A_eq=Aeq,
-        b_eq=beq,
-        integrality=integrality,
-        bounds=bounds,
-        method=method,
-    )
+    try:
+        LP_LOCK.acquire()
+        sol = linprog(
+            c,
+            A_ub=Aub,
+            b_ub=bub,
+            A_eq=Aeq,
+            b_eq=beq,
+            integrality=integrality,
+            bounds=bounds,
+            method=method,
+        )
+        LP_LOCK.release()
+    except:
+        LP_LOCK.release()
 
     return sol
 
@@ -44,12 +53,12 @@ def apply(
 def get_prim_obj_from_sol(
     sol: OptimizeResult, parameters: Optional[Dict[Any, Any]] = None
 ) -> int:
-    if sol.fun is not None:
+    if sol is not None and sol.fun is not None:
         return round(sol.fun)
 
 
 def get_points_from_sol(
     sol: OptimizeResult, parameters: Optional[Dict[Any, Any]] = None
 ) -> List[int]:
-    if sol.x is not None:
+    if sol is not None and sol.x is not None:
         return [round(y) for y in sol.x]
