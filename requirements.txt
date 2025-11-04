@@ -9,3 +9,4 @@ pytz
 tqdm
 wheel
 setuptools
+cvxopt;python_version<'3.14'
