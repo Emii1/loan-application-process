@@ -1400,6 +1400,8 @@ def conformance_ocdfg(
     """
     Performs OC-DFG-based conformance checking between an object-centric event log (or OC-DFG) and a normative OC-DFG.
 
+    Published in: https://publications.rwth-aachen.de/record/1014107
+
     :param ocel: Object-centric event log or OC-DFG representing the real behavior.
     :param model: Normative OC-DFG obtained from discovery.
     :param variant: Variant of the OC-DFG conformance algorithm to use (default: graph comparison).
@@ -1429,6 +1431,8 @@ def conformance_otg(
 ) -> Dict[str, Any]:
     """
     Performs OTG-based conformance checking between an object-centric event log (or OTG) and a normative OTG.
+
+    Published in: https://publications.rwth-aachen.de/record/1014107
 
     :param ocel: Object-centric event log or OTG capturing the real behavior.
     :param model: Normative OTG, typically discovered from a reference log.
@@ -1472,6 +1476,8 @@ def conformance_etot(
 ) -> Dict[str, Any]:
     """
     Performs ET-OT-based conformance checking between an object-centric event log (or ET-OT graph) and a normative ET-OT graph.
+
+    Published in: https://publications.rwth-aachen.de/record/1014107
 
     :param ocel: Object-centric event log or ET-OT graph capturing the real behavior.
     :param model: Normative ET-OT graph, typically discovered from a reference log.

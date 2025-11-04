@@ -1505,6 +1505,8 @@ def discover_otg(
     """
     Discovers an Object-Type Graph (OTG) from an object-centric event log.
 
+    Published in: https://publications.rwth-aachen.de/record/1014107
+
     The OTG summarizes how object types are related across different interaction graphs extracted from the OCEL.
     The default variant applies the classic OTG discovery algorithm.
 
@@ -1540,6 +1542,8 @@ def discover_etot(
 ]:
     """
     Discovers the ET-OT (Event Type - Object Type) graph from an object-centric event log.
+
+    Published in: https://publications.rwth-aachen.de/record/1014107
 
     The ET-OT graph captures the relationships between event types and object types along with their frequencies.
     The default variant applies the classic ET-OT discovery algorithm.
