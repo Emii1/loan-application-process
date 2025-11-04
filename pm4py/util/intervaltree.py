@@ -9,9 +9,11 @@ class Interval:
     def overlaps(self, qstart, qend):
         return self.start < qend and self.end > qstart
 
+    def contains(self, point):
+        return self.start <= point <= self.end
+
     def __repr__(self):
         return f"Interval({self.start}, {self.end}, data={self.data})"
-
 
 class IntervalTree:
     class Node:
@@ -25,48 +27,75 @@ class IntervalTree:
         self.root = None
 
     def add(self, interval):
-        self.root = self._insert(self.root, interval)
+        if self.root is None:
+            self.root = self.Node(interval)
+            return
 
-    def _insert(self, node, interval):
-        if node is None:
-            return self.Node(interval)
+        stack = []
+        curr = self.root
+        while curr:
+            stack.append(curr)
+            if interval.start < curr.interval.start:
+                if curr.left is None:
+                    curr.left = self.Node(interval)
+                    break
+                curr = curr.left
+            else:
+                if curr.right is None:
+                    curr.right = self.Node(interval)
+                    break
+                curr = curr.right
 
-        if interval.start < node.interval.start:
-            node.left = self._insert(node.left, interval)
+        # Update max_end from the parent up to the root
+        while stack:
+            curr = stack.pop()
+            curr.max_end = curr.interval.end
+            if curr.left:
+                curr.max_end = max(curr.max_end, curr.left.max_end)
+            if curr.right:
+                curr.max_end = max(curr.max_end, curr.right.max_end)
+
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            if key.step is not None:
+                raise ValueError("Step in slicing is not supported")
+            qstart, qend = key.start, key.stop
+            if qstart >= qend:
+                return []
+            return self._query_interval(self.root, qstart, qend)
+        elif isinstance(key, (int, float)):
+            return self._query_point(self.root, key)
         else:
-            node.right = self._insert(node.right, interval)
+            raise ValueError("Only slicing or point queries are supported")
 
-        # Update max_end
-        node.max_end = node.interval.end
-        if node.left:
-            node.max_end = max(node.max_end, node.left.max_end)
-        if node.right:
-            node.max_end = max(node.max_end, node.right.max_end)
-
-        return node
-
-    def __getitem__(self, slc):
-        if not isinstance(slc, slice):
-            raise ValueError("Only slicing is supported")
-        if slc.step is not None:
-            raise ValueError("Step in slicing is not supported")
-        qstart, qend = slc.start, slc.stop
-        if qstart >= qend:
-            return []
-        return self._query(self.root, qstart, qend)
-
-    def _query(self, node, qstart, qend):
+    def _query_interval(self, node, qstart, qend):
         if node is None:
             return []
 
         result = []
-        if node.interval.overlaps(qstart, qend):
-            result.append(node.interval)
+        stack = [node]
+        while stack:
+            current = stack.pop()
+            if current.interval.overlaps(qstart, qend):
+                result.append(current.interval)
+            if current.right and current.interval.start < qend:
+                stack.append(current.right)
+            if current.left and current.left.max_end >= qstart:
+                stack.append(current.left)
+        return result
 
-        if node.left and node.left.max_end >= qstart:
-            result.extend(self._query(node.left, qstart, qend))
+    def _query_point(self, node, point):
+        if node is None:
+            return []
 
-        if node.right:
-            result.extend(self._query(node.right, qstart, qend))
-
+        result = []
+        stack = [node]
+        while stack:
+            current = stack.pop()
+            if current.interval.contains(point):
+                result.append(current.interval)
+            if current.right and current.interval.start <= point:
+                stack.append(current.right)
+            if current.left and current.left.max_end >= point:
+                stack.append(current.left)
         return result
