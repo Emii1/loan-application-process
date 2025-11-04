@@ -138,7 +138,11 @@ def get_graph(
     bgcolor = exec_utils.get_param_value(
         Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR
     )
-    graph = Digraph(strict=True, engine="dot")
+
+    filename = tempfile.NamedTemporaryFile(suffix=".gv")
+    filename.close()
+
+    graph = Digraph(filename=filename.name, strict=True, engine="dot")
     graph.attr(bgcolor=bgcolor)
 
     if enable_graph_title:
