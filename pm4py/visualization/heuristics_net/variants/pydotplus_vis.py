@@ -138,6 +138,9 @@ def get_graph(
     bgcolor = exec_utils.get_param_value(
         Parameters.BGCOLOR, parameters, constants.DEFAULT_BGCOLOR
     )
+    image_format = exec_utils.get_param_value(
+        Parameters.FORMAT, parameters, "png"
+    )
 
     filename = tempfile.NamedTemporaryFile(suffix=".gv")
     filename.close()
@@ -340,6 +343,8 @@ def get_graph(
                         color=heu_net.default_edges_color[index],
                         fontcolor=heu_net.default_edges_color[index],
                     )
+
+    graph.format = image_format.replace("html", "plain-ext")
 
     return graph
 
