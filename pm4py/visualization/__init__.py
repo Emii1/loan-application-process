@@ -15,13 +15,15 @@ if pm4_constants.ENABLE_INTERNAL_IMPORTS:
             trie,
             ocel,
             network_analysis,
-            heuristics_net,
-            performance_spectrum
+            heuristics_net
         )
 
-        if importlib.util.find_spec("matplotlib") and importlib.util.find_spec("pyvis"):
-            # SNA requires both packages matplotlib and pyvis.
-            from pm4py.visualization import sna
+        if importlib.util.find_spec("matplotlib"):
+            from pm4py.visualization import performance_spectrum
+
+            if importlib.util.find_spec("pyvis"):
+                # SNA requires both packages matplotlib and pyvis.
+                from pm4py.visualization import sna
 
     if importlib.util.find_spec("matplotlib"):
         # graphs require matplotlib. This is included in the default installation;
